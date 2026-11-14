@@ -13,8 +13,8 @@
     "description": "For each of the 15 questions, whether each engine named or cited County Group, and which tracked builders it named instead. 1 Nov 2026.",
     "file": "data/ai_questions.csv",
     "updated": {
-      "at": "2026-11-14T06:24:26Z",
-      "by": "Claude, from Google Search Console, GA4 and OpenSEO AI visibility (pulled 14 Nov 2026)"
+      "at": "2026-11-14T14:05:00Z",
+      "by": "Claude, from the OpenSEO AI visibility run of 1 Nov 2026 (6 Google AI Overview cells corrected to no answer)"
     }
   },
   "ai_sources": {
