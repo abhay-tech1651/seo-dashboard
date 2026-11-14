@@ -1,0 +1,802 @@
+<meta name="dash-one-writer">
+<style>
+  .s-wrap { display: flex; flex-direction: column; gap: var(--cds-gap-xl); font-family: var(--font-anthropic-sans); color: var(--color-fg); }
+  .s-title { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; text-wrap: balance; }
+  .s-lede { font-size: var(--cds-font-size-body); line-height: 1.6; max-width: 70ch; margin: var(--cds-gap-sm) 0 0; }
+  .s-lede b, .s-p b, .s-note b { font-weight: var(--cds-font-weight-medium); font-variant-numeric: tabular-nums; }
+  .s-muted { color: var(--color-fg-muted); }
+  .s-nav { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs) var(--cds-gap-md); font-size: var(--cds-font-size-caption); margin-top: var(--cds-gap-md); }
+  .s-nav a { color: var(--color-fg-muted); text-decoration: none; border-bottom: 1px solid var(--color-border-line); }
+  .s-nav a:hover, .s-nav a:focus-visible { color: var(--color-fg); }
+  .s-h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0 0 var(--cds-gap-xs); text-wrap: balance; }
+  .s-h3 { font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); margin: var(--cds-gap-lg) 0 var(--cds-gap-xs); }
+  .s-hrow.is-us span:first-child { font-weight: var(--cds-font-weight-medium); }
+  .s-sub { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: 0 0 var(--cds-gap-md); line-height: 1.5; max-width: 80ch; }
+  .s-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); min-width: 0; }
+  .s-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: var(--cds-gap-md); }
+  .s-tile-top { display: flex; justify-content: space-between; align-items: baseline; gap: var(--cds-gap-sm); }
+  .s-tile-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .s-big { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: 34px; line-height: 1.1; margin-top: var(--cds-gap-sm); font-variant-numeric: tabular-nums; }
+  .s-tile-sub { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin-top: var(--cds-gap-xs); }
+  .s-pill { font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--color-border-line); white-space: nowrap; }
+  .s-pill.is-good { color: var(--color-ok); border-color: var(--color-ok); }
+  .s-pill.is-bad { color: var(--color-bad); border-color: var(--color-bad); }
+  .s-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--cds-gap-md); }
+  .s-cmp { padding: var(--cds-gap-sm) 0; border-top: 1px solid var(--color-border-line); }
+  .s-cmp:first-of-type { border-top: 0; padding-top: 0; }
+  .s-cmp-head { display: flex; justify-content: space-between; gap: var(--cds-gap-sm); font-size: var(--cds-font-size-body); }
+  .s-bar-row { display: grid; grid-template-columns: 34px 1fr 64px; gap: var(--cds-gap-sm); align-items: center; font-size: var(--cds-font-size-caption); margin-top: 6px; }
+  .s-bar-track { height: 10px; background: var(--cds-chart-grid); border-radius: 999px; overflow: hidden; }
+  .s-bar { height: 100%; width: 0; border-radius: 999px; }
+  .s-bar.is-sep { background: var(--cds-chart-muted); }
+  .s-num { text-align: right; font-variant-numeric: tabular-nums; }
+  .s-note { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: 6px 0 0; line-height: 1.5; }
+  .s-p { font-size: var(--cds-font-size-body); line-height: 1.6; margin: 0 0 var(--cds-gap-sm); max-width: 80ch; }
+  .s-p:last-child { margin-bottom: 0; }
+  .s-chart { position: relative; min-height: 220px; }
+  .s-chart svg text { fill: var(--cds-text-secondary); font-size: var(--cds-font-size-caption); }
+  .s-chart .domain { display: none; }
+  .s-tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); box-shadow: var(--cds-shadow-popover); border-radius: var(--cds-radius); padding: 6px 10px; font-size: var(--cds-font-size-caption); white-space: nowrap; }
+  .s-tablewrap { overflow-x: auto; }
+  .s-table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-body); font-variant-numeric: tabular-nums; }
+  .s-table th { text-align: right; font-weight: var(--cds-font-weight-medium); color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); padding: 8px 10px; border-bottom: 1px solid var(--color-border-line); white-space: nowrap; }
+  .s-table td { text-align: right; padding: 7px 10px; border-bottom: 1px solid var(--color-border-line); white-space: nowrap; }
+  .s-table th:first-child, .s-table td:first-child { text-align: left; white-space: normal; }
+  .s-table tr.is-total td { font-weight: var(--cds-font-weight-medium); }
+  .s-table tr.is-gap td.is-flag { color: var(--color-bad); }
+  .s-good { color: var(--color-ok); }
+  .s-bad { color: var(--color-bad); }
+  .s-hbars { display: flex; flex-direction: column; gap: 6px; }
+  .s-hrow { display: grid; grid-template-columns: minmax(120px, 190px) 1fr 34px; gap: var(--cds-gap-sm); align-items: center; font-size: var(--cds-font-size-caption); }
+  .s-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--cds-gap-md); margin-bottom: var(--cds-gap-md); }
+  .s-fact-n { font-family: var(--font-anthropic-serif); font-size: 26px; font-variant-numeric: tabular-nums; }
+  .s-fact-l { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.4; }
+  .s-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--cds-gap-md); }
+  .s-steps li { display: grid; grid-template-columns: 26px 1fr; gap: var(--cds-gap-sm); }
+  .s-n { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: var(--cds-font-size-caption); font-weight: var(--cds-font-weight-medium); background: var(--color-fg); color: var(--color-bg); }
+  .s-step-title { font-weight: var(--cds-font-weight-medium); font-size: var(--cds-font-size-body); }
+  .s-owner { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin-left: 6px; }
+  .s-dl { display: grid; grid-template-columns: minmax(130px, 210px) 1fr; gap: var(--cds-gap-sm) var(--cds-gap-lg); margin: 0; font-size: var(--cds-font-size-body); line-height: 1.55; }
+  .s-dl dt { font-weight: var(--cds-font-weight-medium); }
+  .s-dl dd { margin: 0; color: var(--color-fg-muted); }
+  @media (max-width: 520px) { .s-dl { grid-template-columns: 1fr; } .s-dl dd { margin-bottom: var(--cds-gap-sm); } .s-hrow { grid-template-columns: 110px 1fr 30px; } }
+  [data-dash-source-state=refreshing] { opacity: .5; }
+</style>
+
+<div class="s-wrap">
+  <header id="top">
+    <h1 class="s-title">County SEO: September vs October 2026</h1>
+    <p class="s-lede">Clicks from Google search went from <b data-draw="v" data-source="monthly" data-where="metric=gsc_clicks" data-field="sep">—</b> in September to <b data-draw="v" data-source="monthly" data-where="metric=gsc_clicks" data-field="oct">—</b> in October (<b data-draw="chg" data-source="changes" data-where="metric=gsc_clicks" data-field="change_pct">—</b>). Organic leads went from <b data-draw="v" data-source="monthly" data-where="metric=leads" data-field="sep">—</b> to <b data-draw="v" data-source="monthly" data-where="metric=leads" data-field="oct">—</b> (<b data-draw="chg" data-source="changes" data-where="metric=leads" data-field="change_pct">—</b>). Traffic fell, mostly from people who already know County; leads rose, mostly through website forms. September was lifted by a one-off burst of searches for the new Gurgaon projects, but October is also <b data-draw="chg" data-source="launch_view" data-where="metric=gsc_clicks" data-field="oct_vs_aug_pct">—</b> against August, so the fall is not only the launch ending. This page shows where, why, how ROI’s work checks out against Google’s own data, and what to do next.</p>
+    <nav class="s-nav" aria-label="Sections">
+      <a href="#launch">Was September unusual?</a><a href="#projects">By project</a><a href="#pages">Every page</a><a href="#where">Where traffic went</a><a href="#why">Why leads rose</a><a href="#leads">Leads</a><a href="#roi">ROI’s work vs Google</a><a href="#chances">Searches close to page 1</a><a href="#ai">AI answers</a><a href="#next">Next steps</a><a href="#explainer">Explainer</a>
+    </nav>
+  </header>
+
+  <section id="tiles" class="s-tiles" aria-label="Headline numbers, October vs September">
+    <div class="s-card">
+      <div class="s-tile-top"><span class="s-tile-label">Clicks from Google search · Oct</span><span class="s-pill" data-draw="pill" data-good="up" data-source="changes" data-where="metric=gsc_clicks" data-field="change_pct">—</span></div>
+      <div class="s-big" data-draw="v" data-source="monthly" data-where="metric=gsc_clicks" data-field="oct">—</div>
+      <div class="s-tile-sub">September: <span data-draw="v" data-source="monthly" data-where="metric=gsc_clicks" data-field="sep">—</span> · Search Console</div>
+    </div>
+    <div class="s-card">
+      <div class="s-tile-top"><span class="s-tile-label">Visits from Google search · Oct</span><span class="s-pill" data-draw="pill" data-good="up" data-source="changes" data-where="metric=ga_sessions" data-field="change_pct">—</span></div>
+      <div class="s-big" data-draw="v" data-source="monthly" data-where="metric=ga_sessions" data-field="oct">—</div>
+      <div class="s-tile-sub">September: <span data-draw="v" data-source="monthly" data-where="metric=ga_sessions" data-field="sep">—</span> · Google Analytics</div>
+    </div>
+    <div class="s-card">
+      <div class="s-tile-top"><span class="s-tile-label">Organic leads · Oct</span><span class="s-pill" data-draw="pill" data-good="up" data-source="changes" data-where="metric=leads" data-field="change_pct">—</span></div>
+      <div class="s-big" data-draw="v" data-source="monthly" data-where="metric=leads" data-field="oct">—</div>
+      <div class="s-tile-sub">September: <span data-draw="v" data-source="monthly" data-where="metric=leads" data-field="sep">—</span> · CRM</div>
+    </div>
+    <div class="s-card">
+      <div class="s-tile-top"><span class="s-tile-label">Qualified organic leads · Oct</span><span class="s-pill" data-draw="pill" data-good="up" data-source="lead_change" data-row="0" data-field="q_change_pct">—</span></div>
+      <div class="s-big" data-draw="v" data-source="leads_view" data-where="key=Oct|All organic" data-field="q">—</div>
+      <div class="s-tile-sub">September: <span data-draw="v" data-source="leads_view" data-where="key=Sep|All organic" data-field="q">—</span> · sales team’s call</div>
+    </div>
+  </section>
+
+  <section id="daily" class="s-card">
+    <h2 class="s-h2">Clicks from Google search, day by day</h2>
+    <p class="s-sub">Search Console, 1 September to 31 October 2026. Point at the line to read a day.</p>
+    <div class="s-chart" data-draw="daily" data-source="daily"></div>
+  </section>
+
+  <section id="launch" class="s-card">
+    <h2 class="s-h2">Was September unusual? August, September and October</h2>
+    <p class="s-sub">In September many people searched for County’s new Gurgaon projects in Sector 88A (Center Court and Cocoa County). To separate that one-off burst from a real fall, August is added here as the normal month before it. Search Console; a separate export pulled with GSC Wizard gives the same totals for all three months.</p>
+    <div class="s-facts">
+      <div><div class="s-fact-n s-bad" data-draw="chg" data-source="launch_view" data-where="metric=gsc_clicks" data-field="oct_vs_aug_pct">—</div><div class="s-fact-l">clicks in October against August, the month before the burst</div></div>
+      <div><div class="s-fact-n s-bad" data-draw="chg" data-source="launch_view" data-where="metric=gsc_clicks" data-field="oct_vs_sep_pct">—</div><div class="s-fact-l">clicks in October against September</div></div>
+      <div><div class="s-fact-n" data-draw="v" data-source="cocoa_loss" data-row="0" data-field="cocoa_lost">—</div><div class="s-fact-l">of the <span data-draw="v" data-source="cocoa_loss" data-row="0" data-field="total_lost">—</span> clicks lost were searches naming Cocoa. The launch searches alone do not explain the fall.</div></div>
+    </div>
+    <div class="s-tablewrap">
+      <table class="s-table" data-source="launch_view" data-row-key="metric">
+        <thead><tr>
+          <th data-field="label">Number</th>
+          <th data-field="aug">Aug</th>
+          <th data-field="sep">Sep</th>
+          <th data-field="oct">Oct</th>
+          <th data-field="oct_vs_sep_pct" data-fmt="chg">Oct vs Sep</th>
+          <th data-field="oct_vs_aug_pct" data-fmt="chg">Oct vs Aug</th>
+        </tr></thead>
+        <tbody data-draw="tbl"></tbody>
+      </table>
+    </div>
+    <p class="s-note">Brand, non-brand and Cocoa clicks are counted from Google’s top 1,000 searches each month. Click rate: <span data-draw="v" data-fmt="pct" data-source="launch_months" data-where="metric=ctr_pct" data-field="aug">—</span> in August, <span data-draw="v" data-fmt="pct" data-source="launch_months" data-where="metric=ctr_pct" data-field="sep">—</span> in September, <span data-draw="v" data-fmt="pct" data-source="launch_months" data-where="metric=ctr_pct" data-field="oct">—</span> in October. Average position: <span data-draw="v" data-fmt="pos" data-source="launch_months" data-where="metric=position" data-field="aug">—</span>, <span data-draw="v" data-fmt="pos" data-source="launch_months" data-where="metric=position" data-field="sep">—</span>, <span data-draw="v" data-fmt="pos" data-source="launch_months" data-where="metric=position" data-field="oct">—</span> (lower is better).</p>
+    <p class="s-p" style="margin-top: var(--cds-gap-md)"><b>Two reasons for the September-to-October fall, in clicks.</b> About <b data-draw="v" data-source="loss_split" data-row="0" data-field="shown_less">—</b> clicks went because Google showed us less often, and about <b data-draw="v" data-source="loss_split" data-row="0" data-field="clicked_less">—</b> because fewer people clicked when we were shown.</p>
+
+    <h3 class="s-h3">Main pages, three months</h3>
+    <p class="s-note">“Jumped in September” means at least 20% more clicks in September than August. “Below August” means October is at least 10% under August.</p>
+    <div class="s-tablewrap">
+      <table class="s-table" data-source="pages_3m_view" data-row-key="label">
+        <thead><tr>
+          <th data-field="label">Page</th>
+          <th data-field="aug">Clicks Aug</th>
+          <th data-field="sep">Clicks Sep</th>
+          <th data-field="oct">Clicks Oct</th>
+          <th data-field="oct_vs_aug_pct" data-fmt="chg">Oct vs Aug</th>
+          <th data-field="pattern" data-fmt="text">Pattern</th>
+        </tr></thead>
+        <tbody data-draw="tbl"></tbody>
+      </table>
+    </div>
+    <p class="s-p" style="margin-top: var(--cds-gap-md)">The <b data-draw="v" data-source="pattern_totals" data-where="pattern=Jumped in September" data-field="pages">—</b> pages that jumped in September went from <b data-draw="v" data-source="pattern_totals" data-where="pattern=Jumped in September" data-field="aug">—</b> clicks in August to <b data-draw="v" data-source="pattern_totals" data-where="pattern=Jumped in September" data-field="sep">—</b>, then <b data-draw="v" data-source="pattern_totals" data-where="pattern=Jumped in September" data-field="oct">—</b>: the burst ended and together they finished below August. The <b data-draw="v" data-source="pattern_totals" data-where="pattern=Below August" data-field="pages">—</b> older project pages had no September jump and together have slipped every month: <b data-draw="v" data-source="pattern_totals" data-where="pattern=Below August" data-field="aug">—</b>, <b data-draw="v" data-source="pattern_totals" data-where="pattern=Below August" data-field="sep">—</b>, <b data-draw="v" data-source="pattern_totals" data-where="pattern=Below August" data-field="oct">—</b>. That steady slide is the part to explain.</p>
+
+    <h3 class="s-h3">Searches for our names, three months</h3>
+    <div class="s-tablewrap">
+      <table class="s-table" data-source="brand_3m_view" data-row-key="query">
+        <thead><tr>
+          <th data-field="query">Search</th>
+          <th data-field="aug">Clicks Aug</th>
+          <th data-field="sep">Clicks Sep</th>
+          <th data-field="oct">Clicks Oct</th>
+          <th data-field="oct_vs_aug_pct" data-fmt="chg">Oct vs Aug</th>
+          <th data-field="pattern" data-fmt="text">Pattern</th>
+        </tr></thead>
+        <tbody data-draw="tbl"></tbody>
+      </table>
+    </div>
+    <p class="s-note">“Oct vs Aug” is left blank where August had fewer than 10 clicks, here and in the table above.</p>
+
+    <h3 class="s-h3">Where people searching “Cocoa County” landed</h3>
+    <p class="s-note">Clicks from every search containing “cocoa county”, by the page Google sent them to. In September <span data-draw="v" data-fmt="pct" data-source="cocoa_share" data-row="0" data-field="sep_coco_pct">—</span> of them landed on Coco County, the older Noida project with a similar name; in October <span data-draw="v" data-fmt="pct" data-source="cocoa_share" data-row="0" data-field="oct_coco_pct">—</span>. So part of Coco County’s September clicks were Cocoa buyers on the wrong page.</p>
+    <div class="s-tablewrap">
+      <table class="s-table" data-source="cocoa_dest" data-row-key="destination">
+        <thead><tr>
+          <th data-field="destination">Landed on</th>
+          <th data-field="sep">Clicks Sep</th>
+          <th data-field="oct">Clicks Oct</th>
+        </tr></thead>
+        <tbody data-draw="tbl"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="projects" class="s-card">
+    <h2 class="s-h2">By project: which pages lost traffic</h2>
+    <p class="s-sub">Each project’s main page. Clicks from Search Console; visits that started on that page from Google search from Google Analytics. The home page and Center Court together lost <b data-draw="v" data-source="home_cc_loss" data-row="0" data-field="lost">—</b> of the <b data-draw="v" data-source="home_cc_loss" data-row="0" data-field="total_lost">—</b> clicks the whole site lost.</p>
+    <div class="s-tablewrap">
+      <table class="s-table" data-source="projects_view" data-row-key="label">
+        <thead><tr>
+          <th data-field="label">Page</th>
+          <th data-field="gsc_sep">Clicks Sep</th>
+          <th data-field="gsc_oct">Clicks Oct</th>
+          <th data-field="gsc_change_pct" data-fmt="chg">Change</th>
+          <th data-field="ga_sep">Visits Sep</th>
+          <th data-field="ga_oct">Visits Oct</th>
+        </tr></thead>
+        <tbody data-draw="tbl"></tbody>
+      </table>
+    </div>
+    <p class="s-note">Cocoa County’s main page shows no visits from Google search in Google Analytics in either month; its campaign page does.</p>
+  </section>
+
+  <section id="pages" class="s-card">
+    <h2 class="s-h2">Every page: what ranks, what lost, what is wasted</h2>
+    <p class="s-sub">Search Console clicks per page, September against October, with Google Analytics visits and enquiry events for the same page. Pages with at least 10 clicks in either month or 500 impressions in October; all of them are in Sources (“Pages”). Google counts a search once per page here, so page totals add up a little higher than the site total.</p>
+    <h3 class="s-h3">By kind of page</h3>
+    <div class="s-tablewrap">
+      <table class="s-table" data-source="types_view" data-row-key="type">
+        <thead><tr>
+          <th data-field="type">Kind of page</th>
+          <th data-field="clicks_sep">Clicks Sep</th>
+          <th data-field="clicks_oct">Clicks Oct</th>
+          <th data-field="change_pct" data-fmt="chg">Change</th>
+        </tr></thead>
+        <tbody data-draw="tbl"></tbody>
+      </table>
+    </div>
+    <p class="s-note">Project pages and the home page carry most of the fall. Brochures and price-list PDFs were the only kind of page that grew.</p>
+
+    <h3 class="s-h3">Best pages in October</h3>
+    <div class="s-tablewrap">
+      <table class="s-table" data-source="pages" data-row-key="page" data-sort="clicks_oct:desc" data-limit="12">
+        <thead><tr>
+          <th data-field="page">Page</th>
+          <th data-field="type" data-fmt="text">Kind</th>
+          <th data-field="clicks_sep">Clicks Sep</th>
+          <th data-field="clicks_oct">Clicks Oct</th>
+          <th data-field="position_oct" data-fmt="pos">Avg position</th>
+          <th data-field="visits_oct">Visits Oct</th>
+          <th data-field="enquiry_events_oct">Enquiry events</th>
+        </tr></thead>
+        <tbody data-draw="tbl"></tbody>
+      </table>
+    </div>
+
+    <h3 class="s-h3">Pages that lost the most clicks</h3>
+    <div class="s-tablewrap">
+      <table class="s-table" data-source="pages" data-row-key="page" data-sort="clicks_change:asc" data-limit="10">
+        <thead><tr>
+          <th data-field="page">Page</th>
+          <th data-field="clicks_sep">Clicks Sep</th>
+          <th data-field="clicks_oct">Clicks Oct</th>
+          <th data-field="clicks_change" data-fmt="diff">Lost</th>
+          <th data-field="position_oct" data-fmt="pos">Avg position Oct</th>
+        </tr></thead>
+        <tbody data-draw="tbl"></tbody>
+      </table>
+    </div>
+
+    <h3 class="s-h3">Shown often, clicked rarely</h3>
+    <p class="s-note">Pages Google showed at least 1,000 times in October that fewer than 1 in 100 people clicked. Usually the title and description in Google’s result don’t match what people searched, or the page sits low on page 1.</p>
+    <div class="s-tablewrap">
+      <table class="s-table" data-source="pages" data-row-key="page" data-filter="low_ctr=yes" data-sort="impressions_oct:desc">
+        <thead><tr>
+          <th data-field="page">Page</th>
+          <th data-field="impressions_oct">Times shown Oct</th>
+          <th data-field="clicks_oct">Clicks Oct</th>
+          <th data-field="ctr_oct_pct" data-fmt="pct">Click rate</th>
+          <th data-field="position_oct" data-fmt="pos">Avg position</th>
+        </tr></thead>
+        <tbody data-draw="tbl"></tbody>
+      </table>
+    </div>
+
+    <h3 class="s-h3">Pages where Google-search visitors enquired</h3>
+    <p class="s-note">Google Analytics enquiry events (WhatsApp clicks, Contact Us, thank-you pages) in October, by the page the visit started on.</p>
+    <div class="s-tablewrap">
+      <table class="s-table" data-source="pages" data-row-key="page" data-filter="enquiry_events_oct>=1" data-sort="enquiry_events_oct:desc">
+        <thead><tr>
+          <th data-field="page">Page</th>
+          <th data-field="visits_oct">Visits Oct</th>
+          <th data-field="enquiry_events_oct">Enquiry events</th>
+          <th data-field="clicks_oct">Clicks Oct</th>
+        </tr></thead>
+        <tbody data-draw="tbl"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="s-two">
+    <section id="where" class="s-card">
+      <h2 class="s-h2">Where the traffic went</h2>
+      <p class="s-sub">Search Console clicks, September (grey) against October. “Brand” means the search names County or one of its projects.</p>
+      <div class="s-cmp">
+        <div class="s-cmp-head"><span>Brand searches</span><span class="s-pill" data-draw="pill" data-good="up" data-source="changes" data-where="metric=brand_clicks" data-field="change_pct">—</span></div>
+        <div class="s-bar-row"><span class="s-muted">Sep</span><div class="s-bar-track"><div class="s-bar is-sep" data-draw="bar" data-source="monthly" data-where="metric=brand_clicks" data-field="sep"></div></div><span class="s-num" data-draw="v" data-source="monthly" data-where="metric=brand_clicks" data-field="sep">—</span></div>
+        <div class="s-bar-row"><span class="s-muted">Oct</span><div class="s-bar-track"><div class="s-bar" data-draw="bar" data-source="monthly" data-where="metric=brand_clicks" data-field="oct"></div></div><span class="s-num" data-draw="v" data-source="monthly" data-where="metric=brand_clicks" data-field="oct">—</span></div>
+        <p class="s-note">People who already know County. Counted from Google’s top 1,000 searches each month.</p>
+      </div>
+      <div class="s-cmp">
+        <div class="s-cmp-head"><span>“county group” alone</span><span class="s-pill" data-draw="pill" data-good="up" data-source="changes" data-where="metric=county_group_clicks" data-field="change_pct">—</span></div>
+        <div class="s-bar-row"><span class="s-muted">Sep</span><div class="s-bar-track"><div class="s-bar is-sep" data-draw="bar" data-source="monthly" data-where="metric=county_group_clicks" data-field="sep"></div></div><span class="s-num" data-draw="v" data-source="monthly" data-where="metric=county_group_clicks" data-field="sep">—</span></div>
+        <div class="s-bar-row"><span class="s-muted">Oct</span><div class="s-bar-track"><div class="s-bar" data-draw="bar" data-source="monthly" data-where="metric=county_group_clicks" data-field="oct"></div></div><span class="s-num" data-draw="v" data-source="monthly" data-where="metric=county_group_clicks" data-field="oct">—</span></div>
+      </div>
+      <div class="s-cmp">
+        <div class="s-cmp-head"><span>Non-brand searches (new buyers)</span><span class="s-pill" data-draw="pill" data-good="up" data-source="changes" data-where="metric=nonbrand_clicks" data-field="change_pct">—</span></div>
+        <div class="s-bar-row"><span class="s-muted">Sep</span><div class="s-bar-track"><div class="s-bar is-sep" data-draw="bar" data-source="monthly" data-where="metric=nonbrand_clicks" data-field="sep"></div></div><span class="s-num" data-draw="v" data-source="monthly" data-where="metric=nonbrand_clicks" data-field="sep">—</span></div>
+        <div class="s-bar-row"><span class="s-muted">Oct</span><div class="s-bar-track"><div class="s-bar" data-draw="bar" data-source="monthly" data-where="metric=nonbrand_clicks" data-field="oct"></div></div><span class="s-num" data-draw="v" data-source="monthly" data-where="metric=nonbrand_clicks" data-field="oct">—</span></div>
+        <p class="s-note">This is the part SEO is paid to grow. It is small in both months.</p>
+      </div>
+      <div class="s-cmp">
+        <div class="s-cmp-head"><span>Clicks from phones</span><span class="s-pill" data-draw="pill" data-good="up" data-source="changes" data-where="metric=mobile_clicks" data-field="change_pct">—</span></div>
+        <div class="s-bar-row"><span class="s-muted">Sep</span><div class="s-bar-track"><div class="s-bar is-sep" data-draw="bar" data-source="monthly" data-where="metric=mobile_clicks" data-field="sep"></div></div><span class="s-num" data-draw="v" data-source="monthly" data-where="metric=mobile_clicks" data-field="sep">—</span></div>
+        <div class="s-bar-row"><span class="s-muted">Oct</span><div class="s-bar-track"><div class="s-bar" data-draw="bar" data-source="monthly" data-where="metric=mobile_clicks" data-field="oct"></div></div><span class="s-num" data-draw="v" data-source="monthly" data-where="metric=mobile_clicks" data-field="oct">—</span></div>
+      </div>
+      <div class="s-cmp">
+        <div class="s-cmp-head"><span>Clicks from computers</span><span class="s-pill" data-draw="pill" data-good="up" data-source="changes" data-where="metric=desktop_clicks" data-field="change_pct">—</span></div>
+        <div class="s-bar-row"><span class="s-muted">Sep</span><div class="s-bar-track"><div class="s-bar is-sep" data-draw="bar" data-source="monthly" data-where="metric=desktop_clicks" data-field="sep"></div></div><span class="s-num" data-draw="v" data-source="monthly" data-where="metric=desktop_clicks" data-field="sep">—</span></div>
+        <div class="s-bar-row"><span class="s-muted">Oct</span><div class="s-bar-track"><div class="s-bar" data-draw="bar" data-source="monthly" data-where="metric=desktop_clicks" data-field="oct"></div></div><span class="s-num" data-draw="v" data-source="monthly" data-where="metric=desktop_clicks" data-field="oct">—</span></div>
+      </div>
+      <div class="s-cmp">
+        <div class="s-cmp-head"><span>Visits from AI assistants (ChatGPT and others)</span><span class="s-pill" data-draw="pill" data-good="up" data-source="changes" data-where="metric=ai_sessions" data-field="change_pct">—</span></div>
+        <div class="s-bar-row"><span class="s-muted">Sep</span><div class="s-bar-track"><div class="s-bar is-sep" data-draw="bar" data-source="monthly" data-where="metric=ai_sessions" data-field="sep"></div></div><span class="s-num" data-draw="v" data-source="monthly" data-where="metric=ai_sessions" data-field="sep">—</span></div>
+        <div class="s-bar-row"><span class="s-muted">Oct</span><div class="s-bar-track"><div class="s-bar" data-draw="bar" data-source="monthly" data-where="metric=ai_sessions" data-field="oct"></div></div><span class="s-num" data-draw="v" data-source="monthly" data-where="metric=ai_sessions" data-field="oct">—</span></div>
+        <p class="s-note">Small, but it is where search is heading. Google Analytics.</p>
+      </div>
+    </section>
+
+    <section id="why" class="s-card">
+      <h2 class="s-h2">Why leads went up while traffic went down</h2>
+      <p class="s-sub">Facts from the data. The last point is not proven yet.</p>
+      <p class="s-p"><b>1. The traffic lost was mostly people who already know us.</b> Clicks on brand searches went from <b data-draw="v" data-source="monthly" data-where="metric=brand_clicks" data-field="sep">—</b> to <b data-draw="v" data-source="monthly" data-where="metric=brand_clicks" data-field="oct">—</b>. Non-brand clicks, the new buyers, barely moved: <b data-draw="v" data-source="monthly" data-where="metric=nonbrand_clicks" data-field="sep">—</b> to <b data-draw="v" data-source="monthly" data-where="metric=nonbrand_clicks" data-field="oct">—</b>.</p>
+      <p class="s-p"><b>2. The growth came from website forms.</b> Direct leads, which are website form fills, went from <b data-draw="v" data-source="leads_view" data-where="key=Sep|Direct (website form)" data-field="leads">—</b> to <b data-draw="v" data-source="leads_view" data-where="key=Oct|Direct (website form)" data-field="leads">—</b>. WhatsApp leads also rose, from <b data-draw="v" data-source="leads_view" data-where="key=Sep|WhatsApp Organic" data-field="leads">—</b> to <b data-draw="v" data-source="leads_view" data-where="key=Oct|WhatsApp Organic" data-field="leads">—</b>, but only <b data-draw="v" data-source="leads_view" data-where="key=Oct|WhatsApp Organic" data-field="q">—</b> of October’s was qualified.</p>
+      <p class="s-p"><b>3. We cannot yet tell which form leads came from Google search.</b> In October Google Analytics saw <b data-draw="v" data-source="monthly" data-where="metric=ga_form_sent" data-field="oct">—</b> thank-you pages and <b data-draw="v" data-source="monthly" data-where="metric=ga_contact" data-field="oct">—</b> Contact Us events from people who came from Google search. A form fill does not record where its visitor came from, so a lead can’t be traced back to SEO yet.</p>
+      <p class="s-p"><b>4. Lead quality did not rise with the count.</b> Qualified organic leads went from <b data-draw="v" data-source="leads_view" data-where="key=Sep|All organic" data-field="q">—</b> to <b data-draw="v" data-source="leads_view" data-where="key=Oct|All organic" data-field="q">—</b>; the qualified share went from <b data-draw="v" data-fmt="pct" data-source="leads_view" data-where="key=Sep|All organic" data-field="qualified_pct">—</b> to <b data-draw="v" data-fmt="pct" data-source="leads_view" data-where="key=Oct|All organic" data-field="qualified_pct">—</b>.</p>
+      <p class="s-p s-muted"><b>Not proven yet:</b> visits from paid search ads went from <b data-draw="v" data-source="monthly" data-where="metric=paid_sessions" data-field="sep">—</b> to <b data-draw="v" data-source="monthly" data-where="metric=paid_sessions" data-field="oct">—</b> in the same months. Our own brand ads may be taking clicks that used to come free from Google search. Check this before anyone concludes it.</p>
+    </section>
+  </div>
+
+  <section id="leads" class="s-card">
+    <h2 class="s-h2">Organic leads by where they came from</h2>
+    <p class="s-sub">CRM lead status sheet. Qualified % = qualified ÷ (qualified + not qualified + pending); duplicates and blank statuses are left out of the rate.</p>
+    <div class="s-tablewrap">
+      <table class="s-table" data-source="leads_view" data-row-key="key">
+        <thead><tr>
+          <th data-field="key" data-show="label">Month · came from</th>
+          <th data-field="leads">Leads</th>
+          <th data-field="q">Qualified</th>
+          <th data-field="dq">Not qualified</th>
+          <th data-field="p">Pending</th>
+          <th data-field="duplicate">Duplicate</th>
+          <th data-field="blank">No status</th>
+          <th data-field="qualified_pct" data-fmt="pct">Qualified %</th>
+        </tr></thead>
+        <tbody data-draw="tbl"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="roi" class="s-card">
+    <h2 class="s-h2">ROI’s work, checked against Google’s own data</h2>
+    <p class="s-sub">ROI’s October report and keyword sheet, next to Search Console for October.</p>
+    <div class="s-facts">
+      <div><div class="s-fact-n" data-draw="v" data-source="monthly" data-where="metric=roi_top10" data-field="oct">—</div><div class="s-fact-l">keywords in Google’s top 10, ROI says (September: <span data-draw="v" data-source="monthly" data-where="metric=roi_top10" data-field="sep">—</span>)</div></div>
+      <div><div class="s-fact-n" data-draw="v" data-source="monthly" data-where="metric=roi_top10_brand_clicks" data-field="oct">—</div><div class="s-fact-l">October clicks from the 13 of them that are our own names</div></div>
+      <div><div class="s-fact-n s-bad" data-draw="v" data-source="monthly" data-where="metric=roi_top10_nonbrand_clicks" data-field="oct">—</div><div class="s-fact-l">October clicks from the other 36, the new-buyer searches</div></div>
+      <div><div class="s-fact-n" data-draw="v" data-source="monthly" data-where="metric=roi_backlinks" data-field="oct">—</div><div class="s-fact-l">backlinks, ROI says (September: <span data-draw="v" data-source="monthly" data-where="metric=roi_backlinks" data-field="sep">—</span>). Domain Authority stayed at <span data-draw="v" data-source="monthly" data-where="metric=roi_da" data-field="oct">—</span>.</div></div>
+    </div>
+    <p class="s-p">Their highest-volume “top 10” keywords, with what Google itself recorded in October. A ranking tool checks one search from one place; Google’s position is the average over every time we were shown, so the two can differ. Few impressions for a big search mean we rarely appear for it.</p>
+    <div class="s-tablewrap">
+      <table class="s-table" data-source="roi_keywords" data-row-key="keyword" data-filter="roi_rank_oct<=10" data-sort="monthly_searches:desc" data-limit="15">
+        <thead><tr>
+          <th data-field="keyword">Keyword</th>
+          <th data-field="type" data-fmt="text">Type</th>
+          <th data-field="monthly_searches">Searches a month</th>
+          <th data-field="roi_rank_oct" data-fmt="rank">ROI’s rank</th>
+          <th data-field="google_position_oct" data-fmt="pos">Google’s avg position</th>
+          <th data-field="google_impressions_oct">Times shown</th>
+          <th data-field="google_clicks_oct">Clicks</th>
+        </tr></thead>
+        <tbody data-draw="tbl"></tbody>
+      </table>
+    </div>
+    <p class="s-note">All 60 keywords are in Sources (“ROI keywords vs Google”). Their off-page work in October:</p>
+    <div class="s-hbars" data-draw="hbars" data-source="offpage" aria-label="ROI off-page tasks in October by type"></div>
+  </section>
+
+  <section id="chances" class="s-card">
+    <h2 class="s-h2">Searches close to page 1</h2>
+    <p class="s-sub">Non-brand searches where Google already shows us, just below the top results, often enough to matter. Moving these to the top five is the quickest SEO win. Search Console, October.</p>
+    <div class="s-tablewrap">
+      <table class="s-table" data-source="chances" data-row-key="search" data-sort="impressions_oct:desc">
+        <thead><tr>
+          <th data-field="search">Search</th>
+          <th data-field="google_position_oct" data-fmt="pos">Google’s avg position</th>
+          <th data-field="impressions_oct">Times shown</th>
+          <th data-field="clicks_oct">Clicks</th>
+        </tr></thead>
+        <tbody data-draw="tbl"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="ai" class="s-card">
+    <h2 class="s-h2">AI answers: who ChatGPT, Gemini and Google’s AI recommend</h2>
+    <p class="s-sub">15 buyer questions (such as “best real estate developers in Noida”) asked to ChatGPT, Gemini and Google AI Overviews on 1 November 2026 through OpenSEO: 38 answers came back. This is one snapshot, not September against October; the next monthly check runs on 30 November.</p>
+    <div class="s-facts">
+      <div><div class="s-fact-n s-bad" data-draw="v" data-source="ai_brands" data-where="brand=County Group" data-field="mentioned_in">—</div><div class="s-fact-l">answers that named County Group, out of <span data-draw="v" data-source="ai_brands" data-where="brand=County Group" data-field="answers">—</span></div></div>
+      <div><div class="s-fact-n" data-draw="v" data-source="ai_brands" data-where="brand=ATS" data-field="mentioned_in">—</div><div class="s-fact-l">answers that named ATS, the most-named builder</div></div>
+      <div><div class="s-fact-n" data-draw="v" data-source="ai_brands" data-where="brand=County Group" data-field="cited_site_in">—</div><div class="s-fact-l">answer that linked to countygroup.in as a source</div></div>
+      <div><div class="s-fact-n" data-draw="v" data-source="ai_sources" data-where="site=magicbricks.com" data-field="answers_citing">—</div><div class="s-fact-l">answers that quoted magicbricks.com, the most-quoted site</div></div>
+    </div>
+    <h3 class="s-h3">How often each builder is named</h3>
+    <div class="s-hbars" data-draw="aibars" data-source="ai_brands" aria-label="Number of AI answers naming each builder"></div>
+    <h3 class="s-h3">Question by question</h3>
+    <p class="s-note">“Named” means the answer mentions County Group; “cited” means it links to our website as a source; “no answer” means that engine gave no answer for that question.</p>
+    <div class="s-tablewrap">
+      <table class="s-table" data-source="ai_questions" data-row-key="question">
+        <thead><tr>
+          <th data-field="question">Question</th>
+          <th data-field="ChatGPT" data-fmt="text">ChatGPT</th>
+          <th data-field="Gemini" data-fmt="text">Gemini</th>
+          <th data-field="Google AI Overview" data-fmt="text">Google AI Overview</th>
+          <th data-field="competitors_named" data-fmt="text">Builders named instead</th>
+        </tr></thead>
+        <tbody data-draw="tbl"></tbody>
+      </table>
+    </div>
+    <h3 class="s-h3">The websites AI answers quote</h3>
+    <p class="s-note">AI answers build their lists from property portals, broker blogs and builders’ own sites. Being listed and described on these sites is how a builder gets named.</p>
+    <div class="s-tablewrap">
+      <table class="s-table" data-source="ai_sources" data-row-key="site" data-sort="answers_citing:desc">
+        <thead><tr>
+          <th data-field="site">Website</th>
+          <th data-field="kind" data-fmt="text">Kind</th>
+          <th data-field="answers_citing">Answers quoting it</th>
+          <th data-field="chatgpt">ChatGPT</th>
+          <th data-field="gemini">Gemini</th>
+          <th data-field="google_ai_overview">Google AI</th>
+        </tr></thead>
+        <tbody data-draw="tbl"></tbody>
+      </table>
+    </div>
+    <p class="s-note">The tracker counts the name “County Group”. An answer that names only a project, such as County 107, is not counted, so County’s real share may be slightly higher.</p>
+  </section>
+
+  <section id="next" class="s-card">
+    <h2 class="s-h2">Next steps</h2>
+    <p class="s-sub">In order. Each one answers a question the numbers above leave open.</p>
+    <ol class="s-steps">
+      <li><span class="s-n">1</span><div><div class="s-step-title">Record where every form lead came from<span class="s-owner">County + website team</span></div><p class="s-p s-muted">Save the visitor’s source with each website form, chatbox and WhatsApp lead, so the CRM shows which leads came from Google search. Until then nobody can say how many leads SEO brings.</p></div></li>
+      <li><span class="s-n">2</span><div><div class="s-step-title">Ask ROI to explain the ranking gaps<span class="s-owner">ROI</span></div><p class="s-p s-muted">Their sheet puts “real estate developers” at #1; Google shows us at an average position of <b data-draw="v" data-fmt="pos" data-source="roi_keywords" data-where="keyword=real estate developers" data-field="google_position_oct">—</b> for it, <b data-draw="v" data-source="roi_keywords" data-where="keyword=real estate developers" data-field="google_impressions_oct">—</b> times in October. Ask them to report rankings from Search Console from now on, and clicks next to every keyword.</p></div></li>
+      <li><span class="s-n">3</span><div><div class="s-step-title">Target the searches close to page 1<span class="s-owner">ROI</span></div><p class="s-p s-muted">Locality searches such as “sector 135 noida” (shown <b data-draw="v" data-source="chances" data-where="search=sector 135 noida" data-field="impressions_oct">—</b> times at position <b data-draw="v" data-fmt="pos" data-source="chances" data-where="search=sector 135 noida" data-field="google_position_oct">—</b>) and “real estate company in noida” are where the next clicks are. Ask ROI for a page-by-page plan for that list, and when to expect results.</p></div></li>
+      <li><span class="s-n">4</span><div><div class="s-step-title">Find out why the older project pages slip every month<span class="s-owner">ROI + County</span></div><p class="s-p s-muted">County 107’s page went <b data-draw="v" data-source="pages_3m" data-where="label=County 107" data-field="aug">—</b>, <b data-draw="v" data-source="pages_3m" data-where="label=County 107" data-field="sep">—</b>, <b data-draw="v" data-source="pages_3m" data-where="label=County 107" data-field="oct">—</b> clicks from August to October; Ivory, Ivy and Jade follow the same line. That is not the launch. Ask ROI which searches these pages lost since August and whether anything on them changed. Center Court and the home page falling after September is mostly the launch burst ending.</p></div></li>
+      <li><span class="s-n">5</span><div><div class="s-step-title">Rewrite the titles of pages shown often but rarely clicked<span class="s-owner">ROI</span></div><p class="s-p s-muted"><b data-draw="v" data-source="low_ctr_count" data-row="0" data-field="pages">—</b> pages were shown at least 1,000 times in October with fewer than 1 click per 100 (see “Shown often, clicked rarely”). Ask ROI for new titles and descriptions for these first; it is the cheapest change on this page.</p></div></li>
+      <li><span class="s-n">6</span><div><div class="s-step-title">Get County named in AI answers<span class="s-owner">ROI + County</span></div><p class="s-p s-muted">AI answers named County Group in <b data-draw="v" data-source="ai_brands" data-where="brand=County Group" data-field="mentioned_in">—</b> of <b data-draw="v" data-source="ai_brands" data-where="brand=County Group" data-field="answers">—</b> answers; ATS in <b data-draw="v" data-source="ai_brands" data-where="brand=ATS" data-field="mentioned_in">—</b>. The answers quote property portals and broker sites most. Make sure every County project is listed and fully described on magicbricks.com and 99acres.com, and ask ROI for a plan to get County into the “best developers in Noida” articles those answers quote.</p></div></li>
+      <li><span class="s-n">7</span><div><div class="s-step-title">Check whether our brand ads take free clicks<span class="s-owner">County</span></div><p class="s-p s-muted">Compare paid and organic clicks on “county group” and the project names, day by day. If paid ads sit on top of our own free Google result, we may be paying for clicks we used to get free.</p></div></li>
+      <li><span class="s-n">8</span><div><div class="s-step-title">Put the Cocoa page live and link it from the site<span class="s-owner">County</span></div><p class="s-p s-muted">Clicks on searches with “cocoa” went from <b data-draw="v" data-source="monthly" data-where="metric=cocoa_clicks" data-field="sep">—</b> to <b data-draw="v" data-source="monthly" data-where="metric=cocoa_clicks" data-field="oct">—</b>. ROI’s report says the Cocoa page is not linked from the website.</p></div></li>
+      <li><span class="s-n">9</span><div><div class="s-step-title">Fix the visits Google Analytics cannot trace, and ask ROI why their numbers differ<span class="s-owner">Website team + ROI</span></div><p class="s-p s-muted"><b data-draw="v" data-source="monthly" data-where="metric=ga_not_set" data-field="oct">—</b> visits from Google search in October have no landing page recorded. ROI’s report shows <b data-draw="v" data-source="monthly" data-where="metric=roi_sessions" data-field="oct">—</b> organic visits for October; Google Analytics shows <b data-draw="v" data-source="monthly" data-where="metric=ga_sessions" data-field="oct">—</b>. Their Search Console numbers match Google exactly.</p></div></li>
+    </ol>
+  </section>
+
+  <section id="explainer" class="s-card">
+    <h2 class="s-h2">Explainer: what every number means</h2>
+    <p class="s-sub">For anyone reading this for the first time.</p>
+    <dl class="s-dl">
+      <dt>SEO</dt><dd>Work that makes our website appear in Google’s free results, not the paid ads. ROI does it for us and reports every month.</dd>
+      <dt>Impression (times shown)</dt><dd>Our website was shown in Google’s free results once. The person may not have clicked.</dd>
+      <dt>Click from Google search</dt><dd>Someone clicked our free result. Counted by Google Search Console, Google’s own tool. This is the most reliable traffic number.</dd>
+      <dt>Visit from Google search</dt><dd>A visit to our website that started from a free Google result, counted by Google Analytics on our site. Close to clicks, but measured on the website, so the two never match exactly.</dd>
+      <dt>Click rate</dt><dd>Out of every 100 times Google showed a page, how many people clicked it. Below 1 means the result is seen but not chosen.</dd>
+      <dt>Enquiry events</dt><dd>Actions Google Analytics counts as a possible lead: WhatsApp button clicks, Contact Us, and thank-you pages after a form. They are not the same as CRM leads.</dd>
+      <dt>AI answers</dt><dd>When someone asks ChatGPT, Gemini or Google “best developers in Noida”, the AI writes an answer and names builders. “Named” means County Group appears in that answer; “cited” means the answer links to our website as a source.</dd>
+      <dt>Position</dt><dd>Where our result appeared on Google: 1 is the top, 1–10 is page 1. Google reports the average of every time we were shown.</dd>
+      <dt>Brand search</dt><dd>A search that already names us, like “county group” or “ivory county”. These people know us already; SEO helps them less.</dd>
+      <dt>Non-brand search</dt><dd>A search for what we sell without our name, like “luxury flats in noida”. These are new buyers, and growing this is the real job of SEO.</dd>
+      <dt>Organic lead</dt><dd>A lead the CRM marks as not from paid ads: Direct (website form fills), Chatbox Organic and WhatsApp Organic. It does not prove the person found us through Google search.</dd>
+      <dt>Qualified / not qualified / pending</dt><dd>The sales team’s call after talking to the lead. Qualified means a real buyer for our projects; pending means not decided yet.</dd>
+      <dt>Backlinks and Domain Authority</dt><dd>Links from other websites to ours, and a 0–100 score a tool gives a site for how trusted it looks. More good links usually help rankings; many weak links do not.</dd>
+      <dt>Launch burst</dt><dd>A short rise in searches when a new project is announced. In September many people searched for the new Gurgaon projects; that traffic was never going to last, which is why August is shown as the normal month.</dd>
+      <dt>Where the numbers come from</dt><dd>Google Search Console and Google Analytics, read directly on 12 and 14 November 2026 (a separate GSC Wizard export gives the same totals); leads from the CRM lead status sheet; ROI’s numbers from their October report and keyword sheet. Open “Sources” beside this page to see each number’s source and download its rows.</dd>
+      <dt>What this page does not show</dt><dd>Which leads came from Google search (needs step 1), how people use the pages (Microsoft Clarity was connected only recently), and social media.</dd>
+    </dl>
+  </section>
+</div>
+
+<script>
+  const N = (v) => (v === null || v === undefined || v === '' ? null : Number(v));
+  const pct = (a, b) => (a ? Math.round(((b - a) / a) * 1000) / 10 : null);
+
+  dash.calc('changes', {
+    title: 'Change from September to October',
+    description: 'Percent change of each monthly number, October against September.',
+    inputs: ['monthly'],
+    fn: (monthly) => monthly
+      .filter((r) => r.sep !== null && r.sep !== '' && Number(r.sep) !== 0)
+      .map((r) => ({ metric: r.metric, change_pct: Math.round(((Number(r.oct) - Number(r.sep)) / Number(r.sep)) * 1000) / 10 })),
+  });
+
+  dash.calc('leads_view', {
+    title: 'Organic leads with qualified share',
+    description: 'Each month and source, plus an "All organic" total per month, with qualified as a share of leads that have a final status.',
+    inputs: ['leads'],
+    fn: (leads) => {
+      const out = [];
+      for (const month of ['Sep', 'Oct']) {
+        const rows = leads.filter((r) => r.month === month);
+        const t = { leads: 0, q: 0, dq: 0, p: 0, duplicate: 0, blank: 0 };
+        for (const r of rows) {
+          const judged = Number(r.q) + Number(r.dq) + Number(r.p);
+          out.push({ key: `${month}|${r.source}`, month, source: r.source, leads: Number(r.leads), q: Number(r.q), dq: Number(r.dq), p: Number(r.p), duplicate: Number(r.duplicate), blank: Number(r.blank), qualified_pct: judged ? Math.round((Number(r.q) / judged) * 1000) / 10 : null });
+          for (const k of Object.keys(t)) t[k] += Number(r[k]) || 0;
+        }
+        const judged = t.q + t.dq + t.p;
+        out.push({ key: `${month}|All organic`, month, source: 'All organic', ...t, qualified_pct: judged ? Math.round((t.q / judged) * 1000) / 10 : null });
+      }
+      return out;
+    },
+  });
+
+  dash.calc('lead_change', {
+    title: 'Change in qualified organic leads',
+    description: 'Qualified organic leads in October against September, in percent.',
+    inputs: ['leads'],
+    fn: (leads) => {
+      const q = (m) => leads.filter((r) => r.month === m).reduce((a, r) => a + Number(r.q), 0);
+      const a = q('Sep'), b = q('Oct');
+      return [{ q_change_pct: a ? Math.round(((b - a) / a) * 1000) / 10 : null }];
+    },
+  });
+
+  dash.calc('projects_view', {
+    title: 'Project pages with change',
+    description: 'Each project main page with its change in Search Console clicks, October against September.',
+    inputs: ['projects'],
+    fn: (projects) => projects.map((r) => {
+      const a = Number(r.gsc_sep), b = Number(r.gsc_oct);
+      return { label: r.label, page: r.page, gsc_sep: a, gsc_oct: b, gsc_change_pct: a ? Math.round(((b - a) / a) * 1000) / 10 : null, ga_sep: r.ga_sep === '' || r.ga_sep == null ? null : Number(r.ga_sep), ga_oct: r.ga_oct === '' || r.ga_oct == null ? null : Number(r.ga_oct) };
+    }),
+  });
+
+  dash.calc('types_view', {
+    title: 'Clicks by kind of page',
+    description: 'Search Console clicks summed by kind of page (home, project, brochure, jobs, location, blog, other), with the change from September to October.',
+    inputs: ['page_types'],
+    fn: (page_types) => page_types.map((r) => {
+      const a = Number(r.clicks_sep), b = Number(r.clicks_oct);
+      return { type: r.type, clicks_sep: a, clicks_oct: b, change_pct: a ? Math.round(((b - a) / a) * 1000) / 10 : null };
+    }),
+  });
+
+  dash.calc('low_ctr_count', {
+    title: 'Pages shown often but rarely clicked',
+    description: 'Number of pages with at least 1,000 impressions in October and a click rate under 1%.',
+    inputs: ['pages'],
+    fn: (pages) => [{ pages: pages.filter((r) => r.low_ctr === 'yes').length }],
+  });
+
+  dash.calc('home_cc_loss', {
+    title: 'Clicks lost by the home page and Center Court',
+    description: 'Search Console clicks the home page and the Center Court page lost from September to October, next to what the whole site lost.',
+    inputs: ['projects', 'monthly'],
+    fn: (projects, monthly) => {
+      const lost = projects.filter((r) => r.label === 'Home page' || r.label === 'Center Court').reduce((a, r) => a + (Number(r.gsc_sep) - Number(r.gsc_oct)), 0);
+      const all = monthly.find((r) => r.metric === 'gsc_clicks');
+      return [{ lost, total_lost: all ? Number(all.sep) - Number(all.oct) : null }];
+    },
+  });
+
+  /** Jumped in September: Sep at least 20% over Aug. Below August: Oct at least 10% under Aug. */
+  const pattern = (a, s, o) => (s >= a * 1.2 ? 'Jumped in September' : o <= a * 0.9 ? 'Below August' : 'Same as August');
+  const threeMonth = (r, minAug) => {
+    const a = Number(r.aug) || 0, s = Number(r.sep) || 0, o = Number(r.oct) || 0;
+    return { ...r, aug: a, sep: s, oct: o, oct_vs_sep_pct: pct(s, o), oct_vs_aug_pct: a >= minAug ? pct(a, o) : null, pattern: pattern(a, s, o) };
+  };
+
+  dash.calc('launch_view', {
+    title: 'August, September and October totals',
+    description: 'Clicks, impressions, brand, non-brand and Cocoa clicks per month, with October against September and against August in percent. Click rate and position are left out (shown in the note).',
+    inputs: ['launch_months'],
+    fn: (rows) => rows.filter((r) => r.metric !== 'ctr_pct' && r.metric !== 'position').map((r) => threeMonth(r, 10)),
+  });
+
+  dash.calc('pages_3m_view', {
+    title: 'Main pages over three months',
+    description: 'Search Console clicks per main page for August, September and October, October against August, and the pattern: jumped in September (Sep at least 20% over Aug), below August (Oct at least 10% under Aug) or same as August.',
+    inputs: ['pages_3m'],
+    fn: (rows) => rows.map((r) => threeMonth(r, 10)),
+  });
+
+  dash.calc('brand_3m_view', {
+    title: 'Brand searches over three months',
+    description: 'Clicks per brand search for August, September and October with the same pattern rule; October against August is blank where August had fewer than 10 clicks.',
+    inputs: ['brand_queries_3m'],
+    fn: (rows) => rows.map((r) => threeMonth(r, 10)),
+  });
+
+  dash.calc('pattern_totals', {
+    title: 'Main pages summed by pattern',
+    description: 'Number of main pages in each pattern and their summed clicks for August, September and October.',
+    inputs: ['pages_3m'],
+    fn: (rows) => {
+      const g = {};
+      for (const r of rows.map((x) => threeMonth(x, 10))) {
+        const t = (g[r.pattern] ||= { pattern: r.pattern, pages: 0, aug: 0, sep: 0, oct: 0 });
+        t.pages += 1; t.aug += r.aug; t.sep += r.sep; t.oct += r.oct;
+      }
+      return Object.values(g);
+    },
+  });
+
+  dash.calc('loss_split', {
+    title: 'Clicks lost: shown less vs clicked less',
+    description: 'Clicks lost from September to October split in two: fewer impressions at September’s click rate, and October’s impressions at the lower October click rate.',
+    inputs: ['launch_months'],
+    fn: (rows) => {
+      const get = (m) => rows.find((r) => r.metric === m);
+      const c = get('gsc_clicks'), i = get('gsc_impressions');
+      if (!c || !i) return [];
+      const rs = Number(c.sep) / Number(i.sep), ro = Number(c.oct) / Number(i.oct);
+      return [{ shown_less: Math.round((Number(i.sep) - Number(i.oct)) * rs), clicked_less: Math.round(Number(i.oct) * (rs - ro)) }];
+    },
+  });
+
+  dash.calc('cocoa_loss', {
+    title: 'Cocoa searches in the click loss',
+    description: 'Clicks lost on searches naming Cocoa from September to October, next to all clicks the site lost.',
+    inputs: ['launch_months'],
+    fn: (rows) => {
+      const get = (m) => rows.find((r) => r.metric === m);
+      const c = get('gsc_clicks'), k = get('cocoa_name_clicks');
+      return c && k ? [{ cocoa_lost: Number(k.sep) - Number(k.oct), total_lost: Number(c.sep) - Number(c.oct) }] : [];
+    },
+  });
+
+  dash.calc('cocoa_share', {
+    title: 'Cocoa searches landing on Coco County',
+    description: 'Share of clicks from searches containing "cocoa county" that landed on Coco County (Noida) pages, per month.',
+    inputs: ['cocoa_dest'],
+    fn: (rows) => {
+      const share = (m) => {
+        const all = rows.reduce((a, r) => a + Number(r[m]), 0);
+        const coco = rows.filter((r) => r.destination.startsWith('Coco County')).reduce((a, r) => a + Number(r[m]), 0);
+        return all ? Math.round((coco / all) * 1000) / 10 : null;
+      };
+      return [{ sep_coco_pct: share('sep'), oct_coco_pct: share('oct') }];
+    },
+  });
+
+  /** The row a mark points at: by data-where="col=value" or data-row. */
+  window.sRow = function (el) {
+    const d = dash.data(el.dataset.source);
+    if (d.status !== 'ok' || !Array.isArray(d.data)) return { status: d.status, row: null };
+    if (el.dataset.row !== undefined) return { status: 'ok', row: d.data[Number(el.dataset.row)] ?? null };
+    const raw = el.dataset.where || '';
+    const i = raw.indexOf('=');
+    const k = decodeURIComponent(raw.slice(0, i)), v = decodeURIComponent(raw.slice(i + 1));
+    return { status: 'ok', row: d.data.find((r) => String(r[k]) === v) ?? null };
+  };
+
+  window.sFmt = function (v, fmt) {
+    if (v === null || v === undefined || v === '') return '—';
+    const n = Number(v);
+    if (fmt === 'text' || (fmt !== 'rank' && !Number.isFinite(n))) return String(v);
+    if (fmt === 'pct') return `${d3.format('.1f')(n)}%`;
+    if (fmt === 'chg') return `${n > 0 ? '+' : n < 0 ? '−' : ''}${d3.format('.1f')(Math.abs(n))}%`;
+    if (fmt === 'pos') return d3.format('.1f')(n);
+    if (fmt === 'diff') return `${n > 0 ? '+' : n < 0 ? '−' : ''}${d3.format(',')(Math.abs(n))}`;
+    if (fmt === 'rank') return Number.isFinite(n) ? `#${n}` : String(v);
+    return d3.format(',')(n);
+  };
+</script>
+
+<script>
+  const show = (el, text) => { el.textContent = text; };
+
+  dash.draw('v', (el) => {
+    const { row } = window.sRow(el);
+    show(el, window.sFmt(row ? row[el.dataset.field] : null, el.dataset.fmt));
+  });
+
+  dash.draw('chg', (el) => {
+    const { row } = window.sRow(el);
+    show(el, window.sFmt(row ? row[el.dataset.field] : null, 'chg'));
+  });
+
+  dash.draw('pill', (el) => {
+    const { row } = window.sRow(el);
+    const v = row ? Number(row[el.dataset.field]) : NaN;
+    el.classList.remove('is-good', 'is-bad');
+    if (!row || !Number.isFinite(v)) return show(el, '—');
+    show(el, window.sFmt(v, 'chg'));
+    const good = el.dataset.good === 'up' ? v > 0 : v < 0;
+    if (v !== 0) el.classList.add(good ? 'is-good' : 'is-bad');
+  });
+
+  dash.draw('bar', (el) => {
+    const { row } = window.sRow(el);
+    if (!row) { el.style.width = '0'; return; }
+    const max = Math.max(Number(row.sep) || 0, Number(row.oct) || 0, 1);
+    el.style.width = `${((Number(row[el.dataset.field]) || 0) / max) * 100}%`;
+    if (!el.classList.contains('is-sep')) el.style.background = dash.colors[0];
+  });
+
+  /** A table body drawn from its table's dataset, one cell per header that names a field. */
+  dash.draw('tbl', (tbody) => {
+    const table = tbody.closest('table');
+    tbody.replaceChildren();
+    if (!table) return;
+    const d = dash.data(table.dataset.source);
+    if (d.status !== 'ok' || !Array.isArray(d.data)) return;
+    let rows = d.data.slice();
+    const f = table.dataset.filter;
+    if (f) {
+      const m = /^(\w+)(<=|>=|=)(.+)$/.exec(f);
+      if (m) rows = rows.filter((r) => (m[2] === '<=' ? r[m[1]] !== '' && r[m[1]] != null && Number(r[m[1]]) <= Number(m[3])
+        : m[2] === '>=' ? r[m[1]] !== '' && r[m[1]] != null && Number(r[m[1]]) >= Number(m[3])
+        : String(r[m[1]]) === m[3]));
+    }
+    const s = table.dataset.sort;
+    if (s) { const [k, dir] = s.split(':'); rows.sort((a, b) => (dir === 'desc' ? Number(b[k]) - Number(a[k]) : Number(a[k]) - Number(b[k]))); }
+    if (table.dataset.limit) rows = rows.slice(0, Number(table.dataset.limit));
+    const keyCols = (table.dataset.rowKey || '').split(',');
+    const heads = Array.from(table.querySelectorAll('thead th'));
+    for (const r of rows) {
+      const tr = document.createElement('tr');
+      tr.dataset.key = keyCols.map((k) => encodeURIComponent(String(r[k]))).join(',');
+      if (r.source === 'All organic') tr.className = 'is-total';
+      for (const th of heads) {
+        const td = document.createElement('td');
+        const field = th.dataset.field;
+        let v = field ? r[field] : '';
+        if (th.dataset.show === 'label') v = `${r.month} · ${r.source}`;
+        td.textContent = window.sFmt(v, th.dataset.fmt);
+        if (th.dataset.fmt === 'chg' && Number.isFinite(Number(v))) td.className = Number(v) < 0 ? 's-bad' : Number(v) > 0 ? 's-good' : '';
+        tr.append(td);
+      }
+      tbody.append(tr);
+    }
+  });
+
+  dash.draw('hbars', (el) => {
+    const d = dash.data('offpage');
+    el.replaceChildren();
+    if (d.status !== 'ok') return;
+    const max = d3.max(d.data, (r) => Number(r.count)) || 1;
+    for (const r of d.data) {
+      const row = document.createElement('div'); row.className = 's-hrow';
+      const label = document.createElement('span'); label.textContent = r.task;
+      const track = document.createElement('div'); track.className = 's-bar-track';
+      const bar = document.createElement('div'); bar.className = 's-bar'; bar.style.width = `${(Number(r.count) / max) * 100}%`; bar.style.background = dash.colors[0];
+      track.append(bar);
+      const n = document.createElement('span'); n.className = 's-num'; n.textContent = d3.format(',')(Number(r.count));
+      row.append(label, track, n);
+      el.append(row);
+    }
+  });
+
+  dash.draw('aibars', (el) => {
+    const d = dash.data('ai_brands');
+    el.replaceChildren();
+    if (d.status !== 'ok') return;
+    const max = d3.max(d.data, (r) => Number(r.mentioned_in)) || 1;
+    for (const r of d.data) {
+      const us = r.is_county === 'yes';
+      const row = document.createElement('div'); row.className = us ? 's-hrow is-us' : 's-hrow';
+      const label = document.createElement('span'); label.textContent = r.brand;
+      const track = document.createElement('div'); track.className = 's-bar-track';
+      const bar = document.createElement('div'); bar.className = 's-bar';
+      bar.style.width = `${(Number(r.mentioned_in) / max) * 100}%`;
+      bar.style.background = us ? 'var(--color-bad)' : 'var(--cds-chart-muted)';
+      track.append(bar);
+      const n = document.createElement('span'); n.className = 's-num'; n.textContent = d3.format(',')(Number(r.mentioned_in));
+      row.append(label, track, n);
+      el.append(row);
+    }
+  });
+
+  dash.draw('daily', (el) => {
+    const d = dash.data('daily');
+    el.replaceChildren();
+    if (d.status === 'error') { const p = document.createElement('p'); p.className = 's-note'; p.textContent = 'Failed to load'; el.append(p); return; }
+    if (d.status !== 'ok') return;
+    const parse = d3.utcParse('%Y-%m-%d');
+    const rows = d.data.map((r) => ({ day: parse(r.day), clicks: Number(r.clicks) })).filter((r) => r.day && Number.isFinite(r.clicks));
+    if (!rows.length) return;
+    const W = Math.max(280, el.clientWidth), H = 220, m = { t: 12, r: 12, b: 26, l: 40 };
+    const x = d3.scaleUtc().domain(d3.extent(rows, (r) => r.day)).range([m.l, W - m.r]);
+    const y = d3.scaleLinear().domain([0, d3.max(rows, (r) => r.clicks) * 1.1]).nice().range([H - m.b, m.t]);
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`)
+      .attr('role', 'img').attr('aria-label', 'Daily clicks from Google search, 1 September to 31 October 2026');
+    svg.append('g').attr('transform', `translate(${m.l},0)`)
+      .call(d3.axisLeft(y).ticks(4).tickSize(-(W - m.l - m.r)).tickFormat(d3.format(',')))
+      .call((g) => g.selectAll('line').attr('stroke', 'var(--cds-chart-grid)'));
+    svg.append('g').attr('transform', `translate(0,${H - m.b})`)
+      .call(d3.axisBottom(x).ticks(W < 500 ? 4 : 8).tickFormat(d3.utcFormat('%-d %b')).tickSizeOuter(0))
+      .call((g) => g.selectAll('line').attr('stroke', 'var(--cds-chart-axis)'));
+    const split = parse('2026-10-01');
+    svg.append('line').attr('x1', x(split)).attr('x2', x(split)).attr('y1', m.t).attr('y2', H - m.b)
+      .attr('stroke', 'var(--cds-chart-reference)').attr('stroke-dasharray', '3 3');
+    svg.append('text').attr('x', x(split) + 6).attr('y', m.t + 10).text('October');
+    svg.append('path').datum(rows).attr('fill', 'none').attr('stroke-width', 2).style('stroke', dash.colors[0])
+      .attr('d', d3.line().x((r) => x(r.day)).y((r) => y(r.clicks)));
+    const dot = svg.append('circle').attr('r', 4).style('fill', dash.colors[0]).attr('opacity', 0);
+    const tip = document.createElement('div'); tip.className = 's-tip'; tip.hidden = true; el.append(tip);
+    const fmt = d3.utcFormat('%-d %b %Y');
+    svg.append('rect').attr('x', m.l).attr('y', m.t).attr('width', W - m.l - m.r).attr('height', H - m.t - m.b).attr('fill', 'transparent')
+      .on('pointermove', (ev) => {
+        const [px] = d3.pointer(ev);
+        const i = Math.min(rows.length - 1, Math.max(0, d3.bisector((r) => r.day).center(rows, x.invert(px))));
+        const r = rows[i];
+        dot.attr('cx', x(r.day)).attr('cy', y(r.clicks)).attr('opacity', 1);
+        tip.textContent = `${fmt(r.day)} · ${d3.format(',')(r.clicks)} clicks`;
+        tip.hidden = false;
+        const scale = el.clientWidth / W;
+        tip.style.left = `${Math.min(Math.max(0, x(r.day) * scale - 70), el.clientWidth - 150)}px`;
+        tip.style.top = `${Math.max(0, y(r.clicks) * scale - 40)}px`;
+      })
+      .on('pointerleave', () => { dot.attr('opacity', 0); tip.hidden = true; });
+  });
+</script>

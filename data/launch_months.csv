@@ -1,0 +1,8 @@
+metric,label,aug,sep,oct
+gsc_clicks,Clicks from Google search,5000,6033,4289
+gsc_impressions,Times shown on Google,148901,153088,132958
+ctr_pct,Click rate (%),3.36,3.94,3.23
+position,Average position,7.2,5.57,5.89
+brand_clicks,Clicks on brand searches,2817,3385,2314
+nonbrand_clicks,Clicks on non-brand searches,355,334,296
+cocoa_name_clicks,Clicks on searches naming Cocoa,2,140,53

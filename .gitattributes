@@ -1,0 +1,5 @@
+* text=auto eol=lf
+*.csv -text
+*.min.js -diff linguist-vendored
+preview.html -diff linguist-generated
+raw/*.json -diff

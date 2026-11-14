@@ -1,0 +1,146 @@
+{
+  "ai_brands": {
+    "title": "AI answers: builders named",
+    "description": "How many of 38 AI answers (ChatGPT, Gemini, Google AI Overviews; 15 questions; 1 Nov 2026) named each builder or linked to its site. OpenSEO tracker.",
+    "file": "data/ai_brands.csv",
+    "updated": {
+      "at": "2026-11-14T06:24:26Z",
+      "by": "Claude, from Google Search Console, GA4 and OpenSEO AI visibility (pulled 14 Nov 2026)"
+    }
+  },
+  "ai_questions": {
+    "title": "AI answers by question",
+    "description": "For each of the 15 questions, whether each engine named or cited County Group, and which tracked builders it named instead. 1 Nov 2026.",
+    "file": "data/ai_questions.csv",
+    "updated": {
+      "at": "2026-11-14T06:24:26Z",
+      "by": "Claude, from Google Search Console, GA4 and OpenSEO AI visibility (pulled 14 Nov 2026)"
+    }
+  },
+  "ai_sources": {
+    "title": "Websites AI answers quote",
+    "description": "The websites most often quoted as sources in the 1 Nov 2026 AI answers, by engine. Kind is Claude's label.",
+    "file": "data/ai_sources.csv",
+    "updated": {
+      "at": "2026-11-14T06:24:26Z",
+      "by": "Claude, from Google Search Console, GA4 and OpenSEO AI visibility (pulled 14 Nov 2026)"
+    }
+  },
+  "brand_queries_3m": {
+    "title": "Brand searches, Aug to Oct",
+    "description": "Search Console clicks for the main searches that name County or a project, August to October 2026.",
+    "file": "data/brand_queries_3m.csv",
+    "updated": {
+      "at": "2026-11-14T08:35:34Z",
+      "by": "Claude, from Google Search Console (14 Nov 2026); totals match the GSC Wizard export"
+    }
+  },
+  "chances": {
+    "title": "Searches close to page 1",
+    "description": "Non-brand searches where Google showed us at an average position of about 7 to 13 in October, with impressions and clicks from Search Console.",
+    "file": "data/chances.csv",
+    "updated": {
+      "at": "2026-11-12T13:13:26Z",
+      "by": "Claude, from Google Search Console and GA4 (12 Nov 2026), the CRM lead sheet and ROI's report"
+    }
+  },
+  "cocoa_dest": {
+    "title": "Where Cocoa County searches landed",
+    "description": "Search Console clicks from every search containing \"cocoa county\", by the page they landed on, September and October 2026.",
+    "file": "data/cocoa_dest.csv",
+    "updated": {
+      "at": "2026-11-14T08:35:34Z",
+      "by": "Claude, from Google Search Console (14 Nov 2026); totals match the GSC Wizard export"
+    }
+  },
+  "daily": {
+    "title": "Daily clicks from Google search",
+    "description": "Search Console clicks per day, 1 Sep to 31 Oct 2026.",
+    "file": "data/daily.csv",
+    "updated": {
+      "at": "2026-11-12T13:00:43Z",
+      "by": "Claude, from Google Search Console and GA4 (12 Nov 2026) and the CRM"
+    }
+  },
+  "launch_months": {
+    "title": "August, September and October totals",
+    "description": "Search Console totals per month: clicks, impressions, click rate, average position, and clicks on brand, non-brand and Cocoa searches (these three from the top 1,000 searches).",
+    "file": "data/launch_months.csv",
+    "updated": {
+      "at": "2026-11-14T08:35:34Z",
+      "by": "Claude, from Google Search Console (14 Nov 2026); totals match the GSC Wizard export"
+    }
+  },
+  "leads": {
+    "title": "Organic leads by source, Sep and Oct",
+    "description": "Lead counts by status for Direct (website forms), Chatbox Organic and WhatsApp Organic, from the CRM lead status sheet.",
+    "file": "data/leads.csv",
+    "updated": {
+      "at": "2026-11-12T13:13:26Z",
+      "by": "Claude, from Google Search Console and GA4 (12 Nov 2026), the CRM lead sheet and ROI's report"
+    }
+  },
+  "monthly": {
+    "title": "SEO numbers, Sep vs Oct",
+    "description": "Search Console, Google Analytics, CRM lead totals and ROI's reported figures, one row per number, September and October 2026.",
+    "file": "data/monthly.csv",
+    "updated": {
+      "at": "2026-11-12T13:13:26Z",
+      "by": "Claude, from Google Search Console and GA4 (12 Nov 2026), the CRM lead sheet and ROI's report"
+    }
+  },
+  "offpage": {
+    "title": "ROI off-page tasks, October",
+    "description": "Off-page link-building tasks by type from ROI's October SEO report.",
+    "file": "data/offpage.csv",
+    "updated": {
+      "at": "2026-11-12T13:13:26Z",
+      "by": "Claude, from Google Search Console and GA4 (12 Nov 2026), the CRM lead sheet and ROI's report"
+    }
+  },
+  "page_types": {
+    "title": "Clicks by kind of page",
+    "description": "All Search Console pages grouped into home, project, brochure/PDF, jobs, location, blog and other, Sep and Oct.",
+    "file": "data/page_types.csv",
+    "updated": {
+      "at": "2026-11-14T06:24:26Z",
+      "by": "Claude, from Google Search Console, GA4 and OpenSEO AI visibility (pulled 14 Nov 2026)"
+    }
+  },
+  "pages": {
+    "title": "Pages",
+    "description": "Every page with 10+ Search Console clicks in Sep or Oct or 500+ impressions in Oct: clicks, impressions, click rate and position, plus GA4 organic visits and enquiry events.",
+    "file": "data/pages.csv",
+    "updated": {
+      "at": "2026-11-14T06:24:26Z",
+      "by": "Claude, from Google Search Console, GA4 and OpenSEO AI visibility (pulled 14 Nov 2026)"
+    }
+  },
+  "pages_3m": {
+    "title": "Main pages, Aug to Oct",
+    "description": "Search Console clicks to each main page in August, September and October 2026.",
+    "file": "data/pages_3m.csv",
+    "updated": {
+      "at": "2026-11-14T08:35:34Z",
+      "by": "Claude, from Google Search Console (14 Nov 2026); totals match the GSC Wizard export"
+    }
+  },
+  "projects": {
+    "title": "Project pages, Sep vs Oct",
+    "description": "Each project's main page: Search Console clicks and Google Analytics visits that started there from Google search.",
+    "file": "data/projects.csv",
+    "updated": {
+      "at": "2026-11-12T13:13:26Z",
+      "by": "Claude, from Google Search Console and GA4 (12 Nov 2026), the CRM lead sheet and ROI's report"
+    }
+  },
+  "roi_keywords": {
+    "title": "ROI keywords vs Google",
+    "description": "ROI's 60 keywords ranked in the top 50, with ROI's 30 Oct rank next to Google's own average position, impressions and clicks for October. Brand = names County or a project.",
+    "file": "data/roi_keywords.csv",
+    "updated": {
+      "at": "2026-11-12T13:13:26Z",
+      "by": "Claude, from Google Search Console and GA4 (12 Nov 2026), the CRM lead sheet and ROI's report"
+    }
+  }
+}
