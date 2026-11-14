@@ -62,7 +62,7 @@ In September **50%** of clicks from searches containing "cocoa county" (the Gurg
 
 Why visits are higher than clicks: see [NOTES.md](NOTES.md#clicks-vs-visits).
 
-The dashboard's "Visits from Google search" tile shows 6,657 → 5,125, which is **all** search engines; the Google-only numbers are 6,385 → 4,819. Not yet changed on the dashboard.
+The dashboard's "Visits from Google search" tile shows the Google-only numbers (google / organic): 6,385 → 4,819 (−24.5%). All search engines together are 6,657 → 5,125 (−23.0%), kept as a separate row (`ga_sessions_all`). Per-page visits and enquiry events count all search engines; Google is about 95% of them.
 
 ## 3. Organic leads (CRM lead status sheet)
 

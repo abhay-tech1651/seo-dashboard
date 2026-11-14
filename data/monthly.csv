@@ -1,8 +1,9 @@
 metric,label,sep,oct,source
 gsc_clicks,Clicks from Google search,6033,4289,"Search Console, all searches, 1-30 Sep and 1-31 Oct 2026"
 gsc_impressions,Times shown in Google search,153088,132958,"Search Console, all searches"
-ga_sessions,Visits from Google search,6657,5125,"GA4, Organic Search channel"
-ga_users,People visiting from Google search,4906,3557,"GA4, Organic Search channel"
+ga_sessions,Visits from Google search,6385,4819,"GA4, session source / medium = google / organic"
+ga_sessions_all,"Visits from all search engines (Google, Bing, Yahoo, others)",6657,5125,"GA4, Organic Search channel"
+ga_users,People visiting from Google search,4719,3395,"GA4, session source / medium = google / organic (active users)"
 leads,Organic leads,68,93,"CRM lead status sheet: Direct (website forms) + Chatbox Organic + WhatsApp Organic"
 brand_clicks,Clicks on brand searches,3385,2314,"Search Console, top 1,000 searches each month, containing county/ivory/ivy/clove/cocoa/jade/cleo"
 nonbrand_clicks,Clicks on non-brand searches,334,296,"Search Console, top 1,000 searches each month, the rest"

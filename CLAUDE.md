@@ -21,7 +21,7 @@ Read this first on any machine. Then `docs/FINDINGS.md` (every verified number) 
 ## The live dashboard
 
 - https://claude.ai/artifact/NNdUdyrHo7EUtTibA7dMfn, a claude.ai artifact of type "Data", private to the owner.
-- Its database holds `files/index.html` (the page, `{text, edit:{via, at}}`; version 4 on 14 Nov 2026) and `datasets/<id>` (title, description, `source: {kind:"file", format:"csv", name, url:"/_blob/<asset id>"}`, `fixed: true`, `updated`, `edit`).
+- Its database holds `files/index.html` (the page, `{text, edit:{via, at}}`; version 5 on 14 Nov 2026) and `datasets/<id>` (title, description, `source: {kind:"file", format:"csv", name, url:"/_blob/<asset id>"}`, `fixed: true`, `updated`, `edit`).
 - To update: upload each changed CSV with the Artifact tool (`url`, `asset: true`, `file_path`; one CSV per call), set `datasets/<id>` to the new `/_blob/<id>`, and write `files/index.html` with `if_version` set to the version you last read. Read the live versions first; the owner may have edited the page.
 - Page code: `dash.calc(name, {title, description, inputs, fn})` for derived tables; `dash.draw(name, fn(el))` for drawing; marks use `data-draw`, `data-source`, `data-where="col=value"` or `data-row`, `data-field`, `data-fmt` (`pct`, `chg`, `pos`, `rank`, `diff`, `text`). Tables: `<table data-source data-row-key [data-filter] [data-sort="field:asc|desc"] [data-limit]>` with `<th data-field data-fmt>` and `<tbody data-draw="tbl">`.
 - `dashboard/index.html` here is the same page; `scripts/dash-shim.js` stands in for the runtime offline.
@@ -30,6 +30,7 @@ Read this first on any machine. Then `docs/FINDINGS.md` (every verified number) 
 
 - **OpenSEO connector** (MCP): project `14347a02-a0e5-4b73-a38a-930d6071b049`, Search Console property https://www.countygroup.in/, GA4 property "County Group". Gives Search Console, GA4 and the AI visibility tracker (monthly, next run 30 Nov 2026). Uses no credits for GSC/GA reads.
 - **GSC Wizard** connector needs authorising with /mcp in Claude Code; the owner has also pulled its data through ChatGPT. Its Search Console totals match OpenSEO exactly.
+- "Visits from Google search" (`ga_sessions`, `ga_users`) is GA4 session source / medium = google / organic. `ga_sessions_all` and the per-page visit and event numbers are the Organic Search channel (all search engines, about 95% Google).
 - Page-level Search Console rows are not additive: page sums (6,381 Sep / 4,482 Oct) are higher than the site totals (6,033 / 4,289).
 
 ## Checks before saying anything is done
@@ -41,7 +42,6 @@ node scripts/build-preview.mjs   # then open preview.html: no "—" left in the 
 
 ## Open items (14 Nov 2026)
 
-- The dashboard tile "Visits from Google search" shows 6,657 → 5,125, which is all search engines. Google-only (google / organic) is 6,385 → 4,819. Owner was asked whether to switch it; not changed yet.
 - Analytics "(data not available)" visits jumped 1,443 → 4,415 (Sep → Oct). Not explained yet; may hide some organic visits.
 - GSC Wizard reported organic WhatsApp events 33 → 47 and form_submit 1 → 3; not checked against Google, so not on the dashboard.
 - ROI email draft: `docs/EMAIL-TO-ROI.md` (targets in brackets are suggestions, not agreed).

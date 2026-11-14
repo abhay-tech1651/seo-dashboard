@@ -82,11 +82,11 @@
   },
   "monthly": {
     "title": "SEO numbers, Sep vs Oct",
-    "description": "Search Console, Google Analytics, CRM lead totals and ROI's reported figures, one row per number, September and October 2026.",
+    "description": "Search Console, Google Analytics, CRM lead totals and ROI's report, one row per number, September and October 2026. Visits from Google search are google / organic only; all search engines are a separate row.",
     "file": "data/monthly.csv",
     "updated": {
-      "at": "2026-11-12T13:13:26Z",
-      "by": "Claude, from Google Search Console and GA4 (12 Nov 2026), the CRM lead sheet and ROI's report"
+      "at": "2026-11-14T13:33:39Z",
+      "by": "Claude, from Google Search Console and GA4 (12 and 14 Nov 2026), the CRM and ROI's report"
     }
   },
   "offpage": {
