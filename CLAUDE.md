@@ -21,7 +21,7 @@ Read this first on any machine. Then `docs/FINDINGS.md` (every verified number) 
 ## The live dashboard
 
 - https://claude.ai/artifact/NNdUdyrHo7EUtTibA7dMfn, a claude.ai artifact of type "Data", private to the owner.
-- Its database holds `files/index.html` (the page, `{text, edit:{via, at}}`; version 6 on 15 Nov 2026) and `datasets/<id>` (title, description, `source: {kind:"file", format:"csv", name, url:"/_blob/<asset id>"}`, `fixed: true`, `updated`, `edit`).
+- Its database holds `files/index.html` (the page, `{text, edit:{via, at}}`; version 7 on 15 Nov 2026) and `datasets/<id>` (title, description, `source: {kind:"file", format:"csv", name, url:"/_blob/<asset id>"}`, `fixed: true`, `updated`, `edit`).
 - To update: upload each changed CSV with the Artifact tool (`url`, `asset: true`, `file_path`; one CSV per call), set `datasets/<id>` to the new `/_blob/<id>`, and write `files/index.html` with `if_version` set to the version you last read. Read the live versions first; the owner may have edited the page.
 - Page code: `dash.calc(name, {title, description, inputs, fn})` for derived tables; `dash.draw(name, fn(el))` for drawing; marks use `data-draw`, `data-source`, `data-where="col=value"` or `data-row`, `data-field`, `data-fmt` (`pct`, `chg`, `pos`, `rank`, `diff`, `text`). Tables: `<table data-source data-row-key [data-filter] [data-sort="field:asc|desc"] [data-limit]>` with `<th data-field data-fmt>` and `<tbody data-draw="tbl">`.
 - `dashboard/index.html` here is the same page; `scripts/dash-shim.js` stands in for the runtime offline.
@@ -41,6 +41,8 @@ node scripts/build-preview.mjs   # then open preview.html: no "—" left in the 
 ```
 
 ## Open items (14 Nov 2026)
+
+- 15 Nov 2026: merged the separate "County Search Tracker" artifact into this page. New sections and data: `#year` (`data/gsc_year.csv`, Search Console by month Sep 2025 to Oct 2026 with non-brand clicks = queries without "county" or "court"), and in `#roi` a year of ROI's 13 decks (`data/roi_year.csv`, `data/roi_year_checks.csv`); next step 10. ROI deck links are in the County Group reports sheet. The old tracker (claude.ai/artifact/9tbbvzgFNVEa6nbu5pFDk4) now points here and keeps only the 1 Nov OpenSEO baseline.
 
 - Analytics "(data not available)" visits jumped 1,443 → 4,415 (Sep → Oct). Not explained yet; may hide some organic visits.
 - GSC Wizard reported organic WhatsApp events 33 → 47 and form_submit 1 → 3; not checked against Google, so not on the dashboard.

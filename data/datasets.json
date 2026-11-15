@@ -151,5 +151,32 @@
       "at": "2026-11-15T05:40:00Z",
       "by": "Claude, from the full answers of OpenSEO run 89a86ff9 (1 Nov 2026)"
     }
+  },
+  "gsc_year": {
+    "title": "Google clicks by month, a year",
+    "description": "Search Console clicks and impressions for each full month, September 2025 to October 2026, and clicks from searches that contain neither 'county' nor 'court' (non-brand). Searches Google hides for privacy are left out of the non-brand count.",
+    "file": "data/gsc_year.csv",
+    "updated": {
+      "at": "2026-11-15T11:00:00Z",
+      "by": "Claude, from Search Console via OpenSEO (15 Nov 2026) and ROI's 13 monthly SEO decks"
+    }
+  },
+  "roi_year": {
+    "title": "ROI's monthly reports, a year",
+    "description": "What ROI's monthly SEO decks reported, September 2025 to September 2026 (organic visits, Search Console clicks, keywords in top 10, backlinks, Domain Authority, links built), with Search Console's own clicks beside them. ROI's March figures come from its April deck.",
+    "file": "data/roi_year.csv",
+    "updated": {
+      "at": "2026-11-15T11:00:00Z",
+      "by": "Claude, from Search Console via OpenSEO (15 Nov 2026) and ROI's 13 monthly SEO decks"
+    }
+  },
+  "roi_year_checks": {
+    "title": "ROI's reports: what we found",
+    "description": "Claude's review of ROI's 13 monthly SEO decks against each other, Search Console and OpenSEO. Judgment, so kept as a file.",
+    "file": "data/roi_year_checks.csv",
+    "updated": {
+      "at": "2026-11-15T11:00:00Z",
+      "by": "Claude, from Search Console via OpenSEO (15 Nov 2026) and ROI's 13 monthly SEO decks"
+    }
   }
 }

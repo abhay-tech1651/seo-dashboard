@@ -68,7 +68,7 @@
     <h1 class="s-title">County SEO: September vs October 2026</h1>
     <p class="s-lede">Clicks from Google search went from <b data-draw="v" data-source="monthly" data-where="metric=gsc_clicks" data-field="sep">—</b> in September to <b data-draw="v" data-source="monthly" data-where="metric=gsc_clicks" data-field="oct">—</b> in October (<b data-draw="chg" data-source="changes" data-where="metric=gsc_clicks" data-field="change_pct">—</b>). Organic leads went from <b data-draw="v" data-source="monthly" data-where="metric=leads" data-field="sep">—</b> to <b data-draw="v" data-source="monthly" data-where="metric=leads" data-field="oct">—</b> (<b data-draw="chg" data-source="changes" data-where="metric=leads" data-field="change_pct">—</b>). Traffic fell, mostly from people who already know County; leads rose, mostly through website forms. September was lifted by a one-off burst of searches for the new Gurgaon projects, but October is also <b data-draw="chg" data-source="launch_view" data-where="metric=gsc_clicks" data-field="oct_vs_aug_pct">—</b> against August, so the fall is not only the launch ending. This page shows where, why, how ROI’s work checks out against Google’s own data, and what to do next.</p>
     <nav class="s-nav" aria-label="Sections">
-      <a href="#launch">Was September unusual?</a><a href="#projects">By project</a><a href="#pages">Every page</a><a href="#where">Where traffic went</a><a href="#why">Why leads rose</a><a href="#leads">Leads</a><a href="#roi">ROI’s work vs Google</a><a href="#chances">Searches close to page 1</a><a href="#ai">AI answers</a><a href="#next">Next steps</a><a href="#explainer">Explainer</a>
+      <a href="#year">A year of clicks</a><a href="#launch">Was September unusual?</a><a href="#projects">By project</a><a href="#pages">Every page</a><a href="#where">Where traffic went</a><a href="#why">Why leads rose</a><a href="#leads">Leads</a><a href="#roi">ROI’s work vs Google</a><a href="#chances">Searches close to page 1</a><a href="#ai">AI answers</a><a href="#next">Next steps</a><a href="#explainer">Explainer</a>
     </nav>
   </header>
 
@@ -99,6 +99,13 @@
     <h2 class="s-h2">Clicks from Google search, day by day</h2>
     <p class="s-sub">Search Console, 1 September to 31 October 2026. Point at the line to read a day.</p>
     <div class="s-chart" data-draw="daily" data-source="daily"></div>
+  </section>
+
+  <section id="year" class="s-card">
+    <h2 class="s-h2">A year of Google clicks: September 2025 to October 2026</h2>
+    <p class="s-sub">Search Console, every full month. The dark part of each bar is clicks from searches that name neither County nor a project, the people who do not know us yet. Point at a bar to read it.</p>
+    <div class="s-chart" data-draw="yearbars" data-source="gsc_year"></div>
+    <p class="s-p">September 2026 was the best month of the year at <b data-draw="v" data-source="gsc_year" data-where="month=2026-09" data-field="clicks">—</b> clicks, and October the lowest since February at <b data-draw="v" data-source="gsc_year" data-where="month=2026-10" data-field="clicks">—</b>. Searches without our name brought <b data-draw="v" data-source="gsc_year" data-where="month=2025-09" data-field="nonbrand_clicks">—</b> clicks in September 2025 and <b data-draw="v" data-source="gsc_year" data-where="month=2026-10" data-field="nonbrand_clicks">—</b> in October 2026: about double, but still only <b data-draw="v" data-fmt="pct" data-source="gsc_year" data-where="month=2026-10" data-field="nonbrand_share_pct">—</b> of all clicks. Almost all of Google traffic is people already looking for County.</p>
   </section>
 
   <section id="launch" class="s-card">
@@ -364,6 +371,34 @@
     </div>
     <p class="s-note">All 60 keywords are in Sources (“ROI keywords vs Google”). Their off-page work in October:</p>
     <div class="s-hbars" data-draw="hbars" data-source="offpage" aria-label="ROI off-page tasks in October by type"></div>
+    <h3 class="s-h3">ROI’s reports over a year, September 2025 to September 2026</h3>
+    <p class="s-p">We read all 13 of ROI’s monthly SEO decks and checked them against each other and against Search Console. Their Search Console clicks are right; what they leave out matters more.</p>
+    <div class="s-tablewrap">
+      <table class="s-table" data-source="roi_year_checks" data-row-key="id">
+        <thead><tr>
+          <th data-field="priority" data-fmt="text">Priority</th>
+          <th data-field="finding" data-fmt="text">What we found</th>
+          <th data-field="detail" data-fmt="text">Detail</th>
+        </tr></thead>
+        <tbody data-draw="tbl"></tbody>
+      </table>
+    </div>
+    <p class="s-note">What ROI reported each month, with Search Console’s own clicks beside theirs. September 2026 clicks were not in their deck.</p>
+    <div class="s-tablewrap">
+      <table class="s-table" data-source="roi_year" data-row-key="month">
+        <thead><tr>
+          <th data-field="label" data-fmt="text">Month</th>
+          <th data-field="roi_organic_visits">Organic visits, ROI says</th>
+          <th data-field="roi_clicks">Clicks, ROI says</th>
+          <th data-field="google_clicks">Clicks, Search Console</th>
+          <th data-field="roi_top10">Keywords in top 10, ROI says</th>
+          <th data-field="roi_backlinks">Backlinks, ROI says</th>
+          <th data-field="roi_da">Domain Authority</th>
+          <th data-field="roi_links_built">Links built</th>
+        </tr></thead>
+        <tbody data-draw="tbl"></tbody>
+      </table>
+    </div>
   </section>
 
   <section id="chances" class="s-card">
@@ -453,6 +488,7 @@
       <li><span class="s-n">7</span><div><div class="s-step-title">Check whether our brand ads take free clicks<span class="s-owner">County</span></div><p class="s-p s-muted">Compare paid and organic clicks on “county group” and the project names, day by day. If paid ads sit on top of our own free Google result, we may be paying for clicks we used to get free.</p></div></li>
       <li><span class="s-n">8</span><div><div class="s-step-title">Put the Cocoa page live and link it from the site<span class="s-owner">County</span></div><p class="s-p s-muted">Clicks on searches with “cocoa” went from <b data-draw="v" data-source="monthly" data-where="metric=cocoa_clicks" data-field="sep">—</b> to <b data-draw="v" data-source="monthly" data-where="metric=cocoa_clicks" data-field="oct">—</b>. ROI’s report says the Cocoa page is not linked from the website.</p></div></li>
       <li><span class="s-n">9</span><div><div class="s-step-title">Fix the visits Google Analytics cannot trace, and ask ROI why their numbers differ<span class="s-owner">Website team + ROI</span></div><p class="s-p s-muted"><b data-draw="v" data-source="monthly" data-where="metric=ga_not_set" data-field="oct">—</b> visits from Google search in October have no landing page recorded. ROI’s report shows <b data-draw="v" data-source="monthly" data-where="metric=roi_sessions" data-field="oct">—</b> organic visits for October; Google Analytics shows <b data-draw="v" data-source="monthly" data-where="metric=ga_sessions" data-field="oct">—</b> from Google and <b data-draw="v" data-source="monthly" data-where="metric=ga_sessions_all" data-field="oct">—</b> from all search engines. Their Search Console numbers match Google exactly.</p></div></li>
+      <li><span class="s-n">10</span><div><div class="s-step-title">Ask ROI for better links, and for leads in every report<span class="s-owner">ROI</span></div><p class="s-p s-muted">ROI’s decks count backlinks rising from <b data-draw="v" data-source="roi_year" data-where="month=2025-09" data-field="roi_backlinks">—</b> to <b data-draw="v" data-source="roi_year" data-where="month=2026-09" data-field="roi_backlinks">—</b> in a year, mostly bookmarking, classified and profile links, while Domain Authority stayed at <b data-draw="v" data-source="roi_year" data-where="month=2026-09" data-field="roi_da">—</b>. Ask them to swap those for links from real-estate and news sites, and to add organic enquiries to every monthly report; none of their 13 decks shows leads.</p></div></li>
     </ol>
   </section>
 
@@ -781,6 +817,56 @@
       row.append(label, track, n);
       el.append(row);
     }
+  });
+
+  dash.draw('yearbars', (el) => {
+    const d = dash.data('gsc_year');
+    el.replaceChildren();
+    if (d.status === 'error') { const p = document.createElement('p'); p.className = 's-note'; p.textContent = 'Failed to load'; el.append(p); return; }
+    if (d.status !== 'ok') return;
+    const rows = d.data.map((r) => ({ month: r.month, label: r.label, clicks: Number(r.clicks), nb: Number(r.nonbrand_clicks), share: Number(r.nonbrand_share_pct) }))
+      .filter((r) => Number.isFinite(r.clicks)).sort((a, b) => (a.month < b.month ? -1 : 1));
+    if (!rows.length) return;
+    const W = Math.max(280, el.clientWidth), H = 220, m = { t: 12, r: 12, b: 26, l: 40 };
+    const x = d3.scaleBand().domain(rows.map((r) => r.month)).range([m.l, W - m.r]).padding(0.25);
+    const y = d3.scaleLinear().domain([0, d3.max(rows, (r) => r.clicks) * 1.1]).nice().range([H - m.b, m.t]);
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`)
+      .attr('role', 'img').attr('aria-label', 'Clicks from Google search by month, September 2025 to October 2026, with non-brand clicks');
+    svg.append('g').attr('transform', `translate(${m.l},0)`)
+      .call(d3.axisLeft(y).ticks(4).tickSize(-(W - m.l - m.r)).tickFormat(d3.format(',')))
+      .attr('font-size', null).attr('font-family', null)
+      .call((g) => g.select('.domain').remove())
+      .call((g) => g.selectAll('line').attr('stroke', 'var(--cds-chart-grid)'))
+      .call((g) => g.selectAll('text').attr('fill', 'var(--color-fg-muted)').attr('font-size', 11));
+    const bw = Math.min(x.bandwidth(), 32), off = (x.bandwidth() - bw) / 2;
+    svg.append('g').selectAll('rect').data(rows).join('rect')
+      .attr('x', (r) => x(r.month) + off).attr('width', bw).attr('rx', 3)
+      .attr('y', (r) => y(r.clicks)).attr('height', (r) => y(0) - y(r.clicks))
+      .attr('fill', 'var(--cds-chart-muted)');
+    svg.append('g').selectAll('rect').data(rows).join('rect')
+      .attr('x', (r) => x(r.month) + off).attr('width', bw).attr('rx', 2)
+      .attr('y', (r) => y(r.nb)).attr('height', (r) => y(0) - y(r.nb))
+      .attr('fill', dash.colors[0]);
+    const step = W < 520 ? 3 : 2;
+    svg.append('g').selectAll('text').data(rows.filter((r, i) => i % step === 0)).join('text')
+      .attr('x', (r) => x(r.month) + x.bandwidth() / 2).attr('y', H - 6).attr('text-anchor', 'middle')
+      .attr('font-size', 11).attr('fill', 'var(--color-fg-muted)')
+      .text((r) => d3.utcFormat('%b %y')(new Date(`${r.month}-01T00:00:00Z`)));
+    el.style.position = 'relative';
+    const tip = d3.select(el).append('div').attr('class', 's-tip').style('position', 'absolute').style('pointer-events', 'none')
+      .style('background', 'var(--cds-surface-popover)').style('border', '1px solid var(--cds-border)').style('border-radius', 'var(--cds-radius)')
+      .style('box-shadow', 'var(--cds-shadow-popover)').style('padding', 'var(--cds-pad-xs) var(--cds-pad-sm)').style('font-size', 'var(--cds-font-size-caption)').style('opacity', 0);
+    svg.append('g').selectAll('rect').data(rows).join('rect')
+      .attr('x', (r) => x(r.month)).attr('width', x.bandwidth()).attr('y', m.t).attr('height', H - m.t - m.b).attr('fill', 'transparent')
+      .on('mouseenter', (ev, r) => {
+        tip.selectAll('*').remove();
+        tip.append('div').style('color', 'var(--cds-text-secondary)').text(r.label);
+        tip.append('div').text(`All clicks: ${d3.format(',')(r.clicks)}`);
+        tip.append('div').text(`Without our name: ${d3.format(',')(r.nb)} (${d3.format('.1f')(r.share)}%)`);
+        const left = Math.min(((x(r.month) + x.bandwidth()) / W) * el.clientWidth + 6, el.clientWidth - 200);
+        tip.style('left', `${Math.max(0, left)}px`).style('top', '8px').style('opacity', 1);
+      })
+      .on('mouseleave', () => tip.style('opacity', 0));
   });
 
   dash.draw('daily', (el) => {
