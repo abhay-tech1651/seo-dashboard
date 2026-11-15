@@ -92,11 +92,14 @@ Qualified % = Q ÷ (Q + DQ + P). Duplicates and blank statuses (IVR calls) are l
 
 15 buyer questions × ChatGPT, Gemini and Google AI Overviews = 38 answers.
 
-- County Group named in **5 of 38** answers. ATS 18, M3M 16, Godrej 14.
+- County Group named by name in **5 of 38** answers (OpenSEO count); **13 of 38** counting project names (see below). ATS 18, M3M 16, Godrej 14.
 - countygroup.in linked as a source **once** (Google AI Overview, "is it a good time to buy a flat in Noida").
 - Most-quoted sites: magicbricks.com (11 answers), 99acres.com (9).
 - One snapshot only; the next monthly check runs on 30 November 2026.
-- The tracker counts the name "County Group"; an answer naming only a project (e.g. County 107) is not counted.
+- OpenSEO only looks for the words "County Group" (it allows one name per company). Reading all 38 full answers for the project names too: **13 of 38** answers name County Group or a County project (10 in the written answer, 3 in a map listing inside Google's AI Overview). By tool: ChatGPT 4 of 15, Gemini 5 of 15, Google AI Overview 4 of 8.
+- Projects named: County 107 (5 answers, including ChatGPT's #3 of 10 for "best luxury apartments in Noida"), Cleo County (5), Clove County, Cherry County, Olive County (1 each). Ivory, Ivy, Jade, Coco, Cocoa and Center Court: none. Gurgaon questions: County named in none.
+- Competitors' project names usually include the builder ("ATS Knightsbridge"), ours usually don't, so 13 is the fairer number to set against ATS's 18. Rows: `data/ai_project_mentions.csv`.
+- Six Google AI Overview cells were first shown as "not named" when Google showed no AI Overview at all; corrected to "no answer" on 14 Nov.
 
 ## 6. Pages
 

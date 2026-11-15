@@ -142,5 +142,14 @@
       "at": "2026-11-12T13:13:26Z",
       "by": "Claude, from Google Search Console and GA4 (12 Nov 2026), the CRM lead sheet and ROI's report"
     }
+  },
+  "ai_project_mentions": {
+    "title": "AI answers naming County or its projects",
+    "description": "Every 1 Nov 2026 AI answer (ChatGPT, Gemini, Google AI Overview) that names County Group or a County project, found by reading the full answer text: County 107, Ivory, Ivy, Jade, Clove, Coco, Cocoa, Cleo, Cherry, Olive County, Center Court, County Courtyard, County Spaces.",
+    "file": "data/ai_project_mentions.csv",
+    "updated": {
+      "at": "2026-11-15T05:40:00Z",
+      "by": "Claude, from the full answers of OpenSEO run 89a86ff9 (1 Nov 2026)"
+    }
   }
 }

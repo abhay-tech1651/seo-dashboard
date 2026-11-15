@@ -12,7 +12,7 @@
 - **Leads went up anyway: 68 → 93.** Most of the extra leads came through website forms and WhatsApp. But only 1 of October's 27 WhatsApp leads was a real buyer, so quality did not rise with the count: qualified leads 19 → 25.
 - **We can't yet say how many leads came from Google search.** The website form doesn't record where the visitor came from. Fixing that is step 1.
 - **New buyers barely find us through Google.** Searches without our name ("flats in noida", "real estate developers") brought about 300 clicks a month. That is the part SEO is paid to grow.
-- **AI tools rarely recommend us.** Asked "best builders in Noida" and similar questions, ChatGPT, Gemini and Google's AI named County Group in 5 of 38 answers; ATS in 18.
+- **AI tools rarely recommend us.** Asked "best builders in Noida" and similar questions, ChatGPT, Gemini and Google's AI named County Group in 5 of 38 answers, or 13 of 38 counting our project names (mostly County 107 and Cleo County); ATS in 18. None of the Gurgaon answers named us.
 
 ## Words used on the dashboard
 
