@@ -1,0 +1,22 @@
+[
+ {
+  "month": "2026-11",
+  "label": "Nov 2026",
+  "organic_visits_est": 15379,
+  "ranked_keywords": 170,
+  "top3_keywords": 43,
+  "top10_keywords": 80,
+  "nonbrand_share_pct": 15.3,
+  "aio_cited_keywords": 18,
+  "referring_domains": 124,
+  "backlinks": 415,
+  "domain_rank": 34,
+  "ai_answers": 38,
+  "ai_named": 5,
+  "ai_named_incl_projects": 13,
+  "ai_own_site_cited": 1,
+  "gsc_clicks": 4289,
+  "gsc_impressions": 132958,
+  "ga4_organic_leads": 72
+ }
+]

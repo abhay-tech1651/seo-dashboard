@@ -1,0 +1,167 @@
+[
+ {
+  "month": "2025-09",
+  "label": "Sep 2025",
+  "clicks": 4356,
+  "impressions": 103556,
+  "nonbrand_clicks": 138,
+  "nonbrand_impressions": 25324,
+  "nonbrand_share_pct": 3.2,
+  "days": 30,
+  "complete": true
+ },
+ {
+  "month": "2025-10",
+  "label": "Oct 2025",
+  "clicks": 4246,
+  "impressions": 88899,
+  "nonbrand_clicks": 123,
+  "nonbrand_impressions": 15832,
+  "nonbrand_share_pct": 2.9,
+  "days": 31,
+  "complete": true
+ },
+ {
+  "month": "2025-11",
+  "label": "Nov 2025",
+  "clicks": 5009,
+  "impressions": 103905,
+  "nonbrand_clicks": 255,
+  "nonbrand_impressions": 21408,
+  "nonbrand_share_pct": 5.1,
+  "days": 30,
+  "complete": true
+ },
+ {
+  "month": "2025-12",
+  "label": "Dec 2025",
+  "clicks": 4729,
+  "impressions": 109334,
+  "nonbrand_clicks": 197,
+  "nonbrand_impressions": 23144,
+  "nonbrand_share_pct": 4.2,
+  "days": 31,
+  "complete": true
+ },
+ {
+  "month": "2026-01",
+  "label": "Jan 2026",
+  "clicks": 4458,
+  "impressions": 125589,
+  "nonbrand_clicks": 173,
+  "nonbrand_impressions": 27275,
+  "nonbrand_share_pct": 3.9,
+  "days": 31,
+  "complete": true
+ },
+ {
+  "month": "2026-02",
+  "label": "Feb 2026",
+  "clicks": 4169,
+  "impressions": 120384,
+  "nonbrand_clicks": 173,
+  "nonbrand_impressions": 25305,
+  "nonbrand_share_pct": 4.1,
+  "days": 28,
+  "complete": true
+ },
+ {
+  "month": "2026-03",
+  "label": "Mar 2026",
+  "clicks": 4696,
+  "impressions": 118945,
+  "nonbrand_clicks": 218,
+  "nonbrand_impressions": 22812,
+  "nonbrand_share_pct": 4.6,
+  "days": 31,
+  "complete": true
+ },
+ {
+  "month": "2026-04",
+  "label": "Apr 2026",
+  "clicks": 5509,
+  "impressions": 127633,
+  "nonbrand_clicks": 295,
+  "nonbrand_impressions": 24212,
+  "nonbrand_share_pct": 5.4,
+  "days": 30,
+  "complete": true
+ },
+ {
+  "month": "2026-05",
+  "label": "May 2026",
+  "clicks": 5330,
+  "impressions": 131192,
+  "nonbrand_clicks": 248,
+  "nonbrand_impressions": 26966,
+  "nonbrand_share_pct": 4.7,
+  "days": 31,
+  "complete": true
+ },
+ {
+  "month": "2026-06",
+  "label": "Jun 2026",
+  "clicks": 5692,
+  "impressions": 175296,
+  "nonbrand_clicks": 252,
+  "nonbrand_impressions": 25091,
+  "nonbrand_share_pct": 4.4,
+  "days": 30,
+  "complete": true
+ },
+ {
+  "month": "2026-07",
+  "label": "Jul 2026",
+  "clicks": 5448,
+  "impressions": 145136,
+  "nonbrand_clicks": 290,
+  "nonbrand_impressions": 30926,
+  "nonbrand_share_pct": 5.3,
+  "days": 31,
+  "complete": true
+ },
+ {
+  "month": "2026-08",
+  "label": "Aug 2026",
+  "clicks": 5000,
+  "impressions": 148901,
+  "nonbrand_clicks": 318,
+  "nonbrand_impressions": 32871,
+  "nonbrand_share_pct": 6.4,
+  "days": 31,
+  "complete": true
+ },
+ {
+  "month": "2026-09",
+  "label": "Sep 2026",
+  "clicks": 6033,
+  "impressions": 153088,
+  "nonbrand_clicks": 288,
+  "nonbrand_impressions": 27606,
+  "nonbrand_share_pct": 4.8,
+  "days": 30,
+  "complete": true
+ },
+ {
+  "month": "2026-10",
+  "label": "Oct 2026",
+  "clicks": 4289,
+  "impressions": 132958,
+  "nonbrand_clicks": 282,
+  "nonbrand_impressions": 25570,
+  "nonbrand_share_pct": 6.6,
+  "days": 31,
+  "complete": true
+ },
+ {
+  "month": "2026-11",
+  "label": "Nov 2026 (to 11th)",
+  "clicks": 1089,
+  "impressions": 38189,
+  "nonbrand_clicks": 58,
+  "nonbrand_impressions": 7907,
+  "nonbrand_share_pct": 5.3,
+  "days": 11,
+  "complete": false
+ }
+]

@@ -1,0 +1,65 @@
+[
+ {
+  "id": "C1",
+  "topic": "Leads",
+  "finding": "No report shows leads or enquiries from Google",
+  "detail": "13 reports track sessions, clicks, keywords and links, but none says how many enquiries organic search produced. That is the number the business is paying for.",
+  "level": "High"
+ },
+ {
+  "id": "C2",
+  "topic": "Traffic is mostly brand",
+  "finding": "Growth and dips follow searches for the County name",
+  "detail": "ROI explains the Sep 2025, Jan 2026 and Jul 2026 dips by falling searches for 'County'. Search Console confirms it: only 3 to 7 percent of clicks each month come from searches without 'County' or a project name (138 in Sep 2025, 282 in Oct 2026). Non-brand clicks doubled in a year but are still under 300 a month.",
+  "level": "High"
+ },
+ {
+  "id": "C3",
+  "topic": "Link quality",
+  "finding": "Backlink count rises, link quality does not",
+  "detail": "Reported backlinks went from 351 (Sep 2025) to 1.7K (Sep 2026), from 110 to 140 bookmarking, classified and profile links a month. openSEO finds 124 linking sites with spam score 11, few real-estate or news sites, and Domain Authority has stayed at 19-20 since Sep 2025.",
+  "level": "High"
+ },
+ {
+  "id": "C4",
+  "topic": "Numbers disagree",
+  "finding": "January 2026 organic sessions reported two ways",
+  "detail": "The Jan 2026 report says 4,760 organic sessions; the Feb 2026 report gives January as 4,298. For clicks, Search Console shows 4,458 in January, so the Jan report (4.46K) was right and the Feb report's 4.03K was wrong.",
+  "level": "Medium"
+ },
+ {
+  "id": "C5",
+  "topic": "Numbers disagree",
+  "finding": "Keyword counts change between reports",
+  "detail": "Oct 2025 top-10 keywords: 30 of 41 in the Oct report, 28 of 39 in the Nov report. Mar 2026: 37 of 51 in the Apr report, 52 of 66 in the yearly report, and 79 of 104 in the Mar-Apr summary. The tracked list also changed in Oct 2025, so the top-10 trend is not like for like.",
+  "level": "Medium"
+ },
+ {
+  "id": "C6",
+  "topic": "Stuck items",
+  "finding": "Fixes left pending for months",
+  "detail": "Home page UI/UX (raised Oct 2025) still pending in Sep 2026; Jade County Google Business Profile waiting for access since Jul 2025; phone number in header pending since Jul 2026; Cocoa County meta and issues pending in Sep 2026.",
+  "level": "Medium"
+ },
+ {
+  "id": "C7",
+  "topic": "AI search",
+  "finding": "AI is reported as visits, not as being named",
+  "detail": "Reports count visits from chatgpt.com (134 in Jun 2026) and promise AEO each month, but never check whether ChatGPT, Gemini or Google AI Overviews name County. The Nov 2026 openSEO check found County named in 5 of 38 answers.",
+  "level": "Medium"
+ },
+ {
+  "id": "C8",
+  "topic": "Sep 2026",
+  "finding": "Organic up while total traffic fell",
+  "detail": "Sep 2026 organic sessions 6,350 (+17.9%) while all sessions fell 12.7% to 8,122. Organic would then be 78% of all traffic, against about 60% before. Worth checking in Search Console before taking it as a win.",
+  "level": "Low"
+ },
+ {
+  "id": "C9",
+  "topic": "Checked",
+  "finding": "ROI's Search Console clicks match Google's data",
+  "detail": "Monthly clicks in the ROI decks match Search Console within 10 clicks for every month checked (Sep 2025 to Aug 2026). ROI did not report September 2026 (6,033 clicks) and October 2026 fell to 4,289, down 29 percent.",
+  "level": "Low"
+ }
+]

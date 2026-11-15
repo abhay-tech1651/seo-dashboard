@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Visibility Audit — Nov 1, 2026</title>
+<style>
+:root{--bg:#fff;--fg:#0a0a0a;--fg-2:#454545;--fg-3:#8f8f8f;--rule:#ebebeb;--rule-2:#dcdcdc;--sunk:#fafafa;
+  --accent:var(--fg)}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--fg);margin:0;padding:0 24px 120px;font-size:18px;line-height:1.65;letter-spacing:-.003em;
+  font-family:Geist,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.shell{max-width:1100px;margin:0 auto}
+header{padding:40px 0 0;max-width:660px}
+h1{font-size:clamp(34px,6vw,56px);font-weight:700;line-height:1.03;letter-spacing:-.035em;margin:0;text-wrap:balance}
+.byline{margin:24px 0 0;font-size:16px;color:var(--fg-2)}
+.body{display:grid;grid-template-columns:minmax(0,660px) 1fr;gap:0 64px;margin:48px 0 0}
+article{grid-column:1;grid-row:1;min-width:0}
+.rail{grid-column:2;grid-row:1;font-size:14px;color:var(--fg-3);padding-top:6px}
+.rail .sticky{position:sticky;top:40px}
+.toc-label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3);margin:0 0 10px}
+.toc ol{list-style:none;margin:0;padding:0}
+.toc li{margin:0 0 7px}
+.toc a{color:var(--fg-2);text-decoration:none}
+.toc a:hover{color:var(--fg)}
+@media (max-width:900px){.body{grid-template-columns:1fr}.rail{display:none}}
+article p{margin:0 0 26px;text-wrap:pretty}
+h2{font-size:30px;font-weight:600;letter-spacing:-.025em;line-height:1.2;margin:60px 0 22px;text-wrap:balance}
+h3{font-size:20px;font-weight:600;letter-spacing:-.015em;margin:38px 0 14px}
+.finding{list-style:none;padding:0;margin:0 0 26px}
+.finding li{margin:0 0 8px;color:var(--fg-2)}
+.finding b{color:var(--accent);font-weight:600}
+a{color:var(--fg);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--rule-2)}
+strong{font-weight:600}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:var(--sunk);border:1px solid var(--rule);padding:1px 5px;border-radius:4px}
+ul,ol{margin:0 0 26px;padding-left:22px}li{margin:0 0 11px}li::marker{color:var(--fg-3)}
+.note{border-left:2px solid var(--fg);padding:2px 0 2px 22px;margin:0 0 26px}
+.note p{margin:0;color:var(--fg-2)}
+.note p+p{margin-top:14px}
+.tw{overflow-x:auto;margin:0 0 30px}
+table{border-collapse:collapse;width:100%;font-size:15.5px;min-width:440px}
+th{text-align:left;font-weight:500;color:var(--fg-3);padding:0 20px 10px 0;border-bottom:1px solid var(--rule-2);white-space:nowrap}
+td{padding:13px 20px 13px 0;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--fg-2)}
+td:first-child{color:var(--fg)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+td:last-child,th:last-child{padding-right:0}
+tr:last-child td{border-bottom:none}
+figure{margin:0 0 30px}
+figcaption{font-size:14px;color:var(--fg-3);margin-top:8px}
+.bars{display:grid;grid-template-columns:minmax(90px,170px) 1fr auto;gap:10px 12px;align-items:center;font-size:14px}
+.bars .label{color:var(--fg-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bars .track{display:block;height:20px;background:var(--sunk)}
+.bars .bar{display:block;height:100%;background:var(--accent);opacity:.16}
+.bars .value{font-variant-numeric:tabular-nums;min-width:3ch;text-align:right}
+svg{display:block;max-width:100%;height:auto}
+hr{border:none;border-top:1px solid var(--rule);margin:60px 0}
+footer{max-width:660px;margin:64px 0 0;padding:26px 0 0;border-top:1px solid var(--rule);font-size:15px;color:var(--fg-3)}
+details{margin:0 0 26px}
+summary{cursor:pointer;color:var(--fg-2)}
+@media print{
+  @page{margin:0 0 12mm 0;@bottom-center{content:counter(page) " of " counter(pages);font:10px -apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:#8f8f8f}}
+  body{background:#fff;color:#111;padding:14mm 16mm 6mm;font-size:11pt}
+  .shell,.body{display:block;max-width:none}
+  header{padding:0;max-width:none}
+  h1{font-size:26pt}
+  h2{font-size:15pt;margin:22pt 0 10pt}
+  h3{font-size:12pt;margin:14pt 0 6pt}
+  article,footer{max-width:none}
+  .rail{display:none}
+  h1,h2,h3{break-after:avoid}
+  table,figure,.note,svg{break-inside:avoid}
+  tr,td,th{break-inside:avoid}
+  p,li{orphans:3;widows:3}
+  thead{display:table-header-group}
+  .tw{overflow:visible}
+  table{font-size:10pt;min-width:0}
+  .byline,footer,figcaption{font-size:9.5pt}
+  svg,.bars .bar,.bars .track{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  a{text-decoration:none}
+}
+</style></head>
+<body><div class="shell">
+
+<header>
+  <h1>AI Visibility Audit — Nov 1, 2026</h1>
+  <p class="byline">Prepared for County Group · November 1, 2026</p>
+</header>
+
+<div class="body">
+  <aside class="rail"><div class="sticky">
+    <p class="toc-label">Contents</p>
+    <nav class="toc" aria-label="Contents">
+      <ol>
+        <li><a href="#the-simple-version">The simple version</a></li>
+        <li><a href="#where-you-stand-in-ai-answers">Where you stand in AI answers</a></li>
+        <li><a href="#recommendations">Recommendations</a></li>
+        <li><a href="#what-ai-cites-in-your-market">What AI cites in your market</a></li>
+        <li><a href="#what-else-we-checked">What else we checked</a></li>
+        <li><a href="#what-to-do-next">What to do next</a></li>
+        <li><a href="#how-this-report-was-made">How this report was made</a></li>
+      </ol>
+    </nav>
+  </div></aside>
+  <article>
+
+    <p>We asked AI tools 15 questions a home buyer in Delhi NCR would ask. County Group came up in very few answers, and the AI almost never used countygroup.in as its source. That means buyers who ask AI first may never hear of County.</p>
+
+    <h2 id="the-simple-version">The simple version</h2>
+    <ul>
+      <li><strong>Think of AI as a very fast reader.</strong> Before it answers, it reads a few websites. Whoever is written about on those websites gets named in the answer.</li>
+      <li><strong>Right now, AI reads other people's websites about you, not yours.</strong> Property portals (99acres, MagicBricks) and "Top 10 projects" blog lists do the talking.</li>
+      <li><strong>Your website is missing the facts AI looks for.</strong> Price, flat sizes, possession date and proof of on-time delivery are not written on the main pages, so AI takes them from someone else, sometimes wrongly.</li>
+      <li><strong>The fix is simple to say:</strong> write those facts clearly on your own pages, and get your projects onto the lists that AI already reads.</li>
+    </ul>
+
+    <h2 id="where-you-stand-in-ai-answers">Where you stand in AI answers</h2>
+    <ul>
+      <li><strong>Noida is the strongest topic:</strong> County Group named in 5 of 20 answers. <strong>Gurgaon is the weakest:</strong> 0 of 9 answers. Ghaziabad and NCR: 0 of 9 (but one answer used your website as a source). By engine: ChatGPT 3 of 15, Gemini 1 of 15, Google AI Overviews 1 of 8. Your website was used as a source in 1 of 38 answers. All 15 questions were neutral (none contained your name), so no branded questions are left out.</li>
+      <li><strong>Who shows up instead:</strong> M3M and ATS each appear in 14 answers where County does not; DLF in 9, Godrej Properties and Sobha in 8.</li>
+      <li><strong>What already works:</strong> ChatGPT and Gemini both name County when asked "which builders in Noida deliver projects on time". ChatGPT ranks County 107 third and Gemini lists it for "best luxury apartments in Noida". Google's AI Overview cites your blog post <a href="https://www.countygroup.in/blog/A-Buyer-s-Guide-to-Choosing-Flats-in-Noida-in-2026" target="_blank" rel="noopener">A Buyer's Guide to Choosing Flats in Noida in 2026</a>.</li>
+    </ul>
+
+    <figure>
+      <div class="bars" role="img" aria-label="Answers naming each developer, out of 38: ATS 17, M3M 16, Godrej Properties 13, DLF 9, Experion 8, Sobha 8, County Group 5">
+        <span class="label">ATS</span><span class="track"><span class="bar" style="width:100%"></span></span><span class="value">17</span>
+        <span class="label">M3M</span><span class="track"><span class="bar" style="width:94%"></span></span><span class="value">16</span>
+        <span class="label">Godrej Properties</span><span class="track"><span class="bar" style="width:76%"></span></span><span class="value">13</span>
+        <span class="label">DLF</span><span class="track"><span class="bar" style="width:53%"></span></span><span class="value">9</span>
+        <span class="label">Experion</span><span class="track"><span class="bar" style="width:47%"></span></span><span class="value">8</span>
+        <span class="label">Sobha</span><span class="track"><span class="bar" style="width:47%"></span></span><span class="value">8</span>
+        <span class="label">County Group</span><span class="track"><span class="bar" style="width:29%"></span></span><span class="value">5</span>
+      </div>
+      <figcaption>How many of the 38 AI answers named each developer (tool count, all three engines).</figcaption>
+    </figure>
+
+    <div class="note"><p>The tool only counts the words "County Group". When AI writes "County 107" instead, it is not counted. I read the ChatGPT and Gemini answers to "best luxury apartments in Noida" and both name County 107, so the true count is at least 7 of 38. I did not read every answer, so it may be a little higher still.</p></div>
+
+    <h2 id="recommendations">Recommendations</h2>
+
+    <h3>1. Prove on-time delivery where AI can see it</h3>
+    <p><strong>Do this</strong></p>
+    <ul>
+      <li>Publish a "Delivery record" page on countygroup.in: one row per project with RERA number, promised possession date, actual possession date and OC (occupancy certificate, the government's "safe to live in" approval) date.</li>
+      <li>Send County's UP RERA project numbers to <a href="https://www.futuristicnoida.com/reports/builder-delay-report-2026/" target="_blank" rel="noopener">Futuristic Noida's Builder Delay Report 2026</a>. It covers 969 UP RERA projects, accepts corrections by RERA number, and does not include County today.</li>
+      <li>Ask <a href="https://www.ghar.tv/intelligence/top-20-noida-developers-delivery-track-record-2026/artgi1077" target="_blank" rel="noopener">ghar.tv's Top 20 by delivery track record</a>, where County is already #7, to add your delivery page as its source.</li>
+      <li>Fix the founding year: your <a href="https://www.countygroup.in/who-we-are" target="_blank" rel="noopener">Who we are</a> page says 2005 and ghar.tv says 1988. Pick the correct one and state it on your site.</li>
+    </ul>
+    <p><strong>Why</strong></p>
+    <ul class="finding">
+      <li><b>Evidence:</b> For "which builders in Noida deliver projects on time", ChatGPT builds its whole answer from ghar.tv and Futuristic Noida. It shows a delay table for ATS (86% of 14 projects extended), Mahagun, Gaurs and Eldeco, but has no numbers for County. It can only say County has "approximately 18.7 million sq ft" delivered. Your own pages give no completion dates, OC status or possession dates.</li>
+      <li><b>Why it matters:</b> On-time delivery is County's main selling point. Today AI can only repeat a square-foot figure. With records it could say "delivered on time", and that is the sentence that wins buyers. The same proof also helps "most trusted real estate developers in Delhi NCR" (ChatGPT and Gemini name 9 competitors there, not County) and "best real estate developers in Noida" (Gemini names 7 competitors, not County).</li>
+      <li><b>Main uncertainty:</b> Only publish if the records really are good. If some County projects had RERA extensions, this report would show them too. Check the UP RERA records first.</li>
+    </ul>
+    <div class="tw"><table>
+      <thead><tr><th>Prompt</th><th>Engines naming a competitor, not you</th><th>Pages cited instead</th></tr></thead>
+      <tbody>
+        <tr><td>which builders in Noida deliver projects on time</td><td>Google AI Overview</td><td>ghar.tv, futuristicnoida.com, noidarealtytrends.com, acegroupindia.com</td></tr>
+        <tr><td>most trusted real estate developers in Delhi NCR</td><td>ChatGPT, Gemini</td><td>ghar.tv, magicbricks.com, 99acres.com, up-rera.in, haryanarera.gov.in</td></tr>
+        <tr><td>best real estate developers in Noida</td><td>Gemini</td><td>magicbricks.com, 99acres.com, wealth-clinic.com, starestate.com</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>2. Put the key facts at the top of each project page, then get onto the lists</h3>
+    <p><strong>Do this</strong></p>
+    <ul>
+      <li>Add a short "Key facts" box near the top of <a href="https://www.countygroup.in/county107/" target="_blank" rel="noopener">/county107/</a>, <a href="https://www.countygroup.in/clovecounty/" target="_blank" rel="noopener">/clovecounty/</a> and /ivorycounty/: starting price, flat sizes in sq ft, BHK types, possession status or date, RERA number, units and acres. Write it as normal text, not inside images or PDFs.</li>
+      <li>Add 5 to 8 plain FAQs per project page, for example "Is County 107 ready to move?" and "What is the price of a 4 BHK in Clove County?"</li>
+      <li>Ask the owners of the "Top 10 luxury projects in Noida" lists that AI reads to add or update County projects: wealth-clinic.com (already lists Clove County), realtyassistant.in, starestate.com, moneytreerealty.com, orangedoorinfra.com, whitehat.realty, and the MagicBricks luxury list.</li>
+    </ul>
+    <p><strong>Why</strong></p>
+    <ul class="finding">
+      <li><b>Evidence:</b> ChatGPT ranks County 107 third for "best luxury apartments in Noida" but links to no County page. Gemini calls County 107 "ready-to-move" from "about Rs 9.5 Cr" and gets the price from 99acres. The County 107 page shows 4 and 5 BHK, 224 apartments, 6 duplexes and RERA UPRERAPRJ837374. It has no price, no flat sizes and no possession status, so AI fills the gaps from other sites.</li>
+      <li><b>Why it matters:</b> AI already likes County 107. Clear facts make your page the source it quotes, so buyers land on your enquiry form instead of a portal's. It also stops AI repeating wrong facts.</li>
+      <li><b>Main uncertainty:</b> List owners decide what they add, and some are brokers who may want a fee. Also check whether Gemini's "ready-to-move" claim is true. The project's RERA registration suggests it may still be under construction.</li>
+    </ul>
+    <div class="tw"><table>
+      <thead><tr><th>Prompt</th><th>Engines naming a competitor, not you</th><th>Pages cited instead</th></tr></thead>
+      <tbody>
+        <tr><td>best luxury apartments in Noida</td><td>ChatGPT, Gemini, Google AI Overview (County 107 named only as a project)</td><td>magicbricks.com, wealth-clinic.com, realtyassistant.in, 99acres.com, urbaninvestors.in</td></tr>
+        <tr><td>4 BHK luxury flats in Noida</td><td>ChatGPT, Gemini, Google AI Overview</td><td>magicbricks.com, 99acres.com, realtyassistant.in, starestate.com</td></tr>
+        <tr><td>best new residential projects on Noida Expressway</td><td>Gemini, Google AI Overview</td><td>prateekgroup.com, wealth-clinic.com, starestate.com, orangedoorinfra.com</td></tr>
+        <tr><td>best gated communities in Noida for families</td><td>ChatGPT, Gemini, Google AI Overview</td><td>magicbricks.com, housethat.co.in, prateekgroup.com</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>3. Start Gurgaon from zero: Center Court and Cocoa County</h3>
+    <p><strong>Do this</strong></p>
+    <ul>
+      <li>Give <a href="https://www.countygroup.in/centercourt/" target="_blank" rel="noopener">/centercourt/</a> and the Cocoa County page the same key-facts box, including the HARERA numbers already on your homepage.</li>
+      <li>Write one guide page, "Living in Sector 88A on Dwarka Expressway": prices, travel times, schools, and County's two projects.</li>
+      <li>Pitch both projects to the Gurgaon list sites AI used: starestate.com, bestluxuryresidences.in, propzilla.in, mypropertypoint.com and realtyapplications.in.</li>
+    </ul>
+    <p><strong>Why</strong></p>
+    <ul class="finding">
+      <li><b>Evidence:</b> 0 of 9 Gurgaon answers name County. DLF, M3M, Sobha, Experion and Godrej fill every one.</li>
+      <li><b>Why it matters:</b> Your homepage says "Now in Gurugram". Buyers there who ask AI will not find you at all.</li>
+      <li><b>Main uncertainty:</b> This is the slowest of the three. Big Gurgaon brands are already well known, so expect months, not weeks.</li>
+    </ul>
+    <div class="tw"><table>
+      <thead><tr><th>Prompt</th><th>Engines naming a competitor, not you</th><th>Pages cited instead</th></tr></thead>
+      <tbody>
+        <tr><td>best builders in Gurgaon for luxury apartments</td><td>ChatGPT, Gemini, Google AI Overview</td><td>starestate.com, khushihousing.com, proptiger.com, bestluxuryresidences.in</td></tr>
+        <tr><td>best residential projects on Dwarka Expressway Gurgaon</td><td>ChatGPT, Gemini</td><td>haryanarera.gov.in, mypropertypoint.com, propertynivesh.in, dwarkaexpresswayprojects.in</td></tr>
+        <tr><td>ready to move luxury apartments in Gurgaon</td><td>ChatGPT, Gemini</td><td>99acres.com, propzilla.in, mypropertypoint.com, realtyapplications.in</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="what-ai-cites-in-your-market">What AI cites in your market</h2>
+    <div class="tw"><table>
+      <thead><tr><th>Source</th><th>Type</th><th class="n">Answers citing it</th><th>Lists you?</th><th>Lists competitors</th></tr></thead>
+      <tbody>
+        <tr><td>magicbricks.com</td><td>Property portal and lists</td><td class="n">11</td><td>Not checked (site blocked our reader)</td><td>Not checked</td></tr>
+        <tr><td>99acres.com</td><td>Property portal</td><td class="n">9</td><td>Used by Gemini for the County 107 price</td><td>Yes</td></tr>
+        <tr><td>prateekgroup.com</td><td>Competitor page</td><td class="n">7</td><td>No (competitor's own site)</td><td>Prateek</td></tr>
+        <tr><td>wealth-clinic.com</td><td>List article</td><td class="n">6</td><td>Yes: Clove County, #4</td><td>M3M, Experion, Godrej, Max Estates</td></tr>
+        <tr><td>ghar.tv</td><td>Delivery ranking</td><td class="n">6</td><td>Yes: County Group, #7</td><td>Gaurs, Godrej, ATS, Eldeco</td></tr>
+        <tr><td>realtyassistant.in</td><td>List article</td><td class="n">5</td><td>Not checked</td><td>M3M (from Gemini's answer)</td></tr>
+        <tr><td>starestate.com</td><td>Broker lists</td><td class="n">5</td><td>Not checked</td><td>Not checked</td></tr>
+        <tr><td>noidarealtytrends.com</td><td>Buyer guide</td><td class="n">4</td><td>Not checked</td><td>Not checked</td></tr>
+        <tr><td>futuristicnoida.com</td><td>UP RERA delay report</td><td class="n">1</td><td>No</td><td>ATS, Mahagun, Gaurs, Eldeco, Nirala</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><p>"Not checked" means I did not open the page in this audit, so I won't guess whether it lists County. A source that sits next to a competitor's name in an answer does not prove the page itself mentions them.</p></div>
+
+    <h2 id="what-else-we-checked">What else we checked</h2>
+    <div class="tw"><table>
+      <thead><tr><th>Opportunity</th><th>What we found</th><th>Decision</th></tr></thead>
+      <tbody>
+        <tr><td>AI crawlers blocked?</td><td>robots.txt (the file telling robots what they may read) allows GPTBot, ChatGPT-User, ClaudeBot and PerplexityBot, and does not block OAI-SearchBot or Google-Extended.</td><td>No barrier. Nothing to fix.</td></tr>
+        <tr><td>Ghaziabad societies</td><td>Gemini names ATS for "best residential societies in Ghaziabad"; County's Olive, Orange and Jade County are not named.</td><td>Later. Same fix as recommendation 2, after Noida.</td></tr>
+        <tr><td>Quora and YouTube</td><td>Quora cited in 2 Google AI Overviews, YouTube in 3 answers.</td><td>Not now. Too few answers to justify the effort.</td></tr>
+        <tr><td>Claude and Perplexity</td><td>Not measured: all 5 engines would cost 4,515 credits and the account had 292.</td><td>Add them after a credit top-up.</td></tr>
+        <tr><td>"Why" check with explore_prompt</td><td>Skipped to save the last credits.</td><td>Run on "best luxury apartments in Noida" after a top-up.</td></tr>
+      </tbody>
+    </table></div>
+
+    <hr>
+    <h2 id="what-to-do-next">What to do next</h2>
+    <ol>
+      <li>This week: check County's UP RERA records. If they are clean, build the Delivery record page and email Futuristic Noida the RERA numbers.</li>
+      <li>Next two weeks: add key-facts boxes and FAQs to County 107, Clove County and Ivory County, then contact the list sites in recommendation 2.</li>
+      <li>Top up OpenSEO credits. The monthly re-check costs about 90 credits and the account now has 75, so the next check (about 30 Nov) will be skipped without a top-up. Compare that check with this one.</li>
+    </ol>
+
+    <h2 id="how-this-report-was-made">How this report was made</h2>
+    <p>Generated by the <a href="https://openseo.so/docs/skills/ai-visibility-audit" target="_blank" rel="noopener">OpenSEO AI Visibility Audit skill</a>, run by Claude on November 1, 2026.</p>
+    <ul class="finding">
+      <li><b>Run:</b> 89a86ff9-b229-4f3c-b0d9-a3a805fd4b93 (manual check), collected Nov 1, 2026, India, English.</li>
+      <li><b>Engines and coverage:</b> ChatGPT, Gemini and Google AI Overviews. 38 of 45 answers collected; 1 failed; 6 searches showed no AI Overview, so they don't count as "missing you".</li>
+      <li><b>Tools:</b> OpenSEO tracker results and sources gave the counts. Two answers were read in full.</li>
+      <li><b>Verified by hand:</b> robots.txt, the homepage, Who we are, Residential, Flats in Noida, County 107 and Clove County pages, plus the ghar.tv, Futuristic Noida and Wealth Clinic pages.</li>
+    </ul>
+    <details><summary>Evidence and methodology</summary>
+      <p><strong>Prompts (15, all neutral):</strong> Noida homes: best luxury apartments in Noida; best real estate developers in Noida; which builders in Noida deliver projects on time; 4 BHK luxury flats in Noida; best new residential projects on Noida Expressway; best gated communities in Noida for families; best villa projects in Noida. Gurgaon homes: best luxury residential projects in Gurgaon; best builders in Gurgaon for luxury apartments; best residential projects on Dwarka Expressway Gurgaon; ready to move luxury apartments in Gurgaon. Ghaziabad and NCR: best residential societies in Ghaziabad; most trusted real estate developers in Delhi NCR; is it a good time to buy a flat in Noida; best independent floors in Noida.</p>
+      <p><strong>Competitors matched:</strong> ATS, Prateek, Gaurs, Eldeco, ACE, Mahagun, DLF, M3M, Godrej Properties, Tata Housing, Experion, Signature Global, Elan, Sobha.</p>
+      <p><strong>Answers read:</strong> ChatGPT, "which builders in Noida deliver projects on time": names County 5th with "approximately 18.7 million sq ft"; cites ghar.tv, futuristicnoida.com and noidarealtytrends.com. ChatGPT, "best luxury apartments in Noida": lists County 107 3rd with no County link; cites atsgreens.com, noidaluxury.com, magicbricks.com, timesofindia.indiatimes.com. Gemini, "best luxury apartments in Noida" (25 sources): lists County 107 as ready-to-move from about Rs 9.5 Cr, citing whitehat.realty and 99acres.com.</p>
+      <p><strong>Fan-out queries:</strong> not checked; explore_prompt was skipped for credits.</p>
+      <p><strong>robots.txt:</strong> User-agent * allows everything except /cgi-bin/. GPTBot, ChatGPT-User, OpenAI-User, ClaudeBot, PerplexityBot, MetaAI and facebookexternalhit are explicitly allowed. About 200 scraper and downloader bots are blocked.</p>
+      <p><strong>Measurement limit:</strong> brand matching uses the name "County Group" only. Project names such as County 107 are not counted, so mention rates are a floor.</p>
+    </details>
+
+  </article>
+</div>
+
+<footer>Prepared with OpenSEO. Data as of November 1, 2026.</footer>
+</div></body></html>

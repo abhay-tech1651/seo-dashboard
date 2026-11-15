@@ -1,0 +1,106 @@
+[
+ {
+  "id": "A1",
+  "action": "Connect County Search Console and GA4 to openSEO",
+  "area": "Setup",
+  "owner": "Abhay",
+  "status": "Done",
+  "due": "2026-11-08"
+ },
+ {
+  "id": "A2",
+  "action": "Top up openSEO credits (monthly AI check needs ~90)",
+  "area": "Setup",
+  "owner": "Abhay",
+  "status": "To do",
+  "due": "2026-11-25"
+ },
+ {
+  "id": "A3",
+  "action": "Check UP RERA extension records for all County projects",
+  "area": "AI answers",
+  "owner": "To assign",
+  "status": "To do",
+  "due": "2026-11-15"
+ },
+ {
+  "id": "A4",
+  "action": "Publish Delivery record page (RERA, promised vs actual possession, OC)",
+  "area": "AI answers",
+  "owner": "To assign",
+  "status": "To do",
+  "due": "2026-11-30"
+ },
+ {
+  "id": "A5",
+  "action": "Send RERA numbers to Futuristic Noida delay report",
+  "area": "AI answers",
+  "owner": "To assign",
+  "status": "To do",
+  "due": "2026-12-05"
+ },
+ {
+  "id": "A6",
+  "action": "Key facts box + FAQs on County 107, Clove County, Ivory County pages",
+  "area": "AI answers",
+  "owner": "To assign",
+  "status": "To do",
+  "due": "2026-11-30"
+ },
+ {
+  "id": "A7",
+  "action": "Outreach to Top 10 luxury list sites (wealth-clinic, realtyassistant, starestate...)",
+  "area": "AI answers",
+  "owner": "To assign",
+  "status": "To do",
+  "due": "2026-12-15"
+ },
+ {
+  "id": "A8",
+  "action": "Real landing pages for Cleo, Cherry, Olive County (brochure PDFs rank today)",
+  "area": "Google",
+  "owner": "To assign",
+  "status": "To do",
+  "due": "2026-12-31"
+ },
+ {
+  "id": "A9",
+  "action": "Fix /blog/awards ranking for 21 unrelated project names",
+  "area": "Google",
+  "owner": "To assign",
+  "status": "To do",
+  "due": "2026-12-15"
+ },
+ {
+  "id": "A10",
+  "action": "Gurgaon pages: Center Court + Cocoa County key facts, Sector 88A guide",
+  "area": "AI answers",
+  "owner": "To assign",
+  "status": "To do",
+  "due": "2027-01-31"
+ },
+ {
+  "id": "A11",
+  "action": "Fix founding year (site says 2005, ghar.tv says 1988)",
+  "area": "AI answers",
+  "owner": "To assign",
+  "status": "To do",
+  "due": "2026-11-15"
+ },
+ {
+  "id": "A12",
+  "action": "Ask ROI Mantra to report organic leads each month and to explain the Jan 2026 and keyword-count differences",
+  "area": "Agency",
+  "owner": "Abhay",
+  "status": "To do",
+  "due": "2026-11-15"
+ },
+ {
+  "id": "A13",
+  "action": "Agree with ROI Mantra to replace bookmarking and classified links with real-estate and news links",
+  "area": "Agency",
+  "owner": "Abhay",
+  "status": "To do",
+  "due": "2026-11-30"
+ }
+]

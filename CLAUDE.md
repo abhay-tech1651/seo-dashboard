@@ -42,6 +42,7 @@ node scripts/build-preview.mjs   # then open preview.html: no "—" left in the 
 ```
 
 ## Open items (14 Nov 2026)
+- Also in this repo (15 Nov 2026): `docs/OPENSEO_BASELINE_2026-11.md` (1 Nov OpenSEO baseline: domain, ranked keywords, backlinks, buying-search SERPs, 23-month plan), `docs/AI_VISIBILITY_AUDIT_2026-11-01.html` (AI visibility audit report, also saved in OpenSEO), `raw/openseo/` (ranked keywords CSV, SERP and AI-answer JSON from 1 Nov) and `raw/tracker/` (the old County Search Tracker's data: scorecard, actions, Search Console by month, ROI findings).
 
 - 15 Nov 2026: merged the separate "County Search Tracker" artifact into this page. New sections and data: `#year` (`data/gsc_year.csv`, Search Console by month Sep 2025 to Oct 2026 with non-brand clicks = queries without "county" or "court"), and in `#roi` a year of ROI's 13 decks (`data/roi_year.csv`, `data/roi_year_checks.csv`); next step 10. ROI deck links are in the County Group reports sheet. The old tracker (claude.ai/artifact/9tbbvzgFNVEa6nbu5pFDk4) now points here and keeps only the 1 Nov OpenSEO baseline.
 
