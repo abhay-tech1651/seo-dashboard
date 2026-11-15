@@ -21,10 +21,11 @@ Read this first on any machine. Then `docs/FINDINGS.md` (every verified number) 
 ## The live dashboard
 
 - https://claude.ai/artifact/NNdUdyrHo7EUtTibA7dMfn, a claude.ai artifact of type "Data", private to the owner.
-- Its database holds `files/index.html` (the page, `{text, edit:{via, at}}`; version 7 on 15 Nov 2026) and `datasets/<id>` (title, description, `source: {kind:"file", format:"csv", name, url:"/_blob/<asset id>"}`, `fixed: true`, `updated`, `edit`).
+- Its database holds `files/index.html` (the page, `{text, edit:{via, at}}`; version 8 on 15 Nov 2026) and `datasets/<id>` (title, description, `source: {kind:"file", format:"csv", name, url:"/_blob/<asset id>"}`, `fixed: true`, `updated`, `edit`).
 - To update: upload each changed CSV with the Artifact tool (`url`, `asset: true`, `file_path`; one CSV per call), set `datasets/<id>` to the new `/_blob/<id>`, and write `files/index.html` with `if_version` set to the version you last read. Read the live versions first; the owner may have edited the page.
 - Page code: `dash.calc(name, {title, description, inputs, fn})` for derived tables; `dash.draw(name, fn(el))` for drawing; marks use `data-draw`, `data-source`, `data-where="col=value"` or `data-row`, `data-field`, `data-fmt` (`pct`, `chg`, `pos`, `rank`, `diff`, `text`). Tables: `<table data-source data-row-key [data-filter] [data-sort="field:asc|desc"] [data-limit]>` with `<th data-field data-fmt>` and `<tbody data-draw="tbl">`.
 - `dashboard/index.html` here is the same page; `scripts/dash-shim.js` stands in for the runtime offline.
+- Month switch (Both / September / October): sets `data-month` on `.s-wrap`; CSS hides `.m-sep`, `.m-oct`, `.m-cmp`. The `tbl` draw tags columns by field name (`*_sep*`, `*_oct*`, change/`_vs_`/chg/diff) only in tables that have both a Sep and an Oct column, and tags rows whose `month` is Sep or Oct; `data-compare` on a table opts out. Tiles carry both values in `.m-show-oct` / `.m-show-sep` spans; the daily chart redraws through `window.sDaily`. New tables: name fields with `_sep` / `_oct` and they follow the switch automatically.
 
 ## Data access
 

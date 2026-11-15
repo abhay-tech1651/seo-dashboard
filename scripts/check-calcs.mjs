@@ -43,7 +43,9 @@ const manifest = JSON.parse(read('data/datasets.json'));
 const tables = Object.fromEntries(Object.entries(manifest).map(([id, m]) => [id, parseCsv(read(m.file))]));
 
 const calcs = {};
-const ctx = { window: {}, dash: { calc: (n, o) => { calcs[n] = o; }, draw: () => {}, data: () => ({}), colors: [] }, d3: {}, document: {} };
+// A bare stand-in page: enough for the page's start-up code (e.g. the month switch) to run.
+const document = { querySelector: () => ({ dataset: {} }), querySelectorAll: () => [], addEventListener: () => {} };
+const ctx = { window: {}, dash: { calc: (n, o) => { calcs[n] = o; }, draw: () => {}, data: () => ({}), colors: [] }, d3: {}, document };
 vm.createContext(ctx);
 const scripts = [...page.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
 vm.runInContext(scripts.join('\n;\n'), ctx);
