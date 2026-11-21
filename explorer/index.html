@@ -1,0 +1,1221 @@
+<meta name="dash-one-writer">
+<style>
+  .sx { display: flex; flex-direction: column; gap: var(--cds-gap-xl); font-family: var(--font-anthropic-sans); color: var(--color-fg); }
+  .sx-title { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; text-wrap: balance; }
+  .sx-lede { font-size: var(--cds-font-size-body); line-height: 1.6; margin: var(--cds-gap-sm) 0 0; max-width: 72ch; }
+  .sx-lede b, .sx-p b { font-weight: var(--cds-font-weight-medium); font-variant-numeric: tabular-nums; }
+  .sx-muted { color: var(--color-fg-muted); }
+  .sx-tabs { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); margin-top: var(--cds-gap-md); border-bottom: 1px solid var(--color-border-line); }
+  .sx-tab { all: unset; cursor: pointer; padding: 8px 14px; font-size: var(--cds-font-size-body); color: var(--color-fg-muted); border-bottom: 2px solid transparent; margin-bottom: -1px; }
+  .sx-tab:hover { color: var(--color-fg); }
+  .sx-tab[aria-selected=true] { color: var(--color-fg); border-bottom-color: var(--color-fg); font-weight: var(--cds-font-weight-medium); }
+  .sx-tab:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 2px; }
+  .sx-sec { display: flex; flex-direction: column; gap: var(--cds-gap-lg); }
+  .sx-h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0 0 var(--cds-gap-xs); text-wrap: balance; }
+  .sx-h3 { font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); margin: var(--cds-gap-lg) 0 var(--cds-gap-xs); }
+  .sx-sub { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: 0 0 var(--cds-gap-md); line-height: 1.5; max-width: 85ch; }
+  .sx-p { font-size: var(--cds-font-size-body); line-height: 1.6; margin: 0 0 var(--cds-gap-sm); max-width: 85ch; }
+  .sx-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); min-width: 0; }
+  .sx-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: var(--cds-gap-md); }
+  .sx-tile-top { display: flex; justify-content: space-between; align-items: baseline; gap: var(--cds-gap-sm); }
+  .sx-tile-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .sx-big { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: 30px; line-height: 1.1; margin-top: var(--cds-gap-sm); font-variant-numeric: tabular-nums; }
+  .sx-tile-sub { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin-top: var(--cds-gap-xs); font-variant-numeric: tabular-nums; }
+  .sx-pill { font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--color-border-line); white-space: nowrap; }
+  .sx-pill.is-good { color: var(--color-ok); border-color: var(--color-ok); }
+  .sx-pill.is-bad { color: var(--color-bad); border-color: var(--color-bad); }
+  .sx-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--cds-gap-md); }
+  .sx-chart { position: relative; min-height: 240px; }
+  .sx-chart.is-short { min-height: 160px; }
+  .sx-chart svg text { fill: var(--cds-text-secondary); font-size: var(--cds-font-size-caption); }
+  .sx-chart .domain { display: none; }
+  .sx-tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); box-shadow: var(--cds-shadow-popover); border-radius: var(--cds-radius); padding: 6px 10px; font-size: var(--cds-font-size-caption); max-width: 280px; z-index: 2; line-height: 1.45; }
+  .sx-tip b { font-weight: var(--cds-font-weight-medium); }
+  .sx-legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin-bottom: var(--cds-gap-sm); }
+  .sx-key { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+  .sx-key.is-a { background: var(--sx-a); }
+  .sx-key.is-b { background: var(--sx-b); }
+  .sx-key.is-muted { background: var(--cds-chart-muted); }
+  .sx-key.is-warn { background: var(--color-warn); }
+  .sx-tablewrap { overflow-x: auto; }
+  .sx-table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-body); font-variant-numeric: tabular-nums; }
+  .sx-table th { text-align: right; font-weight: var(--cds-font-weight-medium); color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); padding: 8px 10px; border-bottom: 1px solid var(--color-border-line); white-space: nowrap; }
+  .sx-table td { text-align: right; padding: 7px 10px; border-bottom: 1px solid var(--color-border-line); white-space: nowrap; }
+  .sx-table th:first-child, .sx-table td:first-child { text-align: left; white-space: normal; word-break: break-word; }
+  .sx-table td.is-text, .sx-table th.is-text { text-align: left; white-space: normal; }
+  .sx-table td.is-good { color: var(--color-ok); }
+  .sx-table td.is-bad { color: var(--color-bad); }
+  .sx-table a { color: inherit; }
+  .sx-note { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: var(--cds-gap-xs) 0 0; line-height: 1.5; max-width: 85ch; }
+  .sx-fail { font-size: var(--cds-font-size-caption); color: var(--color-bad); margin: 0; }
+  .sx-controls { display: flex; flex-wrap: wrap; gap: var(--cds-gap-md); align-items: flex-end; }
+  .sx-field { display: flex; flex-direction: column; gap: 4px; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .sx-field input { font: inherit; color: var(--color-fg); background: var(--color-bg); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: 5px 8px; }
+  .sx-chips { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); }
+  .sx-chip { all: unset; cursor: pointer; font-size: var(--cds-font-size-caption); padding: 4px 12px; border-radius: 999px; border: 1px solid var(--color-border-line); color: var(--color-fg-muted); }
+  .sx-chip:hover { color: var(--color-fg); border-color: var(--color-fg-muted); }
+  .sx-chip:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 2px; }
+  .sx-period { font-size: var(--cds-font-size-body); margin: var(--cds-gap-sm) 0 0; }
+  .sx-period .is-a { color: var(--sx-a); font-weight: var(--cds-font-weight-medium); }
+  .sx-period .is-b { color: var(--sx-b); font-weight: var(--cds-font-weight-medium); }
+  .sx-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--cds-gap-md); }
+  .sx-fact-n { font-family: var(--font-anthropic-serif); font-size: 26px; font-variant-numeric: tabular-nums; }
+  .sx-fact-l { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.4; }
+  .sx-dl { display: grid; grid-template-columns: minmax(130px, 220px) 1fr; gap: var(--cds-gap-sm) var(--cds-gap-lg); margin: var(--cds-gap-md) 0 0; font-size: var(--cds-font-size-body); line-height: 1.55; }
+  .sx-dl dt { font-weight: var(--cds-font-weight-medium); }
+  .sx-dl dd { margin: 0; color: var(--color-fg-muted); }
+  .sx details summary { cursor: pointer; font-weight: var(--cds-font-weight-medium); }
+  .sx { --sx-a: var(--color-fg); --sx-b: var(--cds-chart-muted); }
+  @media (max-width: 520px) { .sx-dl { grid-template-columns: 1fr; } }
+</style>
+
+<div class="sx" id="explorer">
+  <header id="top">
+    <h1 class="sx-title">County SEO Explorer</h1>
+    <p class="sx-lede">Google sent <b data-draw="v" data-source="live_kpi" data-where="metric=clicks" data-field="now">—</b> clicks in the last 28 days, <b data-draw="chg" data-source="live_kpi" data-where="metric=clicks" data-field="change">—</b> against the 28 days before. <b data-draw="v" data-fmt="pct" data-source="live_segments" data-where="segment=Brand" data-field="share_pct">—</b> came from searches that name County or a project, <b data-draw="v" data-fmt="pct" data-source="live_segments" data-where="segment=Non-brand" data-field="share_pct">—</b> from searches that don’t, and Google hides the words of the other <b data-draw="v" data-fmt="pct" data-source="live_segments" data-where="segment=Hidden by Google" data-field="share_pct">—</b>.</p>
+    <nav class="sx-tabs" role="tablist" aria-label="Views">
+      <button type="button" class="sx-tab" role="tab" data-tab="live" aria-selected="true">Live</button>
+      <button type="button" class="sx-tab" role="tab" data-tab="compare" aria-selected="false">Compare periods</button>
+      <button type="button" class="sx-tab" role="tab" data-tab="ai" aria-selected="false">AI search</button>
+      <button type="button" class="sx-tab" role="tab" data-tab="reports" aria-selected="false">ROI reports</button>
+      <button type="button" class="sx-tab" role="tab" data-tab="guide" aria-selected="false">How to read this</button>
+    </nav>
+  </header>
+
+  <!-- ================= LIVE ================= -->
+  <section id="live" class="sx-sec" role="tabpanel">
+    <p class="sx-sub">Always the last 28 days of complete data (<span data-draw="period" data-which="l">—</span>) against the 28 days before (<span data-draw="period" data-which="p">—</span>). Search Console and Google Analytics, read live each time this page opens.</p>
+
+    <div class="sx-tiles" id="live-tiles">
+      <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Clicks from Google</span><span class="sx-pill" data-draw="pill" data-source="live_kpi" data-where="metric=clicks" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-source="live_kpi" data-where="metric=clicks" data-field="now">—</div><div class="sx-tile-sub">before: <span data-draw="v" data-source="live_kpi" data-where="metric=clicks" data-field="prev">—</span></div></div>
+      <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Times shown on Google</span><span class="sx-pill" data-draw="pill" data-source="live_kpi" data-where="metric=impressions" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-source="live_kpi" data-where="metric=impressions" data-field="now">—</div><div class="sx-tile-sub">before: <span data-draw="v" data-source="live_kpi" data-where="metric=impressions" data-field="prev">—</span></div></div>
+      <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Click rate</span><span class="sx-pill" data-draw="pill" data-source="live_kpi" data-where="metric=ctr" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-fmt="pct" data-source="live_kpi" data-where="metric=ctr" data-field="now">—</div><div class="sx-tile-sub">before: <span data-draw="v" data-fmt="pct" data-source="live_kpi" data-where="metric=ctr" data-field="prev">—</span></div></div>
+      <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Average position</span><span class="sx-pill" data-draw="pill" data-source="live_kpi" data-where="metric=position" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-fmt="pos" data-source="live_kpi" data-where="metric=position" data-field="now">—</div><div class="sx-tile-sub">before: <span data-draw="v" data-fmt="pos" data-source="live_kpi" data-where="metric=position" data-field="prev">—</span> · lower is better</div></div>
+      <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Organic search visits</span><span class="sx-pill" data-draw="pill" data-source="live_kpi" data-where="metric=sessions" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-source="live_kpi" data-where="metric=sessions" data-field="now">—</div><div class="sx-tile-sub">before: <span data-draw="v" data-source="live_kpi" data-where="metric=sessions" data-field="prev">—</span> · Analytics</div></div>
+      <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Enquiry events from search</span><span class="sx-pill" data-draw="pill" data-source="live_kpi" data-where="metric=key_events" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-source="live_kpi" data-where="metric=key_events" data-field="now">—</div><div class="sx-tile-sub">before: <span data-draw="v" data-source="live_kpi" data-where="metric=key_events" data-field="prev">—</span> · Analytics</div></div>
+      <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Visits from AI assistants</span><span class="sx-pill" data-draw="pill" data-source="live_kpi" data-where="metric=ai_sessions" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-source="live_kpi" data-where="metric=ai_sessions" data-field="now">—</div><div class="sx-tile-sub">before: <span data-draw="v" data-source="live_kpi" data-where="metric=ai_sessions" data-field="prev">—</span> · ChatGPT and others</div></div>
+    </div>
+
+    <div class="sx-card" id="live-daily-card">
+      <h2 class="sx-h2" id="live-daily">Clicks per day: this 28 days against the 28 before</h2>
+      <div class="sx-legend"><span><i class="sx-key is-a"></i>Last 28 days</span><span><i class="sx-key is-muted"></i>28 days before</span></div>
+      <div class="sx-chart" data-draw="overlay" data-source="live_daily" data-mode="live"></div>
+    </div>
+
+    <div class="sx-two">
+      <div class="sx-card" id="live-where">
+        <h2 class="sx-h2">Where Google traffic lands</h2>
+        <p class="sx-sub">Clicks by kind of page, last 28 days. <b data-draw="v" data-source="live_concentration" data-row="0" data-field="pages_80">—</b> pages bring 80% of all clicks; the home page alone brings <b data-draw="v" data-fmt="pct" data-source="live_concentration" data-row="0" data-field="home_share_pct">—</b>.</p>
+        <div class="sx-chart is-short" data-draw="hbars" data-source="live_kinds" data-label="kind" data-value="clicks" data-extra="share_pct"></div>
+      </div>
+      <div class="sx-card" id="live-projects">
+        <h2 class="sx-h2">Clicks by project</h2>
+        <p class="sx-sub">Every page of a project together (main page, plans, location, campaign pages), last 28 days.</p>
+        <div class="sx-chart is-short" data-draw="hbars" data-source="live_projects" data-label="project" data-value="clicks" data-extra="change_pct"></div>
+      </div>
+    </div>
+
+    <div class="sx-card" id="live-map">
+      <h2 class="sx-h2">Page opportunity map</h2>
+      <p class="sx-sub">Each dot is a page. Further right means Google shows it more often; higher means more people click when they see it. Orange dots have a problem listed below. Big dots far right and low down are the most valuable fixes: Google already shows them, but people don’t click.</p>
+      <div class="sx-legend"><span><i class="sx-key is-warn"></i>Needs work</span><span><i class="sx-key is-muted"></i>No problem found</span></div>
+      <div class="sx-chart" data-draw="scatter" data-source="live_page_view"></div>
+    </div>
+
+    <div class="sx-card" id="live-fix">
+      <h2 class="sx-h2">Pages to fix first</h2>
+      <p class="sx-sub">Ranked by clicks missed: how many more clicks the page would get at the site’s usual click rate for its position. Last 28 days; enquiries from Google Analytics.</p>
+      <div class="sx-tablewrap">
+        <table class="sx-table" data-source="live_page_view" data-row-key="path" data-filter="issue!=" data-sort="missed_clicks:desc" data-limit="20">
+          <thead><tr>
+            <th data-field="path">Page</th>
+            <th data-field="issue" data-fmt="text" class="is-text">What to do</th>
+            <th data-field="impressions">Times shown</th>
+            <th data-field="clicks">Clicks</th>
+            <th data-field="ctr_pct" data-fmt="pct">Click rate</th>
+            <th data-field="position" data-fmt="pos">Position</th>
+            <th data-field="missed_clicks">Clicks missed</th>
+            <th data-field="key_events">Enquiries</th>
+          </tr></thead>
+          <tbody data-draw="tbl"></tbody>
+        </table>
+      </div>
+      <p class="sx-note">Click rate “usual for its position” is the middle click rate of this site’s own pages at that position, worked out live from the same data.</p>
+    </div>
+
+    <div class="sx-two">
+      <div class="sx-card" id="live-chances">
+        <h2 class="sx-h2">New-buyer searches close to page 1</h2>
+        <p class="sx-sub">Searches without our name, shown at positions 5 to 20, at least 30 times in the last 28 days. Pushing these up is the quickest way to win new buyers.</p>
+        <div class="sx-tablewrap">
+          <table class="sx-table" data-source="live_chances" data-row-key="query" data-sort="impressions:desc" data-limit="15">
+            <thead><tr><th data-field="query">Search</th><th data-field="position" data-fmt="pos">Position</th><th data-field="impressions">Times shown</th><th data-field="clicks">Clicks</th></tr></thead>
+            <tbody data-draw="tbl"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="sx-card" id="live-channels">
+        <h2 class="sx-h2">All website visits by channel</h2>
+        <p class="sx-sub">Google Analytics, last 28 days, so you can see organic search next to ads and the rest.</p>
+        <div class="sx-tablewrap">
+          <table class="sx-table" data-source="live_channels_view" data-row-key="channel" data-sort="sessions:desc" data-limit="12">
+            <thead><tr><th data-field="channel">Channel</th><th data-field="sessions">Visits</th><th data-field="sessions_prev">Before</th><th data-field="change_pct" data-fmt="chg">Change</th><th data-field="key_events">Enquiry events</th></tr></thead>
+            <tbody data-draw="tbl"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="sx-card" id="live-movers">
+      <h2 class="sx-h2">Pages that moved most</h2>
+      <p class="sx-sub">Change in clicks, last 28 days against the 28 before.</p>
+      <div class="sx-two">
+        <div>
+          <h3 class="sx-h3">Lost the most</h3>
+          <div class="sx-tablewrap"><table class="sx-table" data-source="live_page_view" data-row-key="path" data-sort="click_change:asc" data-limit="8">
+            <thead><tr><th data-field="path">Page</th><th data-field="clicks_prev">Before</th><th data-field="clicks">Now</th><th data-field="click_change" data-fmt="diff">Change</th></tr></thead>
+            <tbody data-draw="tbl"></tbody></table></div>
+        </div>
+        <div>
+          <h3 class="sx-h3">Gained the most</h3>
+          <div class="sx-tablewrap"><table class="sx-table" data-source="live_page_view" data-row-key="path" data-sort="click_change:desc" data-limit="8">
+            <thead><tr><th data-field="path">Page</th><th data-field="clicks_prev">Before</th><th data-field="clicks">Now</th><th data-field="click_change" data-fmt="diff">Change</th></tr></thead>
+            <tbody data-draw="tbl"></tbody></table></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= COMPARE ================= -->
+  <section id="compare" class="sx-sec" role="tabpanel" hidden>
+    <div class="sx-card" id="cmp-controls">
+      <h2 class="sx-h2">Pick two periods</h2>
+      <div class="sx-chips" role="group" aria-label="Quick picks">
+        <button type="button" class="sx-chip" data-preset="month">Last month vs month before</button>
+        <button type="button" class="sx-chip" data-preset="yoy">Last month vs same month last year</button>
+        <button type="button" class="sx-chip" data-preset="quarter">Last 3 months vs 3 before</button>
+        <button type="button" class="sx-chip" data-preset="year">Last 12 months vs 12 before</button>
+      </div>
+      <div class="sx-controls" style="margin-top: var(--cds-gap-md)">
+        <label class="sx-field">Period A, month<select class="dash-select" id="pick-a" data-draw="monthpick" data-which="a" aria-label="Period A month"></select></label>
+        <label class="sx-field">Period B, month<select class="dash-select" id="pick-b" data-draw="monthpick" data-which="b" aria-label="Period B month"></select></label>
+        <label class="sx-field">A from<input type="date" id="a-start" data-param="a_start" min="2025-01-01" max="2030-12-31"></label>
+        <label class="sx-field">A to<input type="date" id="a-end" data-param="a_end" min="2025-01-01" max="2030-12-31"></label>
+        <label class="sx-field">B from<input type="date" id="b-start" data-param="b_start" min="2025-01-01" max="2030-12-31"></label>
+        <label class="sx-field">B to<input type="date" id="b-end" data-param="b_end" min="2025-01-01" max="2030-12-31"></label>
+      </div>
+      <p class="sx-period">Comparing <span class="is-a" data-draw="period" data-which="a">—</span> (A) with <span class="is-b" data-draw="period" data-which="b">—</span> (B).</p>
+      <p class="sx-note">Search Console keeps 16 months, so periods before then come back empty.</p>
+    </div>
+
+    <div class="sx-tiles" id="cmp-tiles">
+      <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Clicks from Google</span><span class="sx-pill" data-draw="pill" data-source="cmp_kpi" data-where="metric=clicks" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-source="cmp_kpi" data-where="metric=clicks" data-field="a">—</div><div class="sx-tile-sub">B: <span data-draw="v" data-source="cmp_kpi" data-where="metric=clicks" data-field="b">—</span> · per day A <span data-draw="v" data-source="cmp_kpi" data-where="metric=clicks" data-field="a_per_day">—</span>, B <span data-draw="v" data-source="cmp_kpi" data-where="metric=clicks" data-field="b_per_day">—</span></div></div>
+      <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Times shown</span><span class="sx-pill" data-draw="pill" data-source="cmp_kpi" data-where="metric=impressions" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-source="cmp_kpi" data-where="metric=impressions" data-field="a">—</div><div class="sx-tile-sub">B: <span data-draw="v" data-source="cmp_kpi" data-where="metric=impressions" data-field="b">—</span></div></div>
+      <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Click rate</span><span class="sx-pill" data-draw="pill" data-source="cmp_kpi" data-where="metric=ctr" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-fmt="pct" data-source="cmp_kpi" data-where="metric=ctr" data-field="a">—</div><div class="sx-tile-sub">B: <span data-draw="v" data-fmt="pct" data-source="cmp_kpi" data-where="metric=ctr" data-field="b">—</span></div></div>
+      <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Average position</span><span class="sx-pill" data-draw="pill" data-source="cmp_kpi" data-where="metric=position" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-fmt="pos" data-source="cmp_kpi" data-where="metric=position" data-field="a">—</div><div class="sx-tile-sub">B: <span data-draw="v" data-fmt="pos" data-source="cmp_kpi" data-where="metric=position" data-field="b">—</span></div></div>
+      <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Organic search visits</span><span class="sx-pill" data-draw="pill" data-source="cmp_kpi" data-where="metric=sessions" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-source="cmp_kpi" data-where="metric=sessions" data-field="a">—</div><div class="sx-tile-sub">B: <span data-draw="v" data-source="cmp_kpi" data-where="metric=sessions" data-field="b">—</span></div></div>
+      <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Enquiry events from search</span><span class="sx-pill" data-draw="pill" data-source="cmp_kpi" data-where="metric=key_events" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-source="cmp_kpi" data-where="metric=key_events" data-field="a">—</div><div class="sx-tile-sub">B: <span data-draw="v" data-source="cmp_kpi" data-where="metric=key_events" data-field="b">—</span></div></div>
+      <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Visits from AI assistants</span><span class="sx-pill" data-draw="pill" data-source="cmp_kpi" data-where="metric=ai_sessions" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-source="cmp_kpi" data-where="metric=ai_sessions" data-field="a">—</div><div class="sx-tile-sub">B: <span data-draw="v" data-source="cmp_kpi" data-where="metric=ai_sessions" data-field="b">—</span></div></div>
+    </div>
+
+    <div class="sx-card" id="cmp-year">
+      <h2 class="sx-h2">Every month Google keeps</h2>
+      <p class="sx-sub">Search Console clicks per month. The months inside period A and period B are coloured. A month still running is drawn lighter.</p>
+      <div class="sx-legend"><span><i class="sx-key is-a"></i>Period A</span><span><i class="sx-key is-b" style="background: var(--color-fg-muted)"></i>Period B</span><span><i class="sx-key is-muted"></i>Other months</span></div>
+      <div class="sx-chart" data-draw="months" data-source="trend_months"></div>
+    </div>
+
+    <div class="sx-two">
+      <div class="sx-card" id="cmp-segments">
+        <h2 class="sx-h2">Who the clicks came from</h2>
+        <p class="sx-sub">“Brand” searches name County or a project, “non-brand” searches don’t (new buyers), and Google hides the words of rare searches for privacy.</p>
+        <div class="sx-tablewrap"><table class="sx-table" data-source="cmp_segments" data-row-key="segment">
+          <thead><tr><th data-field="segment">Searches</th><th data-field="a">A</th><th data-field="b">B</th><th data-field="change_pct" data-fmt="chg">Change</th><th data-field="share_a_pct" data-fmt="pct">Share in A</th></tr></thead>
+          <tbody data-draw="tbl"></tbody></table></div>
+      </div>
+      <div class="sx-card" id="cmp-kinds">
+        <h2 class="sx-h2">Clicks by kind of page</h2>
+        <p class="sx-sub">Which part of the website gained or lost.</p>
+        <div class="sx-tablewrap"><table class="sx-table" data-source="cmp_kinds" data-row-key="kind" data-sort="a:desc">
+          <thead><tr><th data-field="kind">Kind of page</th><th data-field="a">A</th><th data-field="b">B</th><th data-field="change_pct" data-fmt="chg">Change</th></tr></thead>
+          <tbody data-draw="tbl"></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="sx-card" id="cmp-projects">
+      <h2 class="sx-h2">Clicks by project</h2>
+      <div class="sx-legend"><span><i class="sx-key is-a"></i>Period A</span><span><i class="sx-key is-muted"></i>Period B</span></div>
+      <div class="sx-chart is-short" data-draw="pairbars" data-source="cmp_projects" data-label="project"></div>
+    </div>
+
+    <div class="sx-card" id="cmp-pages">
+      <h2 class="sx-h2">Pages that moved most</h2>
+      <div class="sx-two">
+        <div>
+          <h3 class="sx-h3">Lost the most (A against B)</h3>
+          <div class="sx-tablewrap"><table class="sx-table" data-source="cmp_page_view" data-row-key="path" data-sort="change:asc" data-limit="10">
+            <thead><tr><th data-field="path">Page</th><th data-field="b">B</th><th data-field="a">A</th><th data-field="change" data-fmt="diff">Change</th><th data-field="position_a" data-fmt="pos">Position A</th></tr></thead>
+            <tbody data-draw="tbl"></tbody></table></div>
+        </div>
+        <div>
+          <h3 class="sx-h3">Gained the most</h3>
+          <div class="sx-tablewrap"><table class="sx-table" data-source="cmp_page_view" data-row-key="path" data-sort="change:desc" data-limit="10">
+            <thead><tr><th data-field="path">Page</th><th data-field="b">B</th><th data-field="a">A</th><th data-field="change" data-fmt="diff">Change</th><th data-field="position_a" data-fmt="pos">Position A</th></tr></thead>
+            <tbody data-draw="tbl"></tbody></table></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sx-card" id="cmp-queries">
+      <h2 class="sx-h2">New-buyer searches that moved most</h2>
+      <p class="sx-sub">Searches without our name, change in clicks from B to A.</p>
+      <div class="sx-tablewrap"><table class="sx-table" data-source="cmp_query_view" data-row-key="query" data-sort="abs_change:desc" data-limit="15">
+        <thead><tr><th data-field="query">Search</th><th data-field="b">Clicks B</th><th data-field="a">Clicks A</th><th data-field="change" data-fmt="diff">Change</th><th data-field="position_b" data-fmt="pos">Position B</th><th data-field="position_a" data-fmt="pos">Position A</th></tr></thead>
+        <tbody data-draw="tbl"></tbody></table></div>
+    </div>
+
+    <div class="sx-two">
+      <div class="sx-card" id="cmp-channels">
+        <h2 class="sx-h2">All website visits by channel</h2>
+        <div class="sx-tablewrap"><table class="sx-table" data-source="cmp_channels" data-row-key="channel" data-sort="a:desc" data-limit="12">
+          <thead><tr><th data-field="channel">Channel</th><th data-field="a">A</th><th data-field="b">B</th><th data-field="change_pct" data-fmt="chg">Change</th></tr></thead>
+          <tbody data-draw="tbl"></tbody></table></div>
+      </div>
+      <div class="sx-card" id="cmp-ai">
+        <h2 class="sx-h2">Visits from AI assistants</h2>
+        <p class="sx-sub">Google Analytics, by assistant.</p>
+        <div class="sx-tablewrap"><table class="sx-table" data-source="cmp_ai_traffic" data-row-key="assistant" data-sort="a:desc">
+          <thead><tr><th data-field="assistant">Assistant</th><th data-field="a">A</th><th data-field="b">B</th><th data-field="key_events_a">Enquiry events A</th></tr></thead>
+          <tbody data-draw="tbl"></tbody></table></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= AI SEARCH ================= -->
+  <section id="ai" class="sx-sec" role="tabpanel" hidden>
+    <div class="sx-card" id="ai-run">
+      <h2 class="sx-h2">AI answers about buying a home in Noida, Gurgaon and NCR</h2>
+      <p class="sx-sub">OpenSEO asks the same buyer questions to ChatGPT, Gemini and Google’s AI Overviews each month and records who they recommend. Pick a check:</p>
+      <label class="sx-field">Check<select class="dash-select" id="pick-run" data-draw="runpick" data-source="ai_trend" aria-label="AI check"></select></label>
+      <div class="sx-facts" style="margin-top: var(--cds-gap-md)">
+        <div><div class="sx-fact-n" data-draw="v" data-source="ai_summary" data-row="0" data-field="answered">—</div><div class="sx-fact-l">answers came back</div></div>
+        <div><div class="sx-fact-n" data-draw="v" data-source="ai_summary" data-row="0" data-field="named">—</div><div class="sx-fact-l">named “County Group”</div></div>
+        <div><div class="sx-fact-n" data-draw="v" data-source="ai_summary" data-row="0" data-field="cited">—</div><div class="sx-fact-l">linked to countygroup.in</div></div>
+        <div><div class="sx-fact-n" data-draw="v" data-source="ai_summary" data-row="0" data-field="top_rival_named">—</div><div class="sx-fact-l">named <span data-draw="v" data-fmt="text" data-source="ai_summary" data-row="0" data-field="top_rival">—</span>, the most-named builder</div></div>
+      </div>
+    </div>
+
+    <div class="sx-two">
+      <div class="sx-card" id="ai-brands">
+        <h2 class="sx-h2">Which builders the answers name</h2>
+        <div class="sx-chart" data-draw="hbars" data-source="ai_brands" data-label="brand" data-value="named" data-highlight="own"></div>
+      </div>
+      <div class="sx-card" id="ai-engines">
+        <h2 class="sx-h2">By AI tool</h2>
+        <div class="sx-tablewrap"><table class="sx-table" data-source="ai_engine_view" data-row-key="engine">
+          <thead><tr><th data-field="engine">AI tool</th><th data-field="answered">Answered</th><th data-field="named">Named County Group</th><th data-field="cited">Linked to our site</th><th data-field="no_answer">No answer</th></tr></thead>
+          <tbody data-draw="tbl"></tbody></table></div>
+        <p class="sx-note">“No answer” means the tool gave no answer, such as a Google search with no AI Overview. It is not counted against us.</p>
+      </div>
+    </div>
+
+    <div class="sx-card" id="ai-projects">
+      <h2 class="sx-h2">Answers naming our projects (1 November check)</h2>
+      <p class="sx-sub">OpenSEO only looks for the words “County Group”. Builders’ project names usually include the builder (“ATS Knightsbridge”), ours usually don’t (“County 107”), so we read each full answer from the 1 November check for our project names too: <b data-draw="v" data-source="ai_projects_count" data-row="0" data-field="answers">—</b> answers name County or a project, <b data-draw="v" data-source="ai_projects_count" data-row="0" data-field="written">—</b> of them in the written answer.</p>
+      <div class="sx-tablewrap"><table class="sx-table" data-source="ai_project_mentions" data-row-key="question,engine">
+        <thead><tr><th data-field="question">Question</th><th data-field="engine" data-fmt="text" class="is-text">AI tool</th><th data-field="names_county_group" data-fmt="text">Says “County Group”</th><th data-field="projects_named" data-fmt="text" class="is-text">Projects named</th><th data-field="how_shown" data-fmt="text" class="is-text">Where</th></tr></thead>
+        <tbody data-draw="tbl"></tbody></table></div>
+    </div>
+
+    <div class="sx-card" id="ai-grid">
+      <h2 class="sx-h2">Question by question</h2>
+      <div class="sx-tablewrap"><table class="sx-table" data-source="ai_grid" data-row-key="question">
+        <thead><tr><th data-field="question">Question</th><th data-field="chatgpt" data-fmt="text">ChatGPT</th><th data-field="gemini" data-fmt="text">Gemini</th><th data-field="google_ai_overview" data-fmt="text">Google AI Overview</th><th data-field="rivals" data-fmt="text" class="is-text">Builders named</th></tr></thead>
+        <tbody data-draw="tbl"></tbody></table></div>
+    </div>
+
+    <div class="sx-two">
+      <div class="sx-card" id="ai-sites">
+        <h2 class="sx-h2">The sites AI answers quote</h2>
+        <p class="sx-sub">Getting County listed and described well on these sites is how a builder gets named.</p>
+        <div class="sx-tablewrap"><table class="sx-table" data-source="ai_sites" data-row-key="domain" data-sort="answers:desc" data-limit="15">
+          <thead><tr><th data-field="domain">Website</th><th data-field="ownership" data-fmt="text">Whose</th><th data-field="answers">Answers</th><th data-field="chatgpt">ChatGPT</th><th data-field="gemini">Gemini</th><th data-field="google_ai_overview">Google AI</th></tr></thead>
+          <tbody data-draw="tbl"></tbody></table></div>
+      </div>
+      <div class="sx-card" id="ai-traffic">
+        <h2 class="sx-h2">Visits from AI assistants, last 28 days</h2>
+        <p class="sx-sub">People who clicked a link to our site inside an AI answer (Google Analytics). Clicks from Google’s own AI Overviews count as Google search.</p>
+        <div class="sx-tablewrap"><table class="sx-table" data-source="live_ai_traffic" data-row-key="assistant" data-sort="sessions:desc">
+          <thead><tr><th data-field="assistant">Assistant</th><th data-field="sessions">Visits</th><th data-field="engaged">Engaged visits</th><th data-field="key_events">Enquiry events</th></tr></thead>
+          <tbody data-draw="tbl"></tbody></table></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ROI REPORTS ================= -->
+  <section id="reports" class="sx-sec" role="tabpanel" hidden>
+    <div class="sx-card" id="roi-chart">
+      <h2 class="sx-h2">What ROI reported each month, against Google</h2>
+      <p class="sx-sub">From ROI’s monthly SEO decks, September 2025 to October 2026. Their Search Console clicks match Google’s; their organic visits come from Google Analytics and run higher.</p>
+      <div class="sx-legend"><span><i class="sx-key is-a"></i>Organic visits, ROI says</span><span><i class="sx-key is-muted"></i>Clicks, Search Console</span></div>
+      <div class="sx-chart" data-draw="roiline" data-source="roi_year"></div>
+      <div class="sx-tablewrap" style="margin-top: var(--cds-gap-md)"><table class="sx-table" data-source="roi_year" data-row-key="month">
+        <thead><tr><th data-field="label" data-fmt="text">Month</th><th data-field="roi_organic_visits">Organic visits, ROI</th><th data-field="google_clicks">Clicks, Google</th><th data-field="roi_top10">Keywords in top 10, ROI</th><th data-field="roi_tracked">Keywords tracked</th><th data-field="roi_backlinks">Backlinks, ROI</th><th data-field="roi_da">Domain Authority</th><th data-field="roi_links_built">Links built</th></tr></thead>
+        <tbody data-draw="tbl"></tbody></table></div>
+    </div>
+
+    <div class="sx-card" id="roi-checks">
+      <h2 class="sx-h2">What the reports leave out</h2>
+      <div class="sx-tablewrap"><table class="sx-table" data-source="roi_checks" data-row-key="id">
+        <thead><tr><th data-field="priority" data-fmt="text">Priority</th><th data-field="finding" data-fmt="text" class="is-text">What we found</th><th data-field="detail" data-fmt="text" class="is-text">Detail</th></tr></thead>
+        <tbody data-draw="tbl"></tbody></table></div>
+    </div>
+
+    <div class="sx-card" id="library">
+      <h2 class="sx-h2">Every report deck</h2>
+      <p class="sx-sub">All the monthly decks listed in the County Group Reports sheet. Open one to read it.</p>
+      <label class="sx-field">Show<select class="dash-select" id="lib-filter" aria-label="Which reports">
+        <option value="">All reports</option><option value="SEO" selected>SEO</option><option value="Social">Social</option><option value="Paid">Paid</option>
+      </select></label>
+      <div class="sx-tablewrap" style="margin-top: var(--cds-gap-sm)"><table class="sx-table" data-source="reports_index" data-row-key="report,month" data-sort="month:desc" data-filter-select="lib-filter:report">
+        <thead><tr><th data-field="label" data-fmt="text">Month</th><th data-field="report" data-fmt="text">Report</th><th data-field="title" data-fmt="link" data-link="link" class="is-text">Deck</th></tr></thead>
+        <tbody data-draw="tbl"></tbody></table></div>
+    </div>
+  </section>
+
+  <!-- ================= GUIDE ================= -->
+  <section id="guide" class="sx-sec" role="tabpanel" hidden>
+    <div class="sx-card">
+      <h2 class="sx-h2">How to read this</h2>
+      <dl class="sx-dl">
+        <dt>Live</dt><dd>The last 28 days of complete Google data against the 28 days before, worked out fresh every time the page opens. Google’s figures run about 3 days behind.</dd>
+        <dt>Compare periods</dt><dd>Any two periods: a month against a month, a quarter, a year, or any dates you type. Every number on that tab is read from Google for exactly those dates.</dd>
+        <dt>Click</dt><dd>Someone clicked our free Google result (Search Console). The most reliable traffic number.</dd>
+        <dt>Times shown</dt><dd>Our page appeared in Google’s free results. The person may not have clicked.</dd>
+        <dt>Click rate</dt><dd>Clicks out of every 100 times shown.</dd>
+        <dt>Position</dt><dd>Where we appeared, 1 being the top; 1–10 is page 1. Google averages every time we were shown.</dd>
+        <dt>Visit</dt><dd>A visit that started from search, counted by Google Analytics on our site. Close to clicks but never equal: one click can become two visits.</dd>
+        <dt>Enquiry events</dt><dd>What Google Analytics counts as a possible lead: WhatsApp clicks, Contact Us, thank-you pages. Not the same as CRM leads.</dd>
+        <dt>Brand / non-brand</dt><dd>A brand search names County or a project (“county 107”, “ivory county”); a non-brand one doesn’t (“flats in noida”): new buyers. Google’s own brand split is not used, because it counts several of our project names as non-brand.</dd>
+        <dt>Hidden by Google</dt><dd>Google keeps the words of rare searches private. Their clicks count in the totals but can’t be sorted into brand or non-brand.</dd>
+        <dt>Clicks missed</dt><dd>Times shown × the click rate this site usually gets at that position, minus the clicks the page got. A rough size of the prize, not a promise.</dd>
+        <dt>AI checks</dt><dd>OpenSEO asks fixed buyer questions to ChatGPT, Gemini and Google AI Overviews every month. AI answers change from one asking to the next, so trust the direction more than one month’s exact count.</dd>
+        <dt>ROI reports</dt><dd>Figures read from ROI’s monthly decks. They don’t change, so they are kept as saved files; everything else is live.</dd>
+        <dt>Who sees what</dt><dd>Live numbers load with the viewer’s own OpenSEO connection. Someone without it sees the saved parts only, unless the owner shares the connection from Sources.</dd>
+      </dl>
+    </div>
+  </section>
+</div>
+
+<script>
+  /* ---------- Shared helpers (on window so every script can use them) ---------- */
+  (function () {
+    const SX = {};
+    SX.num = (v) => (v === null || v === undefined || v === '' ? null : Number(v));
+    SX.pct = (a, b) => (b ? Math.round(((a - b) / b) * 1000) / 10 : null);
+    SX.round1 = (v) => (v === null || !Number.isFinite(v) ? null : Math.round(v * 10) / 10);
+    SX.BRAND = /\bcount(y|ry)\b|countygroup|\bivory\b|\bivy\b|\bjade\b|\bclove\b|\bcoco\b|\bcocoa\b|cherry county|olive county|\bcleo\b|cent(er|re) court|courtyard|amit modi/i;
+    SX.isBrand = (q) => SX.BRAND.test(String(q || ''));
+    SX.PROJECTS = { county107: 'County 107', ivorycounty: 'Ivory County', 'ivorycounty-gold': 'Ivory County Gold', ivycounty: 'Ivy County', jadecounty: 'Jade County', clovecounty: 'Clove County', cocoacounty: 'Cocoa County', cococounty: 'Coco County', centercourt: 'Center Court', countycourtyard: 'County Courtyard', countyspaces: 'County Spaces', cherrycounty: 'Cherry County', olivecounty: 'Olive County', cleocounty: 'Cleo County' };
+    /** Path of a URL without host and trailing slash; keeps the query string. */
+    SX.path = (u) => { let p = String(u || '').replace(/^https?:\/\/[^/]+/i, ''); if (!p.startsWith('/')) p = '/' + p; if (p.length > 1) p = p.replace(/\/(\?|$)/, '$1'); return p || '/'; };
+    SX.bare = (p) => p.split('?')[0];
+    SX.kind = (p) => {
+      const b = SX.bare(p).toLowerCase();
+      if (b.endsWith('.pdf')) return 'Brochure / PDF';
+      if (b === '/') return 'Home';
+      if (/^\/(current-openings|job-apply)/.test(b)) return 'Jobs';
+      if (/^\/flats-(in|for-sale-in)-/.test(b)) return 'Location page';
+      if (b.startsWith('/blog')) return 'Blog';
+      if (SX.PROJECTS[b.split('/')[1]]) return 'Project';
+      return 'Other';
+    };
+    SX.project = (p) => {
+      const b = SX.bare(p).toLowerCase();
+      const seg = b.split('/')[1];
+      if (SX.PROJECTS[seg]) return SX.PROJECTS[seg];
+      const m = /pname=([a-z-]+)/i.exec(p) || /county-107|cherry-county|ivory-county|coco-county|jade-county|clove-county|center-court/i.exec(p);
+      if (m) { const k = (m[1] || m[0]).toLowerCase().replace(/-/g, ''); if (SX.PROJECTS[k]) return SX.PROJECTS[k]; }
+      return null;
+    };
+    /** Totals over Search Console date rows: clicks, impressions, click rate, impression-weighted position. */
+    SX.totals = (rows) => {
+      let c = 0, i = 0, w = 0;
+      for (const r of rows) { c += SX.num(r.clicks) || 0; i += SX.num(r.impressions) || 0; w += (SX.num(r.position) || 0) * (SX.num(r.impressions) || 0); }
+      return { clicks: c, impressions: i, ctr: i ? (c / i) * 100 : null, position: i ? w / i : null, days: rows.length };
+    };
+    /** Search Console page rows merged by path. */
+    SX.byPath = (rows) => {
+      const m = new Map();
+      for (const r of rows) {
+        const p = SX.path(r.page);
+        const t = m.get(p) || { path: p, clicks: 0, impressions: 0, w: 0 };
+        t.clicks += SX.num(r.clicks) || 0; t.impressions += SX.num(r.impressions) || 0; t.w += (SX.num(r.position) || 0) * (SX.num(r.impressions) || 0);
+        m.set(p, t);
+      }
+      for (const t of m.values()) { t.position = t.impressions ? t.w / t.impressions : null; t.ctr_pct = t.impressions ? (t.clicks / t.impressions) * 100 : null; delete t.w; }
+      return m;
+    };
+    SX.band = (pos) => (pos == null ? null : pos <= 3 ? '1–3' : pos <= 5 ? '3–5' : pos <= 10 ? '5–10' : pos <= 20 ? '10–20' : '20+');
+    SX.median = (a) => { const s = a.slice().sort((x, y) => x - y); if (!s.length) return null; const h = Math.floor(s.length / 2); return s.length % 2 ? s[h] : (s[h - 1] + s[h]) / 2; };
+    /** The 'AI Assistant' channel's sources, named plainly. */
+    SX.assistant = (sm) => {
+      const s = String(sm || '').toLowerCase();
+      if (/chatgpt|openai/.test(s)) return 'ChatGPT';
+      if (/gemini|bard/.test(s)) return 'Gemini';
+      if (/perplexity/.test(s)) return 'Perplexity';
+      if (/copilot|bing\.com\/chat/.test(s)) return 'Copilot';
+      if (/claude|anthropic/.test(s)) return 'Claude';
+      if (/deepseek/.test(s)) return 'DeepSeek';
+      if (/meta\.ai/.test(s)) return 'Meta AI';
+      if (/ai-assistant/.test(s)) return 'Other AI assistant';
+      return null;
+    };
+    /** Date helpers (UTC, YYYY-MM-DD). */
+    SX.iso = (d) => d.toISOString().slice(0, 10);
+    SX.addDays = (s, n) => { const d = new Date(`${s}T00:00:00Z`); d.setUTCDate(d.getUTCDate() + n); return SX.iso(d); };
+    SX.monthStart = (s) => `${s.slice(0, 7)}-01`;
+    SX.monthEnd = (s) => { const d = new Date(`${s.slice(0, 7)}-01T00:00:00Z`); d.setUTCMonth(d.getUTCMonth() + 1); d.setUTCDate(0); return SX.iso(d); };
+    SX.addMonths = (s, n) => { const d = new Date(`${s.slice(0, 7)}-01T00:00:00Z`); d.setUTCMonth(d.getUTCMonth() + n); return SX.iso(d); };
+    SX.days = (a, b) => Math.round((new Date(`${b}T00:00:00Z`) - new Date(`${a}T00:00:00Z`)) / 864e5) + 1;
+    SX.label = (a, b) => {
+      const f = d3.utcFormat('%-d %b %Y'), m = d3.utcFormat('%B %Y');
+      const A = new Date(`${a}T00:00:00Z`), B = new Date(`${b}T00:00:00Z`);
+      if (a === SX.monthStart(a) && b === SX.monthEnd(a)) return m(A);
+      if (a === SX.monthStart(a) && b === SX.monthEnd(b)) return `${d3.utcFormat('%b %Y')(A)} to ${d3.utcFormat('%b %Y')(B)}`;
+      return `${f(A)} to ${f(B)}`;
+    };
+    /** Format a value for display. */
+    SX.fmt = (v, fmt) => {
+      if (v === null || v === undefined || v === '') return '—';
+      if (fmt === 'text' || fmt === 'link') return String(v);
+      const n = Number(v);
+      if (!Number.isFinite(n)) return String(v);
+      if (fmt === 'pct') return `${d3.format('.1f')(n)}%`;
+      if (fmt === 'pos') return d3.format('.1f')(n);
+      if (fmt === 'chg') return `${n > 0 ? '+' : n < 0 ? '−' : ''}${d3.format('.1f')(Math.abs(n))}%`;
+      if (fmt === 'diff') return `${n > 0 ? '+' : n < 0 ? '−' : ''}${d3.format(',')(Math.round(Math.abs(n)))}`;
+      return d3.format(',')(Math.round(n * 10) / 10);
+    };
+    /** Rows of one mark's source, or null when not loaded (and the reason). */
+    SX.rows = (id) => { const d = dash.data(id); return d.status === 'ok' && Array.isArray(d.data) ? d.data : null; };
+    SX.failed = (id) => dash.data(id).status === 'error';
+    SX.row = (el) => {
+      const rows = SX.rows(el.dataset.source);
+      if (!rows) return null;
+      if (el.dataset.row !== undefined) return rows[Number(el.dataset.row)] ?? null;
+      const raw = el.dataset.where || ''; const i = raw.indexOf('=');
+      const k = decodeURIComponent(raw.slice(0, i)), v = decodeURIComponent(raw.slice(i + 1));
+      return rows.find((r) => String(r[k]) === v) ?? null;
+    };
+    SX.failNote = (el, text) => { const p = document.createElement('p'); p.className = 'sx-fail'; p.textContent = text || 'This part didn’t load.'; el.append(p); };
+    window.SX = SX;
+  })();
+</script>
+
+<script>
+  /* ---------- Dates: live windows always roll; compare defaults to last full month vs the one before ---------- */
+  (function () {
+    const SX = window.SX;
+    const today = SX.iso(new Date());
+    const lEnd = SX.addDays(today, -3), lStart = SX.addDays(lEnd, -27);
+    const pEnd = SX.addDays(lStart, -1), pStart = SX.addDays(pEnd, -27);
+    const p = dash.params();
+    const next = { l_start: lStart, l_end: lEnd, p_start: pStart, p_end: pEnd };
+    // Compare: only replace the stored defaults, never a period the reader picked in this view.
+    if (p.a_start === '2026-10-01' && p.a_end === '2026-10-31' && p.b_start === '2026-09-01' && p.b_end === '2026-09-30') {
+      const lastFull = SX.addMonths(SX.monthStart(SX.addDays(today, -3)), -1);
+      next.a_start = lastFull; next.a_end = SX.monthEnd(lastFull);
+      next.b_start = SX.addMonths(lastFull, -1); next.b_end = SX.monthEnd(next.b_start);
+    }
+    dash.setParams(next);
+    window.SXpresets = {
+      month: () => { const m = SX.addMonths(SX.monthStart(SX.addDays(today, -3)), -1); const b = SX.addMonths(m, -1); return { a_start: m, a_end: SX.monthEnd(m), b_start: b, b_end: SX.monthEnd(b) }; },
+      yoy: () => { const m = SX.addMonths(SX.monthStart(SX.addDays(today, -3)), -1); const b = SX.addMonths(m, -12); return { a_start: m, a_end: SX.monthEnd(m), b_start: b, b_end: SX.monthEnd(b) }; },
+      quarter: () => { const e = SX.addMonths(SX.monthStart(SX.addDays(today, -3)), -1); const s = SX.addMonths(e, -2); const be = SX.addMonths(s, -1); const bs = SX.addMonths(be, -2); return { a_start: s, a_end: SX.monthEnd(e), b_start: bs, b_end: SX.monthEnd(be) }; },
+      year: () => { const e = SX.addMonths(SX.monthStart(SX.addDays(today, -3)), -1); const s = SX.addMonths(e, -11); const be = SX.addMonths(s, -1); const bs = SX.addMonths(be, -11); return { a_start: s, a_end: SX.monthEnd(e), b_start: bs, b_end: SX.monthEnd(be) }; },
+    };
+  })();
+</script>
+
+<script>
+  /* ---------- Loaders: turn each connector answer into rows ---------- */
+  const gscLoader = ({ answer, args }) => {
+    if (!answer || answer.ok === false || answer.error) throw new Error((answer && (answer.error?.message || answer.error || answer.message)) || 'Search Console gave no answer');
+    const dims = args.dimensions || ['query'];
+    const rows = (answer.rows || []).map((r) => {
+      const o = {};
+      dims.forEach((d, i) => { o[d] = r.keys[i]; });
+      o.clicks = Number(r.clicks); o.impressions = Number(r.impressions); o.ctr = Number(r.ctr); o.position = r.position == null ? null : Number(r.position);
+      return o;
+    });
+    return { columns: [...dims, 'clicks', 'impressions', 'ctr', 'position'], rows, truncated: !!answer.hasMore };
+  };
+  for (const id of ['live_daily', 'live_pages', 'live_pages_prev', 'live_queries', 'a_daily', 'b_daily', 'a_pages', 'b_pages', 'a_queries', 'b_queries', 'trend_daily']) {
+    dash.loader(id, { description: 'One row per Search Console key (date, page or search), with clicks, impressions, click rate (0–1) and position.', fn: gscLoader });
+  }
+
+  const channelLoader = ({ answer }) => {
+    if (!answer || answer.status !== 'ok') throw new Error((answer && (answer.error?.message || answer.message)) || 'Google Analytics gave no answer');
+    const cmp = answer.comparison && answer.comparison.rows;
+    const rows = cmp
+      ? cmp.map((r) => ({ channel: r.dimensions.sessionDefaultChannelGroup, sessions: r.metrics.sessions.current, sessions_prev: r.metrics.sessions.previous, key_events: r.metrics.keyEvents.current, key_events_prev: r.metrics.keyEvents.previous, engaged: r.metrics.engagedSessions.current }))
+      : (answer.rows || []).map((r) => ({ channel: r.sessionDefaultChannelGroup, sessions: r.sessions, key_events: r.keyEvents, engaged: r.engagedSessions }));
+    return { columns: cmp ? ['channel', 'sessions', 'sessions_prev', 'key_events', 'key_events_prev', 'engaged'] : ['channel', 'sessions', 'key_events', 'engaged'], rows, truncated: !!(answer.pageInfo && answer.pageInfo.hasMore) };
+  };
+  for (const id of ['live_channels', 'a_channels', 'b_channels']) dash.loader(id, { description: 'One row per Google Analytics channel: visits, enquiry events and engaged visits (and the period before, where asked).', fn: channelLoader });
+
+  const sourceLoader = ({ answer }) => {
+    if (!answer || answer.status !== 'ok') throw new Error((answer && (answer.error?.message || answer.message)) || 'Google Analytics gave no answer');
+    const rows = (answer.rows || []).map((r) => ({ source_medium: r.sessionSourceMedium, sessions: r.sessions, engaged: r.engagedSessions, key_events: r.keyEvents }));
+    return { columns: ['source_medium', 'sessions', 'engaged', 'key_events'], rows, truncated: !!(answer.pageInfo && answer.pageInfo.hasMore) };
+  };
+  for (const id of ['live_sources', 'a_sources', 'b_sources']) dash.loader(id, { description: 'One row per Google Analytics source / medium: visits, engaged visits and enquiry events.', fn: sourceLoader });
+
+  dash.loader('live_landing', {
+    description: 'One row per page where an organic search visit started: visits, engaged visits and enquiry events.',
+    fn: ({ answer }) => {
+      if (!answer || answer.status !== 'ok') throw new Error((answer && (answer.error?.message || answer.message)) || 'Google Analytics gave no answer');
+      const rows = (answer.rows || []).map((r) => ({ landing_page: r.landingPage, sessions: r.sessions, engaged: r.engagedSessions, key_events: r.keyEvents }));
+      return { columns: ['landing_page', 'sessions', 'engaged', 'key_events'], rows, truncated: !!(answer.pageInfo && answer.pageInfo.hasMore) };
+    },
+  });
+
+  dash.loader('ai_trend', {
+    description: 'One row per AI visibility check: date, answers collected, and the share of answers naming County Group or linking to its site.',
+    fn: ({ answer }) => {
+      if (!answer || answer.status !== 'success') throw new Error((answer && (answer.error?.message || answer.message)) || 'OpenSEO gave no answer');
+      const rows = (answer.data.runs || []).map((r) => ({ run_id: r.runId, date: String(r.createdAt).slice(0, 10), mention_rate_pct: r.mentionRate, citation_rate_pct: r.citationRate, answered: r.coverage ? r.coverage.answered : null, expected: r.coverage ? r.coverage.expected : null }));
+      return { columns: ['run_id', 'date', 'mention_rate_pct', 'citation_rate_pct', 'answered', 'expected'], rows };
+    },
+  });
+
+  dash.loader('ai_answers', {
+    description: 'One row per question and AI tool: whether it answered, named County Group, linked to countygroup.in, and which other tracked builders it named.',
+    fn: ({ answer }) => {
+      if (!answer || answer.status !== 'success') throw new Error((answer && (answer.error?.message || answer.message)) || 'OpenSEO gave no answer');
+      const rows = (answer.data.rows || []).map((r) => {
+        const own = (r.brands || []).find((b) => b.own) || {};
+        const rivals = (r.brands || []).filter((b) => !b.own && b.mentioned).map((b) => b.name);
+        return { question: r.prompt, topic: r.topic, engine: r.engine, answer_status: r.answerStatus || r.status, named: own.mentioned ? 1 : 0, cited: own.cited ? 1 : 0, rivals: rivals.join(', '), rivals_named: rivals.length };
+      });
+      return { columns: ['question', 'topic', 'engine', 'answer_status', 'named', 'cited', 'rivals', 'rivals_named'], rows, truncated: !!answer.data.nextCursor };
+    },
+  });
+
+  dash.loader('ai_brands', {
+    description: 'One row per tracked builder: answers that named it, answers that linked to its site, and its average place in the answer.',
+    fn: ({ answer }) => {
+      if (!answer || answer.status !== 'success') throw new Error((answer && (answer.error?.message || answer.message)) || 'OpenSEO gave no answer');
+      const rows = (answer.data.summaries || []).map((s) => ({ brand: s.name, own: s.own ? 'yes' : 'no', answers: s.answers, named: s.mentions, cited: s.citations }));
+      return { columns: ['brand', 'own', 'answers', 'named', 'cited'], rows };
+    },
+  });
+
+  dash.loader('ai_sites', {
+    description: 'One row per website the AI answers linked to: whose site it is and how many answers quoted it, per AI tool.',
+    fn: ({ answer }) => {
+      if (!answer || answer.status !== 'success') throw new Error((answer && (answer.error?.message || answer.message)) || 'OpenSEO gave no answer');
+      const rows = (answer.data.rows || []).map((r) => {
+        const e = Object.fromEntries((r.engines || []).map((x) => [x.engine, x.answerCount]));
+        return { domain: String(r.domain || r.key).replace(/^www\./, ''), ownership: r.ownership === 'own' ? 'Ours' : r.ownership === 'competitor' ? 'Rival builder' : 'Portal or other', answers: r.answerCount, chatgpt: e.chatgpt || 0, gemini: e.gemini || 0, google_ai_overview: e.google_ai_overview || 0 };
+      });
+      return { columns: ['domain', 'ownership', 'answers', 'chatgpt', 'gemini', 'google_ai_overview'], rows, truncated: !!answer.data.nextCursor };
+    },
+  });
+</script>
+
+<script>
+  /* ---------- Calculations: every derived number, readable in Sources ---------- */
+  const SX = window.SX;
+
+  dash.calc('live_kpi', {
+    title: 'Live: headline numbers',
+    description: 'Last 28 days against the 28 days before: Search Console totals from daily rows, organic visits, enquiry events and AI-assistant visits from Google Analytics. Change is % for counts and points for rates.',
+    inputs: ['live_daily', 'live_channels'],
+    fn: (daily, channels) => {
+      const p = dash.params();
+      const cur = SX.totals(daily.filter((r) => r.date >= p.l_start && r.date <= p.l_end));
+      const prev = SX.totals(daily.filter((r) => r.date >= p.p_start && r.date <= p.p_end));
+      const ch = (name) => channels.find((r) => r.channel === name) || {};
+      const org = ch('Organic Search'), ai = ch('AI Assistant');
+      const row = (metric, now, before, kind, good) => ({ metric, now: SX.round1(now), prev: SX.round1(before), change: kind === 'count' ? SX.pct(now, before) : SX.round1(now - before), unit: kind === 'count' ? '%' : kind === 'pct' ? 'pts' : '', good });
+      return [
+        row('clicks', cur.clicks, prev.clicks, 'count', 'up'),
+        row('impressions', cur.impressions, prev.impressions, 'count', 'up'),
+        row('ctr', cur.ctr, prev.ctr, 'pct', 'up'),
+        row('position', cur.position, prev.position, 'pos', 'down'),
+        row('sessions', org.sessions, org.sessions_prev, 'count', 'up'),
+        row('key_events', org.key_events, org.key_events_prev, 'count', 'up'),
+        row('ai_sessions', ai.sessions || 0, ai.sessions_prev || 0, 'count', 'up'),
+      ];
+    },
+  });
+
+  dash.calc('live_segments', {
+    title: 'Live: brand, non-brand and hidden searches',
+    description: 'Clicks in the last 28 days split by whether the search names County or a project. Hidden = all clicks minus the clicks of the searches Google lists.',
+    inputs: ['live_queries', 'live_daily'],
+    fn: (queries, daily) => {
+      const p = dash.params();
+      const total = SX.totals(daily.filter((r) => r.date >= p.l_start && r.date <= p.l_end)).clicks;
+      let brand = 0, non = 0;
+      for (const q of queries) { if (SX.isBrand(q.query)) brand += q.clicks; else non += q.clicks; }
+      const hidden = Math.max(0, total - brand - non);
+      const s = (v) => (total ? SX.round1((v / total) * 100) : null);
+      return [
+        { segment: 'Brand', clicks: brand, share_pct: s(brand) },
+        { segment: 'Non-brand', clicks: non, share_pct: s(non) },
+        { segment: 'Hidden by Google', clicks: hidden, share_pct: s(hidden) },
+      ];
+    },
+  });
+
+  dash.calc('live_page_view', {
+    title: 'Live: every page with its problem',
+    description: 'Each page’s Search Console figures (last 28 days and the 28 before) with Analytics visits and enquiry events. Clicks missed = times shown × the middle click rate of this site’s pages at the same position band − clicks. Problems: shown 500+ times on page 1 at under half the usual click rate; position 10–20 shown 200+ times; lost 30%+ of 20+ clicks; 50+ visits with no enquiry event.',
+    inputs: ['live_pages', 'live_pages_prev', 'live_landing'],
+    fn: (pages, pagesPrev, landing) => {
+      const cur = SX.byPath(pages), prev = SX.byPath(pagesPrev);
+      const ga = new Map();
+      for (const r of landing) { const k = SX.bare(SX.path(r.landing_page)); const t = ga.get(k) || { sessions: 0, key_events: 0 }; t.sessions += Number(r.sessions) || 0; t.key_events += Number(r.key_events) || 0; ga.set(k, t); }
+      const bands = {};
+      for (const t of cur.values()) if (t.impressions >= 100) (bands[SX.band(t.position)] ||= []).push(t.clicks / t.impressions);
+      const usual = Object.fromEntries(Object.entries(bands).map(([k, v]) => [k, SX.median(v)]));
+      const keys = new Set([...cur.keys(), ...prev.keys()]);
+      const out = [];
+      for (const k of keys) {
+        const c = cur.get(k) || { clicks: 0, impressions: 0, position: null, ctr_pct: null };
+        const b = prev.get(k) || { clicks: 0 };
+        const g = SX.bare(k) === k ? ga.get(k) : null;
+        const u = usual[SX.band(c.position)];
+        const missed = u != null && c.impressions ? Math.max(0, Math.round(c.impressions * u - c.clicks)) : 0;
+        const issues = [];
+        if (c.position != null && c.position <= 10 && c.impressions >= 500 && u != null && c.clicks / c.impressions < u / 2) issues.push('Shown often, rarely clicked: rewrite the title and description');
+        if (c.position != null && c.position > 10 && c.position <= 20 && c.impressions >= 200) issues.push('Just off page 1: improve the page and link to it');
+        if (b.clicks >= 20 && c.clicks <= b.clicks * 0.7) issues.push('Losing clicks fast: check what changed');
+        if (g && g.sessions >= 50 && g.key_events === 0) issues.push('Visitors but no enquiries: add a clear enquiry button');
+        out.push({ path: k, kind: SX.kind(k), project: SX.project(k) || '', clicks: c.clicks, impressions: c.impressions, ctr_pct: SX.round1(c.ctr_pct), position: SX.round1(c.position), clicks_prev: b.clicks, click_change: c.clicks - b.clicks, sessions: g ? g.sessions : null, key_events: g ? g.key_events : null, missed_clicks: missed, issue: issues.join('; ') });
+      }
+      return out;
+    },
+  });
+
+  dash.calc('live_kinds', {
+    title: 'Live: clicks by kind of page',
+    description: 'Search Console clicks in the last 28 days summed by kind of page, with each kind’s share of all page clicks.',
+    inputs: ['live_page_view'],
+    fn: (pages) => {
+      const m = {}; let total = 0;
+      for (const p of pages) { m[p.kind] = (m[p.kind] || 0) + p.clicks; total += p.clicks; }
+      return Object.entries(m).map(([kind, clicks]) => ({ kind, clicks, share_pct: total ? SX.round1((clicks / total) * 100) : null })).sort((a, b) => b.clicks - a.clicks);
+    },
+  });
+
+  dash.calc('live_projects', {
+    title: 'Live: clicks by project',
+    description: 'Search Console clicks in the last 28 days summed over every page of each project, with the change against the 28 days before.',
+    inputs: ['live_page_view'],
+    fn: (pages) => {
+      const m = {};
+      for (const p of pages) { if (!p.project) continue; const t = (m[p.project] ||= { project: p.project, clicks: 0, clicks_prev: 0 }); t.clicks += p.clicks; t.clicks_prev += p.clicks_prev; }
+      return Object.values(m).map((t) => ({ ...t, change_pct: SX.pct(t.clicks, t.clicks_prev) })).sort((a, b) => b.clicks - a.clicks);
+    },
+  });
+
+  dash.calc('live_concentration', {
+    title: 'Live: how concentrated clicks are',
+    description: 'How many pages, biggest first, it takes to reach 50% and 80% of all page clicks in the last 28 days, and the home page’s share.',
+    inputs: ['live_page_view'],
+    fn: (pages) => {
+      const s = pages.map((p) => p.clicks).filter((c) => c > 0).sort((a, b) => b - a);
+      const total = s.reduce((a, b) => a + b, 0);
+      const reach = (share) => { let acc = 0; for (let i = 0; i < s.length; i++) { acc += s[i]; if (acc >= total * share) return i + 1; } return s.length; };
+      const home = (pages.find((p) => p.path === '/') || {}).clicks || 0;
+      return [{ pages_with_clicks: s.length, pages_50: reach(0.5), pages_80: reach(0.8), home_share_pct: total ? SX.round1((home / total) * 100) : null }];
+    },
+  });
+
+  dash.calc('live_chances', {
+    title: 'Live: new-buyer searches close to page 1',
+    description: 'Searches in the last 28 days that don’t name County or a project, at average position 5–20, shown at least 30 times.',
+    inputs: ['live_queries'],
+    fn: (queries) => queries.filter((q) => !SX.isBrand(q.query) && q.position >= 5 && q.position <= 20 && q.impressions >= 30).map((q) => ({ query: q.query, position: SX.round1(q.position), impressions: q.impressions, clicks: q.clicks })),
+  });
+
+  dash.calc('live_ai_traffic', {
+    title: 'Live: visits from AI assistants',
+    description: 'Google Analytics visits in the last 28 days whose source is an AI assistant (ChatGPT, Gemini, Perplexity, Copilot, Claude and others), summed per assistant.',
+    inputs: ['live_sources'],
+    fn: (sources) => {
+      const m = {};
+      for (const r of sources) { const a = SX.assistant(r.source_medium); if (!a) continue; const t = (m[a] ||= { assistant: a, sessions: 0, engaged: 0, key_events: 0 }); t.sessions += r.sessions; t.engaged += r.engaged; t.key_events += r.key_events; }
+      return Object.values(m);
+    },
+  });
+
+  dash.calc('live_channels_view', {
+    title: 'Live: visits by channel with change',
+    description: 'Google Analytics visits per channel, last 28 days against the 28 before.',
+    inputs: ['live_channels'],
+    fn: (channels) => channels.map((r) => ({ ...r, change_pct: SX.pct(r.sessions, r.sessions_prev) })),
+  });
+
+  /* ---- Compare ---- */
+  dash.calc('cmp_kpi', {
+    title: 'Compare: headline numbers',
+    description: 'Period A against period B: Search Console totals from daily rows, organic visits, enquiry events and AI-assistant visits from Google Analytics. Change is % for counts and points for rates; per day evens out periods of different length.',
+    inputs: ['a_daily', 'b_daily', 'a_channels', 'b_channels'],
+    fn: (aDaily, bDaily, aCh, bCh) => {
+      const A = SX.totals(aDaily), B = SX.totals(bDaily);
+      const p = dash.params();
+      const da = SX.days(p.a_start, p.a_end), db = SX.days(p.b_start, p.b_end);
+      const ch = (rows, name) => rows.find((r) => r.channel === name) || {};
+      const row = (metric, a, b, kind, good, perDay) => ({ metric, a: SX.round1(a), b: SX.round1(b), change: kind === 'count' ? SX.pct(a, b) : SX.round1(a - b), unit: kind === 'count' ? '%' : kind === 'pct' ? 'pts' : '', good, a_per_day: perDay ? SX.round1(a / da) : null, b_per_day: perDay ? SX.round1(b / db) : null });
+      return [
+        row('clicks', A.clicks, B.clicks, 'count', 'up', true),
+        row('impressions', A.impressions, B.impressions, 'count', 'up', true),
+        row('ctr', A.ctr, B.ctr, 'pct', 'up'),
+        row('position', A.position, B.position, 'pos', 'down'),
+        row('sessions', ch(aCh, 'Organic Search').sessions, ch(bCh, 'Organic Search').sessions, 'count', 'up', true),
+        row('key_events', ch(aCh, 'Organic Search').key_events, ch(bCh, 'Organic Search').key_events, 'count', 'up'),
+        row('ai_sessions', ch(aCh, 'AI Assistant').sessions || 0, ch(bCh, 'AI Assistant').sessions || 0, 'count', 'up'),
+      ];
+    },
+  });
+
+  dash.calc('trend_months', {
+    title: 'Clicks per month, 16 months',
+    description: 'Search Console daily rows summed per calendar month, marking the months inside period A and period B and a month still running.',
+    inputs: ['trend_daily'],
+    fn: (daily) => {
+      const p = dash.params();
+      const m = new Map();
+      for (const r of daily) { const k = String(r.date).slice(0, 7); const t = m.get(k) || { month: k, clicks: 0, impressions: 0, days: 0 }; t.clicks += r.clicks; t.impressions += r.impressions; t.days += 1; m.set(k, t); }
+      const inR = (k, s, e) => `${k}-01` <= e && SX.monthEnd(`${k}-01`) >= s;
+      return [...m.values()].sort((a, b) => (a.month < b.month ? -1 : 1)).map((t) => {
+        const full = SX.days(`${t.month}-01`, SX.monthEnd(`${t.month}-01`));
+        return { ...t, label: d3.utcFormat('%b %Y')(new Date(`${t.month}-01T00:00:00Z`)), partial: t.days < full ? 'yes' : 'no', in_a: inR(t.month, p.a_start, p.a_end) ? 'yes' : 'no', in_b: inR(t.month, p.b_start, p.b_end) ? 'yes' : 'no' };
+      });
+    },
+  });
+
+  dash.calc('cmp_segments', {
+    title: 'Compare: brand, non-brand and hidden searches',
+    description: 'Clicks in each period split by whether the search names County or a project; hidden = all clicks minus the clicks of the searches Google lists.',
+    inputs: ['a_queries', 'b_queries', 'a_daily', 'b_daily'],
+    fn: (aQ, bQ, aDaily, bDaily) => {
+      const split = (q, daily) => { const total = SX.totals(daily).clicks; let br = 0, nb = 0; for (const r of q) { if (SX.isBrand(r.query)) br += r.clicks; else nb += r.clicks; } return { total, br, nb, hid: Math.max(0, total - br - nb) }; };
+      const A = split(aQ, aDaily), B = split(bQ, bDaily);
+      const r = (segment, a, b) => ({ segment, a, b, change_pct: SX.pct(a, b), share_a_pct: A.total ? SX.round1((a / A.total) * 100) : null });
+      return [r('Brand', A.br, B.br), r('Non-brand', A.nb, B.nb), r('Hidden by Google', A.hid, B.hid), r('All clicks', A.total, B.total)];
+    },
+  });
+
+  dash.calc('cmp_page_view', {
+    title: 'Compare: every page, A against B',
+    description: 'Search Console clicks and position per page in each period, merged by path.',
+    inputs: ['a_pages', 'b_pages'],
+    fn: (aPages, bPages) => {
+      const A = SX.byPath(aPages), B = SX.byPath(bPages);
+      const keys = new Set([...A.keys(), ...B.keys()]);
+      return [...keys].map((k) => { const a = A.get(k) || { clicks: 0, position: null }, b = B.get(k) || { clicks: 0, position: null }; return { path: k, kind: SX.kind(k), project: SX.project(k) || '', a: a.clicks, b: b.clicks, change: a.clicks - b.clicks, position_a: SX.round1(a.position), position_b: SX.round1(b.position) }; });
+    },
+  });
+
+  dash.calc('cmp_kinds', {
+    title: 'Compare: clicks by kind of page',
+    description: 'Search Console clicks per kind of page in each period.',
+    inputs: ['cmp_page_view'],
+    fn: (pages) => { const m = {}; for (const p of pages) { const t = (m[p.kind] ||= { kind: p.kind, a: 0, b: 0 }); t.a += p.a; t.b += p.b; } return Object.values(m).map((t) => ({ ...t, change_pct: SX.pct(t.a, t.b) })); },
+  });
+
+  dash.calc('cmp_projects', {
+    title: 'Compare: clicks by project',
+    description: 'Search Console clicks summed over every page of each project, in each period.',
+    inputs: ['cmp_page_view'],
+    fn: (pages) => { const m = {}; for (const p of pages) { if (!p.project) continue; const t = (m[p.project] ||= { project: p.project, a: 0, b: 0 }); t.a += p.a; t.b += p.b; } return Object.values(m).map((t) => ({ ...t, change_pct: SX.pct(t.a, t.b) })).sort((x, y) => y.a + y.b - (x.a + x.b)); },
+  });
+
+  dash.calc('cmp_query_view', {
+    title: 'Compare: new-buyer searches, A against B',
+    description: 'Searches that don’t name County or a project, with clicks and position in each period.',
+    inputs: ['a_queries', 'b_queries'],
+    fn: (aQ, bQ) => {
+      const A = new Map(aQ.filter((q) => !SX.isBrand(q.query)).map((q) => [q.query, q])), B = new Map(bQ.filter((q) => !SX.isBrand(q.query)).map((q) => [q.query, q]));
+      return [...new Set([...A.keys(), ...B.keys()])].map((k) => { const a = A.get(k) || { clicks: 0, position: null }, b = B.get(k) || { clicks: 0, position: null }; return { query: k, a: a.clicks, b: b.clicks, change: a.clicks - b.clicks, abs_change: Math.abs(a.clicks - b.clicks), position_a: SX.round1(a.position), position_b: SX.round1(b.position) }; });
+    },
+  });
+
+  dash.calc('cmp_channels', {
+    title: 'Compare: visits by channel',
+    description: 'Google Analytics visits per channel in each period.',
+    inputs: ['a_channels', 'b_channels'],
+    fn: (aCh, bCh) => { const names = new Set([...aCh, ...bCh].map((r) => r.channel)); return [...names].map((channel) => { const a = (aCh.find((r) => r.channel === channel) || {}).sessions || 0, b = (bCh.find((r) => r.channel === channel) || {}).sessions || 0; return { channel, a, b, change_pct: SX.pct(a, b) }; }); },
+  });
+
+  dash.calc('cmp_ai_traffic', {
+    title: 'Compare: visits from AI assistants',
+    description: 'Google Analytics visits whose source is an AI assistant, per assistant, in each period.',
+    inputs: ['a_sources', 'b_sources'],
+    fn: (aS, bS) => {
+      const m = {};
+      for (const [rows, key] of [[aS, 'a'], [bS, 'b']]) for (const r of rows) { const n = SX.assistant(r.source_medium); if (!n) continue; const t = (m[n] ||= { assistant: n, a: 0, b: 0, key_events_a: 0 }); t[key] += r.sessions; if (key === 'a') t.key_events_a += r.key_events; }
+      return Object.values(m);
+    },
+  });
+
+  /* ---- AI ---- */
+  dash.calc('ai_summary', {
+    title: 'AI check: summary',
+    description: 'For the chosen check: answers that came back, answers naming County Group or linking to countygroup.in, and the most-named rival builder.',
+    inputs: ['ai_answers', 'ai_brands'],
+    fn: (answers, brands) => {
+      const ok = answers.filter((r) => r.answer_status === 'answered');
+      const rival = brands.filter((b) => b.own !== 'yes').sort((a, b) => b.named - a.named)[0] || {};
+      return [{ answered: ok.length, named: ok.filter((r) => r.named).length, cited: ok.filter((r) => r.cited).length, top_rival: rival.brand || '', top_rival_named: rival.named ?? null }];
+    },
+  });
+
+  dash.calc('ai_engine_view', {
+    title: 'AI check: by AI tool',
+    description: 'For the chosen check, per AI tool: answers, answers naming County Group, answers linking to our site, and questions with no answer.',
+    inputs: ['ai_answers'],
+    fn: (answers) => {
+      const name = { chatgpt: 'ChatGPT', gemini: 'Gemini', google_ai_overview: 'Google AI Overview', google_ai_mode: 'Google AI Mode', perplexity: 'Perplexity', claude: 'Claude' };
+      const m = {};
+      for (const r of answers) { const t = (m[r.engine] ||= { engine: name[r.engine] || r.engine, answered: 0, named: 0, cited: 0, no_answer: 0 }); if (r.answer_status === 'answered') { t.answered += 1; t.named += r.named; t.cited += r.cited; } else t.no_answer += 1; }
+      return Object.values(m);
+    },
+  });
+
+  dash.calc('ai_grid', {
+    title: 'AI check: question by question',
+    description: 'For the chosen check, each question with what each AI tool did about County Group (named, linked, not named, no answer) and the builders named.',
+    inputs: ['ai_answers'],
+    fn: (answers) => {
+      const m = {};
+      for (const r of answers) {
+        const t = (m[r.question] ||= { question: r.question, rivals: new Set() });
+        t[r.engine] = r.answer_status !== 'answered' ? 'no answer' : r.cited && r.named ? 'named + linked' : r.cited ? 'linked' : r.named ? 'named' : 'not named';
+        String(r.rivals || '').split(', ').filter(Boolean).forEach((x) => t.rivals.add(x));
+      }
+      return Object.values(m).map((t) => ({ question: t.question, chatgpt: t.chatgpt || '—', gemini: t.gemini || '—', google_ai_overview: t.google_ai_overview || '—', rivals: [...t.rivals].sort().join(', ') }));
+    },
+  });
+
+  dash.calc('ai_projects_count', {
+    title: 'AI answers naming our projects (1 Nov)',
+    description: 'From the reading of every 1 Nov answer: answers naming County Group or a County project, and how many of them in the written answer rather than a map listing.',
+    inputs: ['ai_project_mentions'],
+    fn: (rows) => [{ answers: rows.length, written: rows.filter((r) => String(r.how_shown).startsWith('in the written')).length }],
+  });
+</script>
+
+<script>
+  /* ---------- Drawings ---------- */
+  const SXd = window.SX;
+
+  dash.draw('v', (el) => {
+    const r = SXd.row(el);
+    el.textContent = SXd.fmt(r ? r[el.dataset.field] : null, el.dataset.fmt);
+  });
+
+  dash.draw('chg', (el) => {
+    const r = SXd.row(el);
+    const v = r ? r[el.dataset.field] : null;
+    el.textContent = v == null ? '—' : `${v > 0 ? '+' : v < 0 ? '−' : ''}${d3.format('.1f')(Math.abs(v))}${r.unit === '%' ? '%' : r.unit === 'pts' ? ' pts' : ''}`;
+  });
+
+  dash.draw('pill', (el) => {
+    const r = SXd.row(el);
+    const v = r ? r[el.dataset.field] : null;
+    el.classList.remove('is-good', 'is-bad');
+    if (v == null || !Number.isFinite(Number(v))) { el.textContent = '—'; return; }
+    el.textContent = `${v > 0 ? '+' : v < 0 ? '−' : ''}${d3.format('.1f')(Math.abs(v))}${r.unit === '%' ? '%' : r.unit === 'pts' ? ' pts' : ''}`;
+    if (v !== 0) el.classList.add((r.good === 'up' ? v > 0 : v < 0) ? 'is-good' : 'is-bad');
+  });
+
+  dash.draw('period', (el) => {
+    const p = dash.params(); const w = el.dataset.which;
+    el.textContent = p[`${w}_start`] && p[`${w}_end`] ? SXd.label(p[`${w}_start`], p[`${w}_end`]) : '—';
+  });
+
+  /** A table body from its table's source; data-filter "field!=" keeps rows where field is not empty. */
+  dash.draw('tbl', (tbody) => {
+    const table = tbody.closest('table');
+    tbody.replaceChildren();
+    if (!table) return;
+    const id = table.dataset.source;
+    if (SXd.failed(id)) { const tr = document.createElement('tr'); const td = document.createElement('td'); td.colSpan = 20; td.className = 'sx-fail'; td.textContent = 'This table didn’t load.'; tr.append(td); tbody.append(tr); return; }
+    let rows = SXd.rows(id);
+    if (!rows) return;
+    rows = rows.slice();
+    const f = table.dataset.filter;
+    if (f) { const m = /^(\w+)(!=|=)(.*)$/.exec(f); if (m) rows = rows.filter((r) => (m[2] === '!=' ? String(r[m[1]] ?? '') !== m[3] : String(r[m[1]] ?? '') === m[3])); }
+    const fs = table.dataset.filterSelect;
+    if (fs) { const [selId, field] = fs.split(':'); const sel = document.getElementById(selId); if (sel && sel.value) rows = rows.filter((r) => String(r[field]) === sel.value); }
+    const s = table.dataset.sort;
+    if (s) { const [k, dir] = s.split(':'); rows.sort((a, b) => { const x = a[k], y = b[k]; const nx = Number(x), ny = Number(y); const c = Number.isFinite(nx) && Number.isFinite(ny) && x !== '' && y !== '' ? nx - ny : String(x).localeCompare(String(y)); return dir === 'desc' ? -c : c; }); }
+    if (table.dataset.limit) rows = rows.slice(0, Number(table.dataset.limit));
+    const keys = (table.dataset.rowKey || '').split(',');
+    const heads = Array.from(table.querySelectorAll('thead th'));
+    if (!rows.length) { const tr = document.createElement('tr'); const td = document.createElement('td'); td.colSpan = heads.length; td.className = 'sx-muted'; td.textContent = 'Nothing here for this period.'; tr.append(td); tbody.append(tr); return; }
+    for (const r of rows) {
+      const tr = document.createElement('tr');
+      tr.dataset.key = keys.map((k) => encodeURIComponent(String(r[k]))).join(',');
+      for (const th of heads) {
+        const td = document.createElement('td');
+        const v = r[th.dataset.field];
+        if (th.classList.contains('is-text')) td.classList.add('is-text');
+        if (th.dataset.fmt === 'link') {
+          const url = String(r[th.dataset.link] || '');
+          if (/^https:\/\//.test(url)) { const a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener'; a.textContent = String(v ?? ''); td.append(a); } else td.textContent = String(v ?? '');
+        } else td.textContent = SXd.fmt(v, th.dataset.fmt);
+        if ((th.dataset.fmt === 'chg' || th.dataset.fmt === 'diff') && Number.isFinite(Number(v)) && Number(v) !== 0) td.classList.add(Number(v) > 0 ? 'is-good' : 'is-bad');
+        tr.append(td);
+      }
+      tbody.append(tr);
+    }
+  });
+
+  /** Horizontal bars: data-label and data-value name columns; data-extra adds a share or change; data-highlight="own" colours our row. */
+  dash.draw('hbars', (el) => {
+    el.replaceChildren();
+    const id = el.dataset.source;
+    if (SXd.failed(id)) return SXd.failNote(el);
+    const rows = SXd.rows(id);
+    if (!rows) return;
+    const L = el.dataset.label, V = el.dataset.value, X = el.dataset.extra;
+    const data = rows.filter((r) => Number(r[V]) > 0).sort((a, b) => b[V] - a[V]).slice(0, 15);
+    if (!data.length) { SXd.failNote(el, 'Nothing to show for this period.'); el.lastChild.className = 'sx-note'; return; }
+    const W = Math.max(280, el.clientWidth), rowH = 26, H = data.length * rowH + 4;
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', `${V} by ${L}`);
+    const labels = svg.append('g');
+    labels.selectAll('text').data(data).join('text').attr('x', 0).attr('y', (d, i) => i * rowH + 17).text((d) => d[L]);
+    let lw = 0; labels.selectAll('text').each(function () { lw = Math.max(lw, this.getComputedTextLength()); });
+    lw = Math.min(lw + 10, W * 0.45);
+    const valW = 96;
+    const x = d3.scaleLinear().domain([0, d3.max(data, (d) => d[V])]).range([0, Math.max(10, W - lw - valW)]);
+    svg.append('g').selectAll('rect').data(data).join('rect').attr('x', lw).attr('y', (d, i) => i * rowH + 6).attr('height', 14).attr('rx', 3)
+      .attr('width', (d) => Math.max(1, x(d[V])))
+      .style('fill', (d) => (el.dataset.highlight === 'own' ? (d.own === 'yes' ? 'var(--color-bad)' : 'var(--cds-chart-muted)') : dash.colors[0]));
+    svg.append('g').selectAll('text').data(data).join('text').attr('x', (d) => lw + x(d[V]) + 6).attr('y', (d, i) => i * rowH + 17)
+      .text((d) => `${d3.format(',')(d[V])}${X && d[X] != null ? (X.endsWith('pct') && X.startsWith('share') ? ` · ${d3.format('.1f')(d[X])}%` : ` · ${d[X] > 0 ? '+' : d[X] < 0 ? '−' : ''}${d3.format('.0f')(Math.abs(d[X]))}%`) : ''}`);
+  });
+
+  /** Paired bars (period A against period B) per label. */
+  dash.draw('pairbars', (el) => {
+    el.replaceChildren();
+    const id = el.dataset.source;
+    if (SXd.failed(id)) return SXd.failNote(el);
+    const rows = SXd.rows(id);
+    if (!rows) return;
+    const L = el.dataset.label;
+    const data = rows.filter((r) => r.a > 0 || r.b > 0).slice(0, 15);
+    if (!data.length) return;
+    const W = Math.max(280, el.clientWidth), rowH = 34, H = data.length * rowH + 4;
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Clicks per project in period A and period B');
+    const labels = svg.append('g');
+    labels.selectAll('text').data(data).join('text').attr('x', 0).attr('y', (d, i) => i * rowH + 20).text((d) => d[L]);
+    let lw = 0; labels.selectAll('text').each(function () { lw = Math.max(lw, this.getComputedTextLength()); });
+    lw = Math.min(lw + 10, W * 0.4);
+    const x = d3.scaleLinear().domain([0, d3.max(data, (d) => Math.max(d.a, d.b))]).range([0, Math.max(10, W - lw - 110)]);
+    const g = svg.append('g');
+    g.selectAll('rect.a').data(data).join('rect').attr('class', 'a').attr('x', lw).attr('y', (d, i) => i * rowH + 6).attr('height', 11).attr('rx', 2).attr('width', (d) => Math.max(1, x(d.a))).style('fill', 'var(--sx-a)');
+    g.selectAll('rect.b').data(data).join('rect').attr('class', 'b').attr('x', lw).attr('y', (d, i) => i * rowH + 19).attr('height', 11).attr('rx', 2).attr('width', (d) => Math.max(1, x(d.b))).style('fill', 'var(--cds-chart-muted)');
+    g.selectAll('text.v').data(data).join('text').attr('class', 'v').attr('x', (d) => lw + Math.max(x(d.a), x(d.b)) + 6).attr('y', (d, i) => i * rowH + 21)
+      .text((d) => `${d3.format(',')(d.a)} vs ${d3.format(',')(d.b)}`);
+  });
+
+  /** Two periods of daily clicks laid over each other, day 1 to day N. */
+  dash.draw('overlay', (el) => {
+    el.replaceChildren();
+    if (SXd.failed('live_daily')) return SXd.failNote(el);
+    const rows = SXd.rows('live_daily');
+    if (!rows) return;
+    const p = dash.params();
+    const cur = rows.filter((r) => r.date >= p.l_start && r.date <= p.l_end).sort((a, b) => (a.date < b.date ? -1 : 1));
+    const prev = rows.filter((r) => r.date >= p.p_start && r.date <= p.p_end).sort((a, b) => (a.date < b.date ? -1 : 1));
+    const n = Math.max(cur.length, prev.length);
+    if (!n) return;
+    const W = Math.max(280, el.clientWidth), H = 240, m = { t: 12, r: 12, b: 26, l: 44 };
+    const x = d3.scaleLinear().domain([1, n]).range([m.l, W - m.r]);
+    const y = d3.scaleLinear().domain([0, d3.max([...cur, ...prev], (r) => r.clicks) * 1.1 || 1]).nice().range([H - m.b, m.t]);
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Daily clicks from Google, last 28 days against the 28 days before');
+    svg.append('g').attr('transform', `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(4).tickSize(-(W - m.l - m.r)).tickFormat(d3.format(','))).call((g) => g.selectAll('line').attr('stroke', 'var(--cds-chart-grid)'));
+    svg.append('g').attr('transform', `translate(0,${H - m.b})`).call(d3.axisBottom(x).ticks(Math.min(7, n)).tickFormat((d) => `day ${d}`).tickSizeOuter(0)).call((g) => g.selectAll('line').attr('stroke', 'var(--cds-chart-axis)'));
+    const line = d3.line().x((d, i) => x(i + 1)).y((d) => y(d.clicks));
+    svg.append('path').datum(prev).attr('fill', 'none').attr('stroke-width', 2).style('stroke', 'var(--cds-chart-muted)').attr('d', line);
+    svg.append('path').datum(cur).attr('fill', 'none').attr('stroke-width', 2.2).style('stroke', 'var(--sx-a)').attr('d', line);
+    const dot = svg.append('circle').attr('r', 4).style('fill', 'var(--sx-a)').attr('opacity', 0);
+    const tip = document.createElement('div'); tip.className = 'sx-tip'; tip.hidden = true; el.append(tip);
+    const fmt = d3.utcFormat('%a %-d %b');
+    svg.append('rect').attr('x', m.l).attr('y', m.t).attr('width', W - m.l - m.r).attr('height', H - m.t - m.b).attr('fill', 'transparent')
+      .on('pointermove', (ev) => {
+        const [px] = d3.pointer(ev);
+        const i = Math.max(1, Math.min(n, Math.round(x.invert(px)))) - 1;
+        const c = cur[i], b = prev[i];
+        if (c) dot.attr('cx', x(i + 1)).attr('cy', y(c.clicks)).attr('opacity', 1);
+        tip.replaceChildren();
+        const l1 = document.createElement('div'); l1.textContent = c ? `${fmt(new Date(`${c.date}T00:00:00Z`))}: ${d3.format(',')(c.clicks)} clicks` : '—';
+        const l2 = document.createElement('div'); l2.className = 'sx-muted'; l2.textContent = b ? `${fmt(new Date(`${b.date}T00:00:00Z`))}: ${d3.format(',')(b.clicks)} clicks` : '';
+        tip.append(l1, l2); tip.hidden = false;
+        const sc = el.clientWidth / W;
+        tip.style.left = `${Math.min(Math.max(0, x(i + 1) * sc - 80), el.clientWidth - 190)}px`; tip.style.top = '4px';
+      })
+      .on('pointerleave', () => { dot.attr('opacity', 0); tip.hidden = true; });
+  });
+
+  /** Page opportunity map: x = times shown (log), y = click rate, size = clicks. */
+  dash.draw('scatter', (el) => {
+    el.replaceChildren();
+    if (SXd.failed('live_page_view')) return SXd.failNote(el);
+    const rows = SXd.rows('live_page_view');
+    if (!rows) return;
+    const data = rows.filter((r) => r.impressions >= 50);
+    if (!data.length) return;
+    const W = Math.max(280, el.clientWidth), H = 320, m = { t: 12, r: 16, b: 34, l: 44 };
+    const x = d3.scaleLog().domain([50, d3.max(data, (d) => d.impressions) * 1.2]).range([m.l, W - m.r]);
+    const y = d3.scaleLinear().domain([0, Math.min(100, (d3.max(data, (d) => d.ctr_pct) || 1) * 1.1)]).nice().range([H - m.b, m.t]);
+    const r = d3.scaleSqrt().domain([0, d3.max(data, (d) => d.clicks) || 1]).range([2.5, 18]);
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Pages by times shown on Google and click rate; larger dots have more clicks');
+    svg.append('g').attr('transform', `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5).tickSize(-(W - m.l - m.r)).tickFormat((d) => `${d}%`)).call((g) => g.selectAll('line').attr('stroke', 'var(--cds-chart-grid)'));
+    svg.append('g').attr('transform', `translate(0,${H - m.b})`).call(d3.axisBottom(x).ticks(W < 500 ? 3 : 6, '~s').tickSizeOuter(0)).call((g) => g.selectAll('line').attr('stroke', 'var(--cds-chart-axis)'));
+    svg.append('text').attr('x', W - m.r).attr('y', H - 4).attr('text-anchor', 'end').text('times shown on Google →');
+    svg.append('text').attr('x', m.l + 4).attr('y', m.t + 10).text('click rate ↑');
+    const tip = document.createElement('div'); tip.className = 'sx-tip'; tip.hidden = true; el.append(tip);
+    svg.append('g').selectAll('circle').data(data.sort((a, b) => b.clicks - a.clicks)).join('circle')
+      .attr('cx', (d) => x(d.impressions)).attr('cy', (d) => y(d.ctr_pct || 0)).attr('r', (d) => r(d.clicks))
+      .style('fill', (d) => (d.issue ? 'var(--color-warn)' : 'var(--cds-chart-muted)')).style('fill-opacity', 0.75).style('stroke', 'var(--color-panel)').attr('stroke-width', 1)
+      .on('pointerenter', (ev, d) => {
+        tip.replaceChildren();
+        const a = document.createElement('b'); a.textContent = d.path;
+        const b = document.createElement('div'); b.textContent = `${d3.format(',')(d.impressions)} times shown · ${d3.format(',')(d.clicks)} clicks · ${SXd.fmt(d.ctr_pct, 'pct')} · position ${SXd.fmt(d.position, 'pos')}`;
+        tip.append(a, b);
+        if (d.issue) { const c = document.createElement('div'); c.textContent = d.issue; c.style.color = 'var(--color-warn)'; tip.append(c); }
+        tip.hidden = false;
+        const sc = el.clientWidth / W;
+        tip.style.left = `${Math.min(Math.max(0, x(d.impressions) * sc + 10), el.clientWidth - 280)}px`;
+        tip.style.top = `${Math.max(0, y(d.ctr_pct || 0) * sc - 20)}px`;
+      })
+      .on('pointerleave', () => { tip.hidden = true; });
+  });
+
+  /** Month columns with period A and B coloured. */
+  dash.draw('months', (el) => {
+    el.replaceChildren();
+    if (SXd.failed('trend_daily')) return SXd.failNote(el);
+    const rows = SXd.rows('trend_months');
+    if (!rows || !rows.length) return;
+    const W = Math.max(280, el.clientWidth), H = 240, m = { t: 12, r: 8, b: 26, l: 44 };
+    const x = d3.scaleBand().domain(rows.map((d) => d.month)).range([m.l, W - m.r]).padding(0.25);
+    const y = d3.scaleLinear().domain([0, d3.max(rows, (d) => d.clicks) * 1.1]).nice().range([H - m.b, m.t]);
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Search Console clicks per month for 16 months, with periods A and B coloured');
+    svg.append('g').attr('transform', `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(4).tickSize(-(W - m.l - m.r)).tickFormat(d3.format(','))).call((g) => g.selectAll('line').attr('stroke', 'var(--cds-chart-grid)'));
+    const step = W < 520 ? 3 : W < 800 ? 2 : 1;
+    svg.append('g').selectAll('text').data(rows.filter((d, i) => i % step === 0)).join('text').attr('x', (d) => x(d.month) + x.bandwidth() / 2).attr('y', H - 8).attr('text-anchor', 'middle').text((d) => d3.utcFormat('%b %y')(new Date(`${d.month}-01T00:00:00Z`)));
+    const tip = document.createElement('div'); tip.className = 'sx-tip'; tip.hidden = true; el.append(tip);
+    svg.append('g').selectAll('rect').data(rows).join('rect')
+      .attr('x', (d) => x(d.month)).attr('width', x.bandwidth()).attr('y', (d) => y(d.clicks)).attr('height', (d) => y(0) - y(d.clicks)).attr('rx', 3)
+      .style('fill', (d) => (d.in_a === 'yes' ? 'var(--sx-a)' : d.in_b === 'yes' ? 'var(--color-fg-muted)' : 'var(--cds-chart-muted)'))
+      .style('fill-opacity', (d) => (d.partial === 'yes' ? 0.45 : 1))
+      .on('pointerenter', (ev, d) => {
+        tip.replaceChildren();
+        const a = document.createElement('b'); a.textContent = d.label + (d.partial === 'yes' ? ' (so far)' : '');
+        const b = document.createElement('div'); b.textContent = `${d3.format(',')(d.clicks)} clicks · ${d3.format(',')(d.impressions)} times shown`;
+        tip.append(a, b); tip.hidden = false;
+        const sc = el.clientWidth / W;
+        tip.style.left = `${Math.min(Math.max(0, (x(d.month) + x.bandwidth()) * sc + 4), el.clientWidth - 220)}px`; tip.style.top = '4px';
+      })
+      .on('pointerleave', () => { tip.hidden = true; });
+  });
+
+  /** ROI's reported organic visits against Search Console clicks, per month. */
+  dash.draw('roiline', (el) => {
+    el.replaceChildren();
+    if (SXd.failed('roi_year')) return SXd.failNote(el);
+    const rows = SXd.rows('roi_year');
+    if (!rows) return;
+    const data = rows.map((r) => ({ month: r.month, label: r.label, roi: SXd.num(r.roi_organic_visits), google: SXd.num(r.google_clicks) })).sort((a, b) => (a.month < b.month ? -1 : 1));
+    const W = Math.max(280, el.clientWidth), H = 240, m = { t: 12, r: 12, b: 26, l: 44 };
+    const x = d3.scalePoint().domain(data.map((d) => d.month)).range([m.l + 6, W - m.r - 6]);
+    const y = d3.scaleLinear().domain([0, d3.max(data, (d) => Math.max(d.roi || 0, d.google || 0)) * 1.1]).nice().range([H - m.b, m.t]);
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Organic visits reported by ROI against Search Console clicks, per month');
+    svg.append('g').attr('transform', `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(4).tickSize(-(W - m.l - m.r)).tickFormat(d3.format(','))).call((g) => g.selectAll('line').attr('stroke', 'var(--cds-chart-grid)'));
+    const step = W < 520 ? 3 : 2;
+    svg.append('g').selectAll('text').data(data.filter((d, i) => i % step === 0)).join('text').attr('x', (d) => x(d.month)).attr('y', H - 8).attr('text-anchor', 'middle').text((d) => d3.utcFormat('%b %y')(new Date(`${d.month}-01T00:00:00Z`)));
+    const mk = (key, color) => { const pts = data.filter((d) => d[key] != null); svg.append('path').datum(pts).attr('fill', 'none').attr('stroke-width', 2).style('stroke', color).attr('d', d3.line().x((d) => x(d.month)).y((d) => y(d[key]))); svg.append('g').selectAll('circle').data(pts).join('circle').attr('cx', (d) => x(d.month)).attr('cy', (d) => y(d[key])).attr('r', 3).style('fill', color); };
+    mk('google', 'var(--cds-chart-muted)'); mk('roi', 'var(--sx-a)');
+    const tip = document.createElement('div'); tip.className = 'sx-tip'; tip.hidden = true; el.append(tip);
+    svg.append('g').selectAll('rect').data(data).join('rect').attr('x', (d) => x(d.month) - (x.step() / 2)).attr('width', x.step()).attr('y', m.t).attr('height', H - m.t - m.b).attr('fill', 'transparent')
+      .on('pointerenter', (ev, d) => {
+        tip.replaceChildren();
+        const a = document.createElement('b'); a.textContent = d.label;
+        const b = document.createElement('div'); b.textContent = `ROI’s organic visits: ${SXd.fmt(d.roi)}`;
+        const c = document.createElement('div'); c.textContent = `Search Console clicks: ${SXd.fmt(d.google)}`;
+        tip.append(a, b, c); tip.hidden = false;
+        const sc = el.clientWidth / W;
+        tip.style.left = `${Math.min(Math.max(0, x(d.month) * sc + 8), el.clientWidth - 220)}px`; tip.style.top = '4px';
+      })
+      .on('pointerleave', () => { tip.hidden = true; });
+  });
+
+  /** Month pickers for period A and B: the last 16 months. */
+  dash.draw('monthpick', (sel) => {
+    const which = sel.dataset.which;
+    const now = SXd.iso(new Date());
+    const months = [];
+    for (let i = 0; i < 16; i++) months.push(SXd.addMonths(SXd.monthStart(now), -i));
+    const p = dash.params();
+    const cur = p[`${which}_start`] === SXd.monthStart(p[`${which}_start`] || '') && p[`${which}_end`] === SXd.monthEnd(p[`${which}_start`] || '2000-01-01') ? p[`${which}_start`] : '';
+    sel.replaceChildren(new Option(cur ? '' : 'Custom dates', ''), ...months.map((m) => new Option(d3.utcFormat('%B %Y')(new Date(`${m}T00:00:00Z`)), m)));
+    if (cur) sel.options[0].textContent = 'Pick a month';
+    sel.value = cur;
+    sel.onchange = () => { if (sel.value) dash.setParams({ [`${which}_start`]: sel.value, [`${which}_end`]: SXd.monthEnd(sel.value) }); };
+  });
+
+  /** AI check picker, newest first. */
+  dash.draw('runpick', (sel) => {
+    const rows = SXd.rows('ai_trend') || [];
+    const p = dash.params();
+    const opts = rows.slice().sort((a, b) => (a.date < b.date ? 1 : -1)).map((r) => new Option(`${d3.utcFormat('%-d %b %Y')(new Date(`${r.date}T00:00:00Z`))} · ${r.answered} answers`, r.run_id));
+    if (!opts.some((o) => o.value === p.ai_run)) opts.unshift(new Option('1 Nov 2026', p.ai_run));
+    sel.replaceChildren(...opts);
+    sel.value = p.ai_run;
+    sel.onchange = () => dash.setParams({ ai_run: sel.value });
+  });
+</script>
+
+<script>
+  /* ---------- Controls: tabs, quick picks, typed dates, report filter ---------- */
+  (function () {
+    document.querySelectorAll('.sx').forEach((root) => { root.style.setProperty('--sx-a', dash.colors[0]); });
+    const tabs = ['live', 'compare', 'ai', 'reports', 'guide'];
+    const show = (name) => {
+      if (!tabs.includes(name)) name = 'live';
+      document.querySelectorAll('.sx-sec[role=tabpanel]').forEach((s) => { s.hidden = s.id !== name; });
+      document.querySelectorAll('.sx-tab').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
+      dash.setLink(name);
+    };
+    document.addEventListener('click', (e) => {
+      const t = e.target.closest && e.target.closest('.sx-tab');
+      if (t) { show(t.dataset.tab); return; }
+      const c = e.target.closest && e.target.closest('[data-preset]');
+      if (c && window.SXpresets[c.dataset.preset]) dash.setParams(window.SXpresets[c.dataset.preset]());
+    });
+    show((location.hash || '').replace('#', '') || 'live');
+    window.addEventListener('hashchange', () => show((location.hash || '').replace('#', '')));
+
+    document.querySelectorAll('input[data-param]').forEach((inp) => {
+      inp.addEventListener('change', () => { if (inp.value && inp.validity.valid) dash.setParams({ [inp.dataset.param]: inp.value }); });
+      inp.addEventListener('blur', () => { inp.value = dash.params()[inp.dataset.param] || ''; });
+    });
+    dash.onData(() => {
+      const p = dash.params();
+      document.querySelectorAll('input[data-param]').forEach((inp) => { if (document.activeElement !== inp) inp.value = p[inp.dataset.param] || ''; });
+    });
+    const lib = document.getElementById('lib-filter');
+    if (lib) lib.addEventListener('change', () => dash.draw('tbl'));
+  })();
+</script>
