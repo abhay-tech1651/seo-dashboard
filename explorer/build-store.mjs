@@ -65,6 +65,8 @@ const datasets = {
   b_channels: ga('get_google_analytics_traffic_acquisition', 'Period B: visits by channel', 'Google Analytics visits and enquiry events by channel in period B.', 'b_start', 'b_end', { breakdown: 'channel_group', limit: 50 }),
   a_sources: ga('get_google_analytics_traffic_acquisition', 'Period A: visits by source', 'Google Analytics visits by source and medium in period A.', 'a_start', 'a_end', { breakdown: 'source_medium', limit: 300 }),
   b_sources: ga('get_google_analytics_traffic_acquisition', 'Period B: visits by source', 'Google Analytics visits by source and medium in period B.', 'b_start', 'b_end', { breakdown: 'source_medium', limit: 300 }),
+  a_landing: ga('get_google_analytics_organic_landing_pages', 'Period A: organic landing pages', 'Google Analytics visits and enquiry events for pages where organic search visits start, period A.', 'a_start', 'a_end', { limit: 500 }),
+  b_landing: ga('get_google_analytics_organic_landing_pages', 'Period B: organic landing pages', 'Google Analytics visits and enquiry events for pages where organic search visits start, period B.', 'b_start', 'b_end', { limit: 500 }),
   trend_daily: {
     title: 'Google clicks by day, 16 months',
     description: 'Search Console clicks, impressions and position per day for the last 16 months, the longest Google keeps.',

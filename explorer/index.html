@@ -66,6 +66,35 @@
   .sx-dl dd { margin: 0; color: var(--color-fg-muted); }
   .sx details summary { cursor: pointer; font-weight: var(--cds-font-weight-medium); }
   .sx { --sx-a: var(--color-fg); --sx-b: var(--cds-chart-muted); }
+  .sx [hidden] { display: none !important; }
+  .sx-chip[aria-pressed=true] { color: var(--color-bg); background: var(--color-fg); border-color: var(--color-fg); }
+  .sx-bar { display: flex; flex-direction: column; gap: var(--cds-gap-md); }
+  .sx-barrow { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cds-gap-sm) var(--cds-gap-md); }
+  .sx-barlabel { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); min-width: 64px; }
+  .sx-bar .sx-period { margin: 0; }
+  .sx-period .is-b { color: var(--color-fg-muted); }
+  .sx-views { display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); }
+  .sx-view { all: unset; cursor: pointer; padding: 7px 14px; border-radius: var(--cds-radius); font-size: var(--cds-font-size-body); color: var(--color-fg-muted); }
+  .sx-view:hover { color: var(--color-fg); }
+  .sx-view[aria-selected=true] { background: var(--color-fg); color: var(--color-bg); }
+  .sx-view:focus-visible, .sx-sortbtn:focus-visible, .sx-linkbtn:focus-visible, .sx-more:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 2px; }
+  .sx-xpanel { display: flex; flex-direction: column; gap: var(--cds-gap-lg); }
+  .sx-xtools { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); margin-bottom: var(--cds-gap-md); }
+  .sx-search { font: inherit; font-size: var(--cds-font-size-body); color: var(--color-fg); background: var(--color-bg); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: 6px 10px; flex: 1 1 220px; max-width: 420px; min-width: 0; }
+  .sx-sum { font-size: var(--cds-font-size-body); margin: 0 0 var(--cds-gap-md); line-height: 1.55; }
+  .sx-sum b { font-weight: var(--cds-font-weight-medium); font-variant-numeric: tabular-nums; }
+  .sx-ch-title { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: 0 0 var(--cds-gap-xs); }
+  .sx-chart.is-auto { min-height: 0; margin-bottom: var(--cds-gap-md); }
+  .sx-xpanel .sx-table td:first-child { min-width: 180px; word-break: normal; overflow-wrap: anywhere; }
+  .sx-sortbtn { all: unset; cursor: pointer; }
+  .sx-sortbtn:hover { color: var(--color-fg); }
+  .sx-table th.is-ctx, .sx-table td.is-ctx { opacity: 0.85; }
+  .sx-linkbtn { all: unset; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+  .sx-more { all: unset; cursor: pointer; margin-top: var(--cds-gap-sm); font-size: var(--cds-font-size-caption); text-decoration: underline; text-underline-offset: 2px; }
+  .sx-insights { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: var(--cds-gap-sm); font-size: var(--cds-font-size-body); line-height: 1.55; max-width: 92ch; }
+  .sx-insights li::marker { color: var(--color-fg-muted); }
+  .sx-insights li.is-good::marker { color: var(--color-ok); }
+  .sx-insights li.is-bad::marker { color: var(--color-bad); }
   @media (max-width: 520px) { .sx-dl { grid-template-columns: 1fr; } }
 </style>
 
@@ -75,7 +104,7 @@
     <p class="sx-lede">Google sent <b data-draw="v" data-source="live_kpi" data-where="metric=clicks" data-field="now">—</b> clicks in the last 28 days, <b data-draw="chg" data-source="live_kpi" data-where="metric=clicks" data-field="change">—</b> against the 28 days before. <b data-draw="v" data-fmt="pct" data-source="live_segments" data-where="segment=Brand" data-field="share_pct">—</b> came from searches that name County or a project, <b data-draw="v" data-fmt="pct" data-source="live_segments" data-where="segment=Non-brand" data-field="share_pct">—</b> from searches that don’t, and Google hides the words of the other <b data-draw="v" data-fmt="pct" data-source="live_segments" data-where="segment=Hidden by Google" data-field="share_pct">—</b>.</p>
     <nav class="sx-tabs" role="tablist" aria-label="Views">
       <button type="button" class="sx-tab" role="tab" data-tab="live" aria-selected="true">Live</button>
-      <button type="button" class="sx-tab" role="tab" data-tab="compare" aria-selected="false">Compare periods</button>
+      <button type="button" class="sx-tab" role="tab" data-tab="compare" aria-selected="false">Explore &amp; compare</button>
       <button type="button" class="sx-tab" role="tab" data-tab="ai" aria-selected="false">AI search</button>
       <button type="button" class="sx-tab" role="tab" data-tab="reports" aria-selected="false">ROI reports</button>
       <button type="button" class="sx-tab" role="tab" data-tab="guide" aria-selected="false">How to read this</button>
@@ -186,46 +215,96 @@
     </div>
   </section>
 
-  <!-- ================= COMPARE ================= -->
+  <!-- ================= EXPLORE & COMPARE ================= -->
   <section id="compare" class="sx-sec" role="tabpanel" hidden>
-    <div class="sx-card" id="cmp-controls">
-      <h2 class="sx-h2">Pick two periods</h2>
-      <div class="sx-chips" role="group" aria-label="Quick picks">
-        <button type="button" class="sx-chip" data-preset="month">Last month vs month before</button>
-        <button type="button" class="sx-chip" data-preset="yoy">Last month vs same month last year</button>
-        <button type="button" class="sx-chip" data-preset="quarter">Last 3 months vs 3 before</button>
-        <button type="button" class="sx-chip" data-preset="year">Last 12 months vs 12 before</button>
+    <div class="sx-card sx-bar" id="x-bar">
+      <div class="sx-barrow">
+        <span class="sx-barlabel">Look at</span>
+        <div class="sx-chips" role="group" aria-label="Period to look at">
+          <button type="button" class="sx-chip" data-a="d7" aria-pressed="false">Last 7 days</button>
+          <button type="button" class="sx-chip" data-a="d28" aria-pressed="false">Last 28 days</button>
+          <button type="button" class="sx-chip" data-a="mtd" aria-pressed="false">This month so far</button>
+          <button type="button" class="sx-chip" data-a="m1" aria-pressed="false">Last month</button>
+          <button type="button" class="sx-chip" data-a="q3" aria-pressed="false">Last 3 months</button>
+          <button type="button" class="sx-chip" data-a="h6" aria-pressed="false">Last 6 months</button>
+          <button type="button" class="sx-chip" data-a="y12" aria-pressed="false">Last 12 months</button>
+          <button type="button" class="sx-chip" data-a="custom" aria-pressed="false">Pick dates…</button>
+        </div>
       </div>
-      <div class="sx-controls" style="margin-top: var(--cds-gap-md)">
-        <label class="sx-field">Period A, month<select class="dash-select" id="pick-a" data-draw="monthpick" data-which="a" aria-label="Period A month"></select></label>
-        <label class="sx-field">Period B, month<select class="dash-select" id="pick-b" data-draw="monthpick" data-which="b" aria-label="Period B month"></select></label>
-        <label class="sx-field">A from<input type="date" id="a-start" data-param="a_start" min="2025-01-01" max="2030-12-31"></label>
-        <label class="sx-field">A to<input type="date" id="a-end" data-param="a_end" min="2025-01-01" max="2030-12-31"></label>
-        <label class="sx-field">B from<input type="date" id="b-start" data-param="b_start" min="2025-01-01" max="2030-12-31"></label>
-        <label class="sx-field">B to<input type="date" id="b-end" data-param="b_end" min="2025-01-01" max="2030-12-31"></label>
+      <div class="sx-barrow">
+        <span class="sx-barlabel">Against</span>
+        <div class="sx-chips" role="group" aria-label="Period to compare with">
+          <button type="button" class="sx-chip" data-b="prev" aria-pressed="false">The period just before</button>
+          <button type="button" class="sx-chip" data-b="yoy" aria-pressed="false">Same time last year</button>
+          <button type="button" class="sx-chip" data-b="custom" aria-pressed="false">Pick dates…</button>
+        </div>
       </div>
-      <p class="sx-period">Comparing <span class="is-a" data-draw="period" data-which="a">—</span> (A) with <span class="is-b" data-draw="period" data-which="b">—</span> (B).</p>
-      <p class="sx-note">Search Console keeps 16 months, so periods before then come back empty.</p>
+      <div class="sx-controls" id="x-custom" hidden>
+        <label class="sx-field">A: a whole month<select class="dash-select" data-draw="monthpick" data-which="a" aria-label="Period A month"></select></label>
+        <label class="sx-field">or A from<input type="date" data-param="a_start" min="2025-01-01" max="2030-12-31"></label>
+        <label class="sx-field">A to<input type="date" data-param="a_end" min="2025-01-01" max="2030-12-31"></label>
+        <label class="sx-field">B: a whole month<select class="dash-select" data-draw="monthpick" data-which="b" aria-label="Period B month"></select></label>
+        <label class="sx-field">or B from<input type="date" data-param="b_start" min="2025-01-01" max="2030-12-31"></label>
+        <label class="sx-field">B to<input type="date" data-param="b_end" min="2025-01-01" max="2030-12-31"></label>
+      </div>
+      <p class="sx-period" data-draw="xperiod">—</p>
     </div>
 
-    <div class="sx-tiles" id="cmp-tiles">
-      <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Clicks from Google</span><span class="sx-pill" data-draw="pill" data-source="cmp_kpi" data-where="metric=clicks" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-source="cmp_kpi" data-where="metric=clicks" data-field="a">—</div><div class="sx-tile-sub">B: <span data-draw="v" data-source="cmp_kpi" data-where="metric=clicks" data-field="b">—</span> · per day A <span data-draw="v" data-source="cmp_kpi" data-where="metric=clicks" data-field="a_per_day">—</span>, B <span data-draw="v" data-source="cmp_kpi" data-where="metric=clicks" data-field="b_per_day">—</span></div></div>
-      <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Times shown</span><span class="sx-pill" data-draw="pill" data-source="cmp_kpi" data-where="metric=impressions" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-source="cmp_kpi" data-where="metric=impressions" data-field="a">—</div><div class="sx-tile-sub">B: <span data-draw="v" data-source="cmp_kpi" data-where="metric=impressions" data-field="b">—</span></div></div>
-      <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Click rate</span><span class="sx-pill" data-draw="pill" data-source="cmp_kpi" data-where="metric=ctr" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-fmt="pct" data-source="cmp_kpi" data-where="metric=ctr" data-field="a">—</div><div class="sx-tile-sub">B: <span data-draw="v" data-fmt="pct" data-source="cmp_kpi" data-where="metric=ctr" data-field="b">—</span></div></div>
-      <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Average position</span><span class="sx-pill" data-draw="pill" data-source="cmp_kpi" data-where="metric=position" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-fmt="pos" data-source="cmp_kpi" data-where="metric=position" data-field="a">—</div><div class="sx-tile-sub">B: <span data-draw="v" data-fmt="pos" data-source="cmp_kpi" data-where="metric=position" data-field="b">—</span></div></div>
-      <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Organic search visits</span><span class="sx-pill" data-draw="pill" data-source="cmp_kpi" data-where="metric=sessions" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-source="cmp_kpi" data-where="metric=sessions" data-field="a">—</div><div class="sx-tile-sub">B: <span data-draw="v" data-source="cmp_kpi" data-where="metric=sessions" data-field="b">—</span></div></div>
-      <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Enquiry events from search</span><span class="sx-pill" data-draw="pill" data-source="cmp_kpi" data-where="metric=key_events" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-source="cmp_kpi" data-where="metric=key_events" data-field="a">—</div><div class="sx-tile-sub">B: <span data-draw="v" data-source="cmp_kpi" data-where="metric=key_events" data-field="b">—</span></div></div>
-      <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Visits from AI assistants</span><span class="sx-pill" data-draw="pill" data-source="cmp_kpi" data-where="metric=ai_sessions" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-source="cmp_kpi" data-where="metric=ai_sessions" data-field="a">—</div><div class="sx-tile-sub">B: <span data-draw="v" data-source="cmp_kpi" data-where="metric=ai_sessions" data-field="b">—</span></div></div>
+    <nav class="sx-views" role="tablist" aria-label="What to explore">
+      <button type="button" class="sx-view" role="tab" data-view="overview" aria-selected="true">Overview</button>
+      <button type="button" class="sx-view" role="tab" data-view="pages" aria-selected="false">Pages</button>
+      <button type="button" class="sx-view" role="tab" data-view="searches" aria-selected="false">Searches</button>
+      <button type="button" class="sx-view" role="tab" data-view="projects" aria-selected="false">Projects</button>
+      <button type="button" class="sx-view" role="tab" data-view="kinds" aria-selected="false">Kinds of page</button>
+      <button type="button" class="sx-view" role="tab" data-view="channels" aria-selected="false">Channels</button>
+      <button type="button" class="sx-view" role="tab" data-view="sources" aria-selected="false">Sources</button>
+      <button type="button" class="sx-view" role="tab" data-view="ai" aria-selected="false">AI assistants</button>
+    </nav>
+
+    <div class="sx-barrow" id="x-measures">
+      <span class="sx-barlabel">Measure</span>
+      <div class="sx-chips" role="group" aria-label="Measure">
+        <button type="button" class="sx-chip" data-measure="clicks" aria-pressed="true">Clicks</button>
+        <button type="button" class="sx-chip" data-measure="impressions" aria-pressed="false">Times shown</button>
+        <button type="button" class="sx-chip" data-measure="ctr" aria-pressed="false">Click rate</button>
+        <button type="button" class="sx-chip" data-measure="position" aria-pressed="false">Position</button>
+        <button type="button" class="sx-chip" data-measure="visits" aria-pressed="false">Visits</button>
+        <button type="button" class="sx-chip" data-measure="enquiries" aria-pressed="false">Enquiry events</button>
+        <button type="button" class="sx-chip" data-measure="engaged" aria-pressed="false">Engaged visits</button>
+      </div>
     </div>
 
-    <div class="sx-card" id="cmp-year">
-      <h2 class="sx-h2">Every month Google keeps</h2>
-      <p class="sx-sub">Search Console clicks per month. The months inside period A and period B are coloured. A month still running is drawn lighter.</p>
-      <div class="sx-legend"><span><i class="sx-key is-a"></i>Period A</span><span><i class="sx-key is-b" style="background: var(--color-fg-muted)"></i>Period B</span><span><i class="sx-key is-muted"></i>Other months</span></div>
-      <div class="sx-chart" data-draw="months" data-source="trend_months"></div>
-    </div>
+    <!-- Overview -->
+    <div class="sx-xpanel" data-panel="overview" data-measures="clicks,impressions,ctr,position">
+      <div class="sx-tiles" id="cmp-tiles">
+        <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Clicks from Google</span><span class="sx-pill" data-draw="pill" data-source="cmp_kpi" data-where="metric=clicks" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-source="cmp_kpi" data-where="metric=clicks" data-field="a">—</div><div class="sx-tile-sub">B: <span data-draw="v" data-source="cmp_kpi" data-where="metric=clicks" data-field="b">—</span> · a day: <span data-draw="v" data-source="cmp_kpi" data-where="metric=clicks" data-field="a_per_day">—</span> against <span data-draw="v" data-source="cmp_kpi" data-where="metric=clicks" data-field="b_per_day">—</span></div></div>
+        <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Times shown</span><span class="sx-pill" data-draw="pill" data-source="cmp_kpi" data-where="metric=impressions" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-source="cmp_kpi" data-where="metric=impressions" data-field="a">—</div><div class="sx-tile-sub">B: <span data-draw="v" data-source="cmp_kpi" data-where="metric=impressions" data-field="b">—</span></div></div>
+        <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Click rate</span><span class="sx-pill" data-draw="pill" data-source="cmp_kpi" data-where="metric=ctr" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-fmt="pct" data-source="cmp_kpi" data-where="metric=ctr" data-field="a">—</div><div class="sx-tile-sub">B: <span data-draw="v" data-fmt="pct" data-source="cmp_kpi" data-where="metric=ctr" data-field="b">—</span></div></div>
+        <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Average position</span><span class="sx-pill" data-draw="pill" data-source="cmp_kpi" data-where="metric=position" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-fmt="pos" data-source="cmp_kpi" data-where="metric=position" data-field="a">—</div><div class="sx-tile-sub">B: <span data-draw="v" data-fmt="pos" data-source="cmp_kpi" data-where="metric=position" data-field="b">—</span> · lower is better</div></div>
+        <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Organic search visits</span><span class="sx-pill" data-draw="pill" data-source="cmp_kpi" data-where="metric=sessions" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-source="cmp_kpi" data-where="metric=sessions" data-field="a">—</div><div class="sx-tile-sub">B: <span data-draw="v" data-source="cmp_kpi" data-where="metric=sessions" data-field="b">—</span> · Analytics</div></div>
+        <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Enquiry events from search</span><span class="sx-pill" data-draw="pill" data-source="cmp_kpi" data-where="metric=key_events" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-source="cmp_kpi" data-where="metric=key_events" data-field="a">—</div><div class="sx-tile-sub">B: <span data-draw="v" data-source="cmp_kpi" data-where="metric=key_events" data-field="b">—</span> · Analytics</div></div>
+        <div class="sx-card"><div class="sx-tile-top"><span class="sx-tile-label">Visits from AI assistants</span><span class="sx-pill" data-draw="pill" data-source="cmp_kpi" data-where="metric=ai_sessions" data-field="change">—</span></div><div class="sx-big" data-draw="v" data-source="cmp_kpi" data-where="metric=ai_sessions" data-field="a">—</div><div class="sx-tile-sub">B: <span data-draw="v" data-source="cmp_kpi" data-where="metric=ai_sessions" data-field="b">—</span> · ChatGPT and others</div></div>
+      </div>
 
-    <div class="sx-two">
+      <div class="sx-card" id="x-insights">
+        <h2 class="sx-h2">What changed</h2>
+        <p class="sx-sub">Worked out from the numbers on this tab for the two periods above. Green is good news, red needs a look.</p>
+        <ul class="sx-insights" data-draw="xinsights" data-source="x_insights"></ul>
+      </div>
+
+      <div class="sx-card" id="x-daily">
+        <h2 class="sx-h2">Day by day, A laid over B</h2>
+        <p class="sx-sub">Day 1 of A sits above day 1 of B, so you can see when the gap opened. Periods longer than three months are drawn by week. The measure buttons above change this chart.</p>
+        <div class="sx-legend"><span><i class="sx-key is-a"></i>A</span><span><i class="sx-key is-muted"></i>B</span></div>
+        <div class="sx-chart" data-draw="xdaily" data-source="x_daily"></div>
+      </div>
+
+      <div class="sx-card" id="x-months">
+        <h2 class="sx-h2">Every month Google keeps</h2>
+        <p class="sx-sub">Click a month to look at it. Months inside A are in colour, inside B dark grey; a month still running is drawn lighter.</p>
+        <div class="sx-chart" data-draw="xmonths" data-source="trend_months"></div>
+      </div>
+
       <div class="sx-card" id="cmp-segments">
         <h2 class="sx-h2">Who the clicks came from</h2>
         <p class="sx-sub">“Brand” searches name County or a project, “non-brand” searches don’t (new buyers), and Google hides the words of rare searches for privacy.</p>
@@ -233,60 +312,72 @@
           <thead><tr><th data-field="segment">Searches</th><th data-field="a">A</th><th data-field="b">B</th><th data-field="change_pct" data-fmt="chg">Change</th><th data-field="share_a_pct" data-fmt="pct">Share in A</th></tr></thead>
           <tbody data-draw="tbl"></tbody></table></div>
       </div>
-      <div class="sx-card" id="cmp-kinds">
-        <h2 class="sx-h2">Clicks by kind of page</h2>
-        <p class="sx-sub">Which part of the website gained or lost.</p>
-        <div class="sx-tablewrap"><table class="sx-table" data-source="cmp_kinds" data-row-key="kind" data-sort="a:desc">
-          <thead><tr><th data-field="kind">Kind of page</th><th data-field="a">A</th><th data-field="b">B</th><th data-field="change_pct" data-fmt="chg">Change</th></tr></thead>
-          <tbody data-draw="tbl"></tbody></table></div>
+    </div>
+
+    <!-- Pages -->
+    <div class="sx-xpanel" data-panel="pages" data-measures="clicks,impressions,ctr,position,visits,enquiries" hidden>
+      <div class="sx-card">
+        <h2 class="sx-h2">Every page, A against B</h2>
+        <p class="sx-sub">Search Console per page, with visits and enquiry events from Google Analytics where an organic visit started on that page. Type to filter, pick a kind of page or a project, click a column to sort, click a page to open it.</p>
+        <div class="sx-xtools"><input type="search" class="sx-search" data-x="q" placeholder="Filter pages, e.g. ivory, plans, /blog" aria-label="Filter pages"><select class="dash-select" data-x="tag" data-draw="xtags" data-source="x_pages" data-all="All pages" aria-label="Kind of page or project"></select></div>
+        <div data-draw="xview" data-source="x_pages" data-noun="pages" data-name-label="Page" data-tag="kind" data-tag-label="Kind"></div>
       </div>
     </div>
 
-    <div class="sx-card" id="cmp-projects">
-      <h2 class="sx-h2">Clicks by project</h2>
-      <div class="sx-legend"><span><i class="sx-key is-a"></i>Period A</span><span><i class="sx-key is-muted"></i>Period B</span></div>
-      <div class="sx-chart is-short" data-draw="pairbars" data-source="cmp_projects" data-label="project"></div>
-    </div>
-
-    <div class="sx-card" id="cmp-pages">
-      <h2 class="sx-h2">Pages that moved most</h2>
-      <div class="sx-two">
-        <div>
-          <h3 class="sx-h3">Lost the most (A against B)</h3>
-          <div class="sx-tablewrap"><table class="sx-table" data-source="cmp_page_view" data-row-key="path" data-sort="change:asc" data-limit="10">
-            <thead><tr><th data-field="path">Page</th><th data-field="b">B</th><th data-field="a">A</th><th data-field="change" data-fmt="diff">Change</th><th data-field="position_a" data-fmt="pos">Position A</th></tr></thead>
-            <tbody data-draw="tbl"></tbody></table></div>
-        </div>
-        <div>
-          <h3 class="sx-h3">Gained the most</h3>
-          <div class="sx-tablewrap"><table class="sx-table" data-source="cmp_page_view" data-row-key="path" data-sort="change:desc" data-limit="10">
-            <thead><tr><th data-field="path">Page</th><th data-field="b">B</th><th data-field="a">A</th><th data-field="change" data-fmt="diff">Change</th><th data-field="position_a" data-fmt="pos">Position A</th></tr></thead>
-            <tbody data-draw="tbl"></tbody></table></div>
-        </div>
+    <!-- Searches -->
+    <div class="sx-xpanel" data-panel="searches" data-measures="clicks,impressions,ctr,position" hidden>
+      <div class="sx-card">
+        <h2 class="sx-h2">Every search, A against B</h2>
+        <p class="sx-sub">The 1,000 searches that brought the most clicks in each period. “Brand” names County or a project; “New buyer” doesn’t. Rare searches Google hides are not here.</p>
+        <div class="sx-xtools"><input type="search" class="sx-search" data-x="q" placeholder="Filter searches, e.g. noida, 3 bhk, ivory" aria-label="Filter searches"><select class="dash-select" data-x="tag" data-draw="xtags" data-source="x_queries" data-all="All searches" aria-label="Brand or new buyer"></select></div>
+        <div data-draw="xview" data-source="x_queries" data-noun="searches" data-name-label="Search" data-tag="tag" data-tag-label="Type"></div>
       </div>
     </div>
 
-    <div class="sx-card" id="cmp-queries">
-      <h2 class="sx-h2">New-buyer searches that moved most</h2>
-      <p class="sx-sub">Searches without our name, change in clicks from B to A.</p>
-      <div class="sx-tablewrap"><table class="sx-table" data-source="cmp_query_view" data-row-key="query" data-sort="abs_change:desc" data-limit="15">
-        <thead><tr><th data-field="query">Search</th><th data-field="b">Clicks B</th><th data-field="a">Clicks A</th><th data-field="change" data-fmt="diff">Change</th><th data-field="position_b" data-fmt="pos">Position B</th><th data-field="position_a" data-fmt="pos">Position A</th></tr></thead>
-        <tbody data-draw="tbl"></tbody></table></div>
+    <!-- Projects -->
+    <div class="sx-xpanel" data-panel="projects" data-measures="clicks,impressions,ctr,position,visits,enquiries" hidden>
+      <div class="sx-card">
+        <h2 class="sx-h2">Every project, A against B</h2>
+        <p class="sx-sub">All pages of a project together: main page, plans, location and campaign pages. Click a project to see its pages.</p>
+        <div class="sx-xtools"><input type="search" class="sx-search" data-x="q" placeholder="Filter projects" aria-label="Filter projects"></div>
+        <div data-draw="xview" data-source="x_projects" data-noun="projects" data-name-label="Project" data-tag="n" data-tag-label="Pages" data-drill="project"></div>
+      </div>
     </div>
 
-    <div class="sx-two">
-      <div class="sx-card" id="cmp-channels">
+    <!-- Kinds of page -->
+    <div class="sx-xpanel" data-panel="kinds" data-measures="clicks,impressions,ctr,position,visits,enquiries" hidden>
+      <div class="sx-card">
+        <h2 class="sx-h2">Kinds of page, A against B</h2>
+        <p class="sx-sub">Home, project pages, location pages, blog, brochures, jobs and the rest. Click a kind to see its pages.</p>
+        <div data-draw="xview" data-source="x_kinds" data-noun="kinds of page" data-name-label="Kind of page" data-tag="n" data-tag-label="Pages" data-drill="kind"></div>
+      </div>
+    </div>
+
+    <!-- Channels -->
+    <div class="sx-xpanel" data-panel="channels" data-measures="visits,enquiries,engaged" hidden>
+      <div class="sx-card">
         <h2 class="sx-h2">All website visits by channel</h2>
-        <div class="sx-tablewrap"><table class="sx-table" data-source="cmp_channels" data-row-key="channel" data-sort="a:desc" data-limit="12">
-          <thead><tr><th data-field="channel">Channel</th><th data-field="a">A</th><th data-field="b">B</th><th data-field="change_pct" data-fmt="chg">Change</th></tr></thead>
-          <tbody data-draw="tbl"></tbody></table></div>
+        <p class="sx-sub">Google Analytics: organic search next to ads, direct, social, referrals and AI assistants.</p>
+        <div data-draw="xview" data-source="x_channels" data-noun="channels" data-name-label="Channel"></div>
       </div>
-      <div class="sx-card" id="cmp-ai">
+    </div>
+
+    <!-- Sources -->
+    <div class="sx-xpanel" data-panel="sources" data-measures="visits,enquiries,engaged" hidden>
+      <div class="sx-card">
+        <h2 class="sx-h2">Every source of visits</h2>
+        <p class="sx-sub">Google Analytics source and medium, such as google / organic, chatgpt.com / referral or facebook / paid. Pick a medium to narrow it.</p>
+        <div class="sx-xtools"><input type="search" class="sx-search" data-x="q" placeholder="Filter sources, e.g. google, chatgpt, facebook" aria-label="Filter sources"><select class="dash-select" data-x="tag" data-draw="xtags" data-source="x_sources" data-all="All mediums" aria-label="Medium"></select></div>
+        <div data-draw="xview" data-source="x_sources" data-noun="sources" data-name-label="Source / medium" data-tag="tag" data-tag-label="Medium"></div>
+      </div>
+    </div>
+
+    <!-- AI assistants -->
+    <div class="sx-xpanel" data-panel="ai" data-measures="visits,enquiries,engaged" hidden>
+      <div class="sx-card">
         <h2 class="sx-h2">Visits from AI assistants</h2>
-        <p class="sx-sub">Google Analytics, by assistant.</p>
-        <div class="sx-tablewrap"><table class="sx-table" data-source="cmp_ai_traffic" data-row-key="assistant" data-sort="a:desc">
-          <thead><tr><th data-field="assistant">Assistant</th><th data-field="a">A</th><th data-field="b">B</th><th data-field="key_events_a">Enquiry events A</th></tr></thead>
-          <tbody data-draw="tbl"></tbody></table></div>
+        <p class="sx-sub">Google Analytics visits whose source is ChatGPT, Gemini, Perplexity, Copilot, Claude or another assistant. Whether AI answers name County is on the AI search tab.</p>
+        <div data-draw="xview" data-source="x_ai" data-noun="assistants" data-name-label="Assistant"></div>
       </div>
     </div>
   </section>
@@ -389,7 +480,7 @@
       <h2 class="sx-h2">How to read this</h2>
       <dl class="sx-dl">
         <dt>Live</dt><dd>The last 28 days of complete Google data against the 28 days before, worked out fresh every time the page opens. Google’s figures run about 3 days behind.</dd>
-        <dt>Compare periods</dt><dd>Any two periods: a month against a month, a quarter, a year, or any dates you type. Every number on that tab is read from Google for exactly those dates.</dd>
+        <dt>Explore &amp; compare</dt><dd>Pick a period to look at (last 7 or 28 days, a month, 3, 6 or 12 months, or any dates) and what to compare it with (the period just before, or the same time last year). Then pick the data (pages, searches, projects, kinds of page, channels, sources, AI assistants) and the measure (clicks, times shown, click rate, position, visits, enquiry events). Every number is read from Google for exactly those dates.</dd>
         <dt>Click</dt><dd>Someone clicked our free Google result (Search Console). The most reliable traffic number.</dd>
         <dt>Times shown</dt><dd>Our page appeared in Google’s free results. The person may not have clicked.</dd>
         <dt>Click rate</dt><dd>Clicks out of every 100 times shown.</dd>
@@ -509,6 +600,107 @@
       return rows.find((r) => String(r[k]) === v) ?? null;
     };
     SX.failNote = (el, text) => { const p = document.createElement('p'); p.className = 'sx-fail'; p.textContent = text || 'This part didn’t load.'; el.append(p); };
+    /* ---- Explore & compare ---- */
+    /** What the reader has picked on the Explore tab (not query parameters, so kept here). */
+    SX.state = { view: 'overview', measure: 'clicks', q: {}, tag: {}, sort: {}, all: {} };
+    SX.M = {
+      clicks: { label: 'Clicks', good: 'up', kind: 'count' },
+      impressions: { label: 'Times shown', good: 'up', kind: 'count' },
+      ctr: { label: 'Click rate', fmt: 'pct', good: 'up', kind: 'rate' },
+      position: { label: 'Position', fmt: 'pos', good: 'down', kind: 'rate' },
+      visits: { label: 'Visits', good: 'up', kind: 'count' },
+      enquiries: { label: 'Enquiry events', good: 'up', kind: 'count' },
+      engaged: { label: 'Engaged visits', good: 'up', kind: 'count' },
+    };
+    SX.isGood = (v, M) => (M.good === 'up' ? v > 0 : v < 0);
+    /** A change in a measure: +120 for counts, +0.4 pts for click rate, −1.2 for position. */
+    SX.chgText = (v, M) => {
+      if (v === null || v === undefined || !Number.isFinite(Number(v))) return '—';
+      const s = v > 0 ? '+' : v < 0 ? '−' : '';
+      if (M.fmt === 'pct') return `${s}${d3.format('.1f')(Math.abs(v))} pts`;
+      if (M.fmt === 'pos') return `${s}${d3.format('.1f')(Math.abs(v))}`;
+      return `${s}${d3.format(',')(Math.round(Math.abs(v)))}`;
+    };
+    /** "kind:Blog", "project:Ivory County" or a plain tag. */
+    SX.tagMatch = (r, tag) => {
+      if (!tag) return true;
+      if (tag.startsWith('kind:')) return r.kind === tag.slice(5);
+      if (tag.startsWith('project:')) return r.project === tag.slice(8);
+      return r.tag === tag;
+    };
+    /** One side (a or b) of a page or search: clicks, times shown, click rate %, position. */
+    SX.side = (s, t) => ({ [`${s}_clicks`]: t ? t.clicks || 0 : 0, [`${s}_impressions`]: t ? t.impressions || 0 : 0, [`${s}_ctr`]: t && t.impressions ? SX.round1((t.clicks / t.impressions) * 100) : null, [`${s}_position`]: t && t.position != null ? SX.round1(t.position) : null });
+    /** Rows summed by key: counts added, click rate and impression-weighted position worked out again. */
+    SX.group = (rows, keyFn) => {
+      const m = new Map();
+      const counts = ['clicks', 'impressions', 'visits', 'enquiries', 'engaged'];
+      for (const r of rows) {
+        const k = keyFn(r);
+        if (!k) continue;
+        let t = m.get(k);
+        if (!t) { t = { name: k, n: 0 }; for (const s of ['a', 'b']) { for (const c of counts) t[`${s}_${c}`] = 0; t[`${s}_pw`] = 0; } m.set(k, t); }
+        t.n += 1;
+        for (const s of ['a', 'b']) {
+          for (const c of counts) t[`${s}_${c}`] += Number(r[`${s}_${c}`]) || 0;
+          t[`${s}_pw`] += (Number(r[`${s}_position`]) || 0) * (Number(r[`${s}_impressions`]) || 0);
+        }
+      }
+      return [...m.values()].map((t) => {
+        for (const s of ['a', 'b']) {
+          const i = t[`${s}_impressions`];
+          t[`${s}_ctr`] = i ? SX.round1((t[`${s}_clicks`] / i) * 100) : null;
+          t[`${s}_position`] = i ? SX.round1(t[`${s}_pw`] / i) : null;
+          delete t[`${s}_pw`];
+        }
+        return t;
+      });
+    };
+    /** Google Analytics rows of both periods merged by key: visits, enquiry events, engaged visits. */
+    SX.gaMerge = (aRows, bRows, keyFn, tagFn) => {
+      const m = new Map();
+      for (const [rows, s] of [[aRows, 'a'], [bRows, 'b']]) {
+        for (const r of rows) {
+          const k = keyFn(r);
+          if (!k) continue;
+          const t = m.get(k) || { name: k, tag: tagFn ? tagFn(r) : '', a_visits: 0, b_visits: 0, a_enquiries: 0, b_enquiries: 0, a_engaged: 0, b_engaged: 0 };
+          t[`${s}_visits`] += Number(r.sessions) || 0; t[`${s}_enquiries`] += Number(r.key_events) || 0; t[`${s}_engaged`] += Number(r.engaged) || 0;
+          m.set(k, t);
+        }
+      }
+      return [...m.values()];
+    };
+    /** Whole months between two month starts. */
+    SX.monthsBetween = (a, b) => (Number(b.slice(0, 4)) - Number(a.slice(0, 4))) * 12 + Number(b.slice(5, 7)) - Number(a.slice(5, 7));
+    /** The period to compare A with: 'prev' = just before, same length; 'yoy' = a year earlier. Whole months stay whole months. */
+    SX.shiftB = (s, e, mode) => {
+      if (s === SX.monthStart(s) && e === SX.monthEnd(e)) {
+        const n = mode === 'yoy' ? 12 : SX.monthsBetween(s, e) + 1;
+        return [SX.addMonths(s, -n), SX.monthEnd(SX.addMonths(SX.monthStart(e), -n))];
+      }
+      if (s === SX.monthStart(s) && s.slice(0, 7) === e.slice(0, 7)) {
+        const bs = SX.addMonths(s, mode === 'yoy' ? -12 : -1);
+        const be = SX.addDays(bs, SX.days(s, e) - 1);
+        return [bs, be > SX.monthEnd(bs) ? SX.monthEnd(bs) : be];
+      }
+      if (mode === 'yoy') return [SX.addDays(s, -364), SX.addDays(e, -364)];
+      const n = SX.days(s, e);
+      return [SX.addDays(s, -n), SX.addDays(s, -1)];
+    };
+    /** Daily rows of both periods summed into one point (used to draw long periods by week). */
+    SX.bucket = (rows) => {
+      const o = {};
+      for (const s of ['a', 'b']) {
+        const have = rows.filter((r) => r[`${s}_date`]);
+        const c = d3.sum(have, (r) => r[`${s}_clicks`]), i = d3.sum(have, (r) => r[`${s}_impressions`]), w = d3.sum(have, (r) => (r[`${s}_position`] || 0) * r[`${s}_impressions`]);
+        o[`${s}_date`] = have.length ? have[0][`${s}_date`] : null;
+        o[`${s}_days`] = have.length;
+        o[`${s}_clicks`] = have.length ? c : null;
+        o[`${s}_impressions`] = have.length ? i : null;
+        o[`${s}_ctr`] = have.length && i ? (c / i) * 100 : null;
+        o[`${s}_position`] = have.length && i ? w / i : null;
+      }
+      return o;
+    };
     window.SX = SX;
   })();
 </script>
@@ -529,12 +721,6 @@
       next.b_start = SX.addMonths(lastFull, -1); next.b_end = SX.monthEnd(next.b_start);
     }
     dash.setParams(next);
-    window.SXpresets = {
-      month: () => { const m = SX.addMonths(SX.monthStart(SX.addDays(today, -3)), -1); const b = SX.addMonths(m, -1); return { a_start: m, a_end: SX.monthEnd(m), b_start: b, b_end: SX.monthEnd(b) }; },
-      yoy: () => { const m = SX.addMonths(SX.monthStart(SX.addDays(today, -3)), -1); const b = SX.addMonths(m, -12); return { a_start: m, a_end: SX.monthEnd(m), b_start: b, b_end: SX.monthEnd(b) }; },
-      quarter: () => { const e = SX.addMonths(SX.monthStart(SX.addDays(today, -3)), -1); const s = SX.addMonths(e, -2); const be = SX.addMonths(s, -1); const bs = SX.addMonths(be, -2); return { a_start: s, a_end: SX.monthEnd(e), b_start: bs, b_end: SX.monthEnd(be) }; },
-      year: () => { const e = SX.addMonths(SX.monthStart(SX.addDays(today, -3)), -1); const s = SX.addMonths(e, -11); const be = SX.addMonths(s, -1); const bs = SX.addMonths(be, -11); return { a_start: s, a_end: SX.monthEnd(e), b_start: bs, b_end: SX.monthEnd(be) }; },
-    };
   })();
 </script>
 
@@ -572,14 +758,12 @@
   };
   for (const id of ['live_sources', 'a_sources', 'b_sources']) dash.loader(id, { description: 'One row per Google Analytics source / medium: visits, engaged visits and enquiry events.', fn: sourceLoader });
 
-  dash.loader('live_landing', {
-    description: 'One row per page where an organic search visit started: visits, engaged visits and enquiry events.',
-    fn: ({ answer }) => {
-      if (!answer || answer.status !== 'ok') throw new Error((answer && (answer.error?.message || answer.message)) || 'Google Analytics gave no answer');
-      const rows = (answer.rows || []).map((r) => ({ landing_page: r.landingPage, sessions: r.sessions, engaged: r.engagedSessions, key_events: r.keyEvents }));
-      return { columns: ['landing_page', 'sessions', 'engaged', 'key_events'], rows, truncated: !!(answer.pageInfo && answer.pageInfo.hasMore) };
-    },
-  });
+  const landingLoader = ({ answer }) => {
+    if (!answer || answer.status !== 'ok') throw new Error((answer && (answer.error?.message || answer.message)) || 'Google Analytics gave no answer');
+    const rows = (answer.rows || []).map((r) => ({ landing_page: r.landingPage, sessions: r.sessions, engaged: r.engagedSessions, key_events: r.keyEvents }));
+    return { columns: ['landing_page', 'sessions', 'engaged', 'key_events'], rows, truncated: !!(answer.pageInfo && answer.pageInfo.hasMore) };
+  };
+  for (const id of ['live_landing', 'a_landing', 'b_landing']) dash.loader(id, { description: 'One row per page where an organic search visit started: visits, engaged visits and enquiry events.', fn: landingLoader });
 
   dash.loader('ai_trend', {
     description: 'One row per AI visibility check: date, answers collected, and the share of answers naming County Group or linking to its site.',
@@ -785,18 +969,147 @@
   });
 
   dash.calc('trend_months', {
-    title: 'Clicks per month, 16 months',
-    description: 'Search Console daily rows summed per calendar month, marking the months inside period A and period B and a month still running.',
+    title: 'Google figures per month, 16 months',
+    description: 'Search Console daily rows summed per calendar month (clicks, times shown, click rate, impression-weighted position), marking the months inside period A and period B and a month still running.',
     inputs: ['trend_daily'],
     fn: (daily) => {
       const p = dash.params();
       const m = new Map();
-      for (const r of daily) { const k = String(r.date).slice(0, 7); const t = m.get(k) || { month: k, clicks: 0, impressions: 0, days: 0 }; t.clicks += r.clicks; t.impressions += r.impressions; t.days += 1; m.set(k, t); }
+      for (const r of daily) { const k = String(r.date).slice(0, 7); const t = m.get(k) || { month: k, clicks: 0, impressions: 0, pw: 0, days: 0 }; t.clicks += r.clicks; t.impressions += r.impressions; t.pw += (r.position || 0) * r.impressions; t.days += 1; m.set(k, t); }
       const inR = (k, s, e) => `${k}-01` <= e && SX.monthEnd(`${k}-01`) >= s;
       return [...m.values()].sort((a, b) => (a.month < b.month ? -1 : 1)).map((t) => {
         const full = SX.days(`${t.month}-01`, SX.monthEnd(`${t.month}-01`));
-        return { ...t, label: d3.utcFormat('%b %Y')(new Date(`${t.month}-01T00:00:00Z`)), partial: t.days < full ? 'yes' : 'no', in_a: inR(t.month, p.a_start, p.a_end) ? 'yes' : 'no', in_b: inR(t.month, p.b_start, p.b_end) ? 'yes' : 'no' };
+        return { month: t.month, label: d3.utcFormat('%b %Y')(new Date(`${t.month}-01T00:00:00Z`)), clicks: t.clicks, impressions: t.impressions, ctr: t.impressions ? SX.round1((t.clicks / t.impressions) * 100) : null, position: t.impressions ? SX.round1(t.pw / t.impressions) : null, days: t.days, partial: t.days < full ? 'yes' : 'no', in_a: inR(t.month, p.a_start, p.a_end) ? 'yes' : 'no', in_b: inR(t.month, p.b_start, p.b_end) ? 'yes' : 'no' };
       });
+    },
+  });
+
+  dash.calc('x_daily', {
+    title: 'Explore: day by day, A beside B',
+    description: 'Search Console daily rows of period A and period B side by side: day 1 of A next to day 1 of B. Click rate in %, position as Google gives it.',
+    inputs: ['a_daily', 'b_daily'],
+    fn: (aD, bD) => {
+      const sa = aD.slice().sort((x, y) => (x.date < y.date ? -1 : 1)), sb = bD.slice().sort((x, y) => (x.date < y.date ? -1 : 1));
+      const n = Math.max(sa.length, sb.length), out = [];
+      for (let i = 0; i < n; i++) {
+        const a = sa[i], b = sb[i], o = { day: i + 1 };
+        for (const [s, r] of [['a', a], ['b', b]]) { o[`${s}_date`] = r ? r.date : null; o[`${s}_clicks`] = r ? r.clicks : null; o[`${s}_impressions`] = r ? r.impressions : null; o[`${s}_ctr`] = r && r.impressions ? SX.round1((r.clicks / r.impressions) * 100) : null; o[`${s}_position`] = r && r.position != null ? SX.round1(r.position) : null; }
+        out.push(o);
+      }
+      return out;
+    },
+  });
+
+  dash.calc('x_pages', {
+    title: 'Explore: every page, A against B',
+    description: 'Search Console clicks, times shown, click rate and position per page in each period, merged by path, with Google Analytics visits and enquiry events where an organic visit started on that page (pages with a query string get none). Kind of page and project from the address.',
+    inputs: ['a_pages', 'b_pages', 'a_landing', 'b_landing'],
+    fn: (aP, bP, aL, bL) => {
+      const A = SX.byPath(aP), B = SX.byPath(bP);
+      const urls = new Map();
+      for (const r of [...aP, ...bP]) { const k = SX.path(r.page); if (!urls.has(k)) urls.set(k, String(r.page)); }
+      const ga = (rows) => { const m = new Map(); for (const r of rows) { const k = SX.bare(SX.path(r.landing_page)); const t = m.get(k) || { visits: 0, enquiries: 0 }; t.visits += Number(r.sessions) || 0; t.enquiries += Number(r.key_events) || 0; m.set(k, t); } return m; };
+      const gA = ga(aL), gB = ga(bL);
+      return [...new Set([...A.keys(), ...B.keys()])].map((k) => {
+        const bare = SX.bare(k) === k, xa = bare ? gA.get(k) : null, xb = bare ? gB.get(k) : null;
+        return { name: k, url: urls.get(k) || '', kind: SX.kind(k), project: SX.project(k) || '', ...SX.side('a', A.get(k)), ...SX.side('b', B.get(k)), a_visits: xa ? xa.visits : null, b_visits: xb ? xb.visits : null, a_enquiries: xa ? xa.enquiries : null, b_enquiries: xb ? xb.enquiries : null };
+      });
+    },
+  });
+
+  dash.calc('x_queries', {
+    title: 'Explore: every search, A against B',
+    description: 'Search Console clicks, times shown, click rate and position per search in each period (the 1,000 biggest of each). Brand = names County or a project; New buyer = doesn’t.',
+    inputs: ['a_queries', 'b_queries'],
+    fn: (aQ, bQ) => {
+      const A = new Map(aQ.map((q) => [q.query, q])), B = new Map(bQ.map((q) => [q.query, q]));
+      return [...new Set([...A.keys(), ...B.keys()])].map((k) => ({ name: k, tag: SX.isBrand(k) ? 'Brand' : 'New buyer', ...SX.side('a', A.get(k)), ...SX.side('b', B.get(k)) }));
+    },
+  });
+
+  dash.calc('x_projects', {
+    title: 'Explore: every project, A against B',
+    description: 'Every page of a project summed: clicks, times shown, visits and enquiry events; click rate and impression-weighted position worked out from the sums.',
+    inputs: ['x_pages'],
+    fn: (pages) => SX.group(pages, (r) => r.project),
+  });
+
+  dash.calc('x_kinds', {
+    title: 'Explore: kinds of page, A against B',
+    description: 'Pages summed by kind (home, project, location, blog, brochure, jobs, other): clicks, times shown, visits and enquiry events; click rate and position from the sums.',
+    inputs: ['x_pages'],
+    fn: (pages) => SX.group(pages, (r) => r.kind),
+  });
+
+  dash.calc('x_channels', {
+    title: 'Explore: visits by channel, A against B',
+    description: 'Google Analytics visits, enquiry events and engaged visits per channel in each period.',
+    inputs: ['a_channels', 'b_channels'],
+    fn: (a, b) => SX.gaMerge(a, b, (r) => r.channel),
+  });
+
+  dash.calc('x_sources', {
+    title: 'Explore: visits by source, A against B',
+    description: 'Google Analytics visits, enquiry events and engaged visits per source / medium in each period (the 300 biggest of each).',
+    inputs: ['a_sources', 'b_sources'],
+    fn: (a, b) => SX.gaMerge(a, b, (r) => r.source_medium, (r) => String(r.source_medium || '').split(' / ')[1] || ''),
+  });
+
+  dash.calc('x_ai', {
+    title: 'Explore: visits from AI assistants, A against B',
+    description: 'Google Analytics sources that are AI assistants (ChatGPT, Gemini, Perplexity, Copilot, Claude and others), summed per assistant in each period.',
+    inputs: ['a_sources', 'b_sources'],
+    fn: (a, b) => SX.gaMerge(a, b, (r) => SX.assistant(r.source_medium)),
+  });
+
+  dash.calc('x_insights', {
+    title: 'Explore: what changed, in sentences',
+    description: 'Plain sentences built from the figures on the Explore tab: total clicks, whether the change came from being shown less or clicked less, brand against new-buyer searches, the pages and projects that moved most, pages that went quiet, new searches, searches close to page 1, enquiry events and AI-assistant visits.',
+    inputs: ['cmp_kpi', 'x_pages', 'x_queries', 'x_projects'],
+    fn: (kpi, pages, queries, projects) => {
+      const out = [];
+      const add = (text, tone = 'neutral') => out.push({ n: out.length + 1, text, tone });
+      const k = (m) => kpi.find((r) => r.metric === m) || {};
+      const f = (v) => SX.fmt(v);
+      const moved = (v) => (v == null ? 'changed' : v > 0 ? `rose ${d3.format('.1f')(v)}%` : v < 0 ? `fell ${d3.format('.1f')(-v)}%` : 'held steady');
+      const tone = (v) => (v == null || v === 0 ? 'neutral' : v > 0 ? 'good' : 'bad');
+      const p = dash.params();
+      const da = SX.days(p.a_start, p.a_end), db = SX.days(p.b_start, p.b_end);
+      const c = k('clicks'), im = k('impressions'), r = k('ctr'), po = k('position');
+      if (c.a != null) {
+        let t = `Clicks from Google ${moved(c.change)}: ${f(c.a)} in A against ${f(c.b)} in B.`;
+        if (da !== db) t += ` The periods are ${da} and ${db} days long, so per day it is ${f(c.a_per_day)} against ${f(c.b_per_day)}.`;
+        add(t, tone(c.change));
+      }
+      if (im.a != null && r.a != null && r.b && Math.abs(c.change || 0) >= 3) {
+        const rel = SX.pct(r.a, r.b) || 0;
+        const cause = Math.abs(im.change || 0) >= Math.abs(rel)
+          ? `Mostly because Google showed the site ${im.change < 0 ? 'less' : 'more'} often`
+          : `Mostly because ${rel < 0 ? 'fewer' : 'more'} people clicked when they saw the site`;
+        add(`${cause}: times shown ${moved(im.change)} (${f(im.a)} against ${f(im.b)}), click rate ${SX.fmt(r.a, 'pct')} against ${SX.fmt(r.b, 'pct')}, average position ${SX.fmt(po.a, 'pos')} against ${SX.fmt(po.b, 'pos')}.`);
+      }
+      const seg = (tag) => queries.filter((q) => q.tag === tag).reduce((s, q) => [s[0] + q.a_clicks, s[1] + q.b_clicks], [0, 0]);
+      const [ba, bb] = seg('Brand'), [na, nb] = seg('New buyer');
+      if (ba + bb + na + nb) add(`Searches naming County or a project brought ${f(ba)} clicks against ${f(bb)} (${SX.fmt(SX.pct(ba, bb), 'chg')}). Searches that don’t, from new buyers, brought ${f(na)} against ${f(nb)} (${SX.fmt(SX.pct(na, nb), 'chg')}).`, tone(SX.pct(na, nb)));
+      const ch = pages.filter((x) => x.a_clicks !== x.b_clicks).sort((x, y) => (x.a_clicks - x.b_clicks) - (y.a_clicks - y.b_clicks));
+      const lo = ch[0], hi = ch[ch.length - 1];
+      if (lo && lo.a_clicks < lo.b_clicks) add(`Page that lost most: ${lo.name}, ${f(lo.a_clicks)} clicks against ${f(lo.b_clicks)} (${SX.fmt(lo.a_clicks - lo.b_clicks, 'diff')}).`, 'bad');
+      if (hi && hi.a_clicks > hi.b_clicks) add(`Page that gained most: ${hi.name}, ${f(hi.a_clicks)} clicks against ${f(hi.b_clicks)} (${SX.fmt(hi.a_clicks - hi.b_clicks, 'diff')}).`, 'good');
+      const quiet = pages.filter((x) => x.b_clicks >= 10 && x.a_clicks === 0).sort((x, y) => y.b_clicks - x.b_clicks);
+      if (quiet.length) add(`${quiet.length === 1 ? 'One page' : `${quiet.length} pages`} that got 10 or more clicks in B got none in A, such as ${quiet[0].name} (${f(quiet[0].b_clicks)} in B). Check ${quiet.length === 1 ? 'it still opens and is' : 'they still open and are'} still on Google.`, 'bad');
+      const pj = projects.filter((x) => x.a_clicks !== x.b_clicks).sort((x, y) => (x.a_clicks - x.b_clicks) - (y.a_clicks - y.b_clicks));
+      const plo = pj[0], phi = pj[pj.length - 1];
+      if (plo && plo.a_clicks < plo.b_clicks) add(`Project that lost most: ${plo.name}, ${f(plo.a_clicks)} clicks against ${f(plo.b_clicks)} (${SX.fmt(SX.pct(plo.a_clicks, plo.b_clicks), 'chg')}).`, 'bad');
+      if (phi && phi.a_clicks > phi.b_clicks) add(`Project that gained most: ${phi.name}, ${f(phi.a_clicks)} clicks against ${f(phi.b_clicks)}${phi.b_clicks ? ` (${SX.fmt(SX.pct(phi.a_clicks, phi.b_clicks), 'chg')})` : ''}.`, 'good');
+      const fresh = queries.filter((q) => q.tag === 'New buyer' && q.a_clicks >= 2 && !q.b_impressions).sort((x, y) => y.a_clicks - x.a_clicks);
+      if (fresh.length) add(`${fresh.length === 1 ? 'One new-buyer search' : `${fresh.length} new-buyer searches`} brought clicks in A but ${fresh.length === 1 ? 'was' : 'were'} not among B’s searches, led by “${fresh[0].name}” (${f(fresh[0].a_clicks)} clicks).`, 'good');
+      const near = queries.filter((q) => q.tag === 'New buyer' && q.a_position >= 8 && q.a_position <= 20 && q.a_impressions >= 50);
+      if (near.length) add(`${near.length === 1 ? 'One new-buyer search sits' : `${near.length} new-buyer searches sit`} at positions 8 to 20 and ${near.length === 1 ? 'was' : 'were'} shown 50 or more times in A. These are the quickest to push onto the first page: open Searches and pick “New buyer”, then sort by position.`);
+      const e = k('key_events');
+      if (e.a != null) add(`Enquiry events from organic search ${moved(e.change)}: ${f(e.a)} against ${f(e.b)}.`, tone(e.change));
+      const ai = k('ai_sessions');
+      if (ai.a != null) add(`Visits from AI assistants such as ChatGPT ${moved(ai.change)}: ${f(ai.a)} against ${f(ai.b)}.`, tone(ai.change));
+      return out;
     },
   });
 
@@ -809,59 +1122,6 @@
       const A = split(aQ, aDaily), B = split(bQ, bDaily);
       const r = (segment, a, b) => ({ segment, a, b, change_pct: SX.pct(a, b), share_a_pct: A.total ? SX.round1((a / A.total) * 100) : null });
       return [r('Brand', A.br, B.br), r('Non-brand', A.nb, B.nb), r('Hidden by Google', A.hid, B.hid), r('All clicks', A.total, B.total)];
-    },
-  });
-
-  dash.calc('cmp_page_view', {
-    title: 'Compare: every page, A against B',
-    description: 'Search Console clicks and position per page in each period, merged by path.',
-    inputs: ['a_pages', 'b_pages'],
-    fn: (aPages, bPages) => {
-      const A = SX.byPath(aPages), B = SX.byPath(bPages);
-      const keys = new Set([...A.keys(), ...B.keys()]);
-      return [...keys].map((k) => { const a = A.get(k) || { clicks: 0, position: null }, b = B.get(k) || { clicks: 0, position: null }; return { path: k, kind: SX.kind(k), project: SX.project(k) || '', a: a.clicks, b: b.clicks, change: a.clicks - b.clicks, position_a: SX.round1(a.position), position_b: SX.round1(b.position) }; });
-    },
-  });
-
-  dash.calc('cmp_kinds', {
-    title: 'Compare: clicks by kind of page',
-    description: 'Search Console clicks per kind of page in each period.',
-    inputs: ['cmp_page_view'],
-    fn: (pages) => { const m = {}; for (const p of pages) { const t = (m[p.kind] ||= { kind: p.kind, a: 0, b: 0 }); t.a += p.a; t.b += p.b; } return Object.values(m).map((t) => ({ ...t, change_pct: SX.pct(t.a, t.b) })); },
-  });
-
-  dash.calc('cmp_projects', {
-    title: 'Compare: clicks by project',
-    description: 'Search Console clicks summed over every page of each project, in each period.',
-    inputs: ['cmp_page_view'],
-    fn: (pages) => { const m = {}; for (const p of pages) { if (!p.project) continue; const t = (m[p.project] ||= { project: p.project, a: 0, b: 0 }); t.a += p.a; t.b += p.b; } return Object.values(m).map((t) => ({ ...t, change_pct: SX.pct(t.a, t.b) })).sort((x, y) => y.a + y.b - (x.a + x.b)); },
-  });
-
-  dash.calc('cmp_query_view', {
-    title: 'Compare: new-buyer searches, A against B',
-    description: 'Searches that don’t name County or a project, with clicks and position in each period.',
-    inputs: ['a_queries', 'b_queries'],
-    fn: (aQ, bQ) => {
-      const A = new Map(aQ.filter((q) => !SX.isBrand(q.query)).map((q) => [q.query, q])), B = new Map(bQ.filter((q) => !SX.isBrand(q.query)).map((q) => [q.query, q]));
-      return [...new Set([...A.keys(), ...B.keys()])].map((k) => { const a = A.get(k) || { clicks: 0, position: null }, b = B.get(k) || { clicks: 0, position: null }; return { query: k, a: a.clicks, b: b.clicks, change: a.clicks - b.clicks, abs_change: Math.abs(a.clicks - b.clicks), position_a: SX.round1(a.position), position_b: SX.round1(b.position) }; });
-    },
-  });
-
-  dash.calc('cmp_channels', {
-    title: 'Compare: visits by channel',
-    description: 'Google Analytics visits per channel in each period.',
-    inputs: ['a_channels', 'b_channels'],
-    fn: (aCh, bCh) => { const names = new Set([...aCh, ...bCh].map((r) => r.channel)); return [...names].map((channel) => { const a = (aCh.find((r) => r.channel === channel) || {}).sessions || 0, b = (bCh.find((r) => r.channel === channel) || {}).sessions || 0; return { channel, a, b, change_pct: SX.pct(a, b) }; }); },
-  });
-
-  dash.calc('cmp_ai_traffic', {
-    title: 'Compare: visits from AI assistants',
-    description: 'Google Analytics visits whose source is an AI assistant, per assistant, in each period.',
-    inputs: ['a_sources', 'b_sources'],
-    fn: (aS, bS) => {
-      const m = {};
-      for (const [rows, key] of [[aS, 'a'], [bS, 'b']]) for (const r of rows) { const n = SX.assistant(r.source_medium); if (!n) continue; const t = (m[n] ||= { assistant: n, a: 0, b: 0, key_events_a: 0 }); t[key] += r.sessions; if (key === 'a') t.key_events_a += r.key_events; }
-      return Object.values(m);
     },
   });
 
@@ -1004,30 +1264,6 @@
       .text((d) => `${d3.format(',')(d[V])}${X && d[X] != null ? (X.endsWith('pct') && X.startsWith('share') ? ` · ${d3.format('.1f')(d[X])}%` : ` · ${d[X] > 0 ? '+' : d[X] < 0 ? '−' : ''}${d3.format('.0f')(Math.abs(d[X]))}%`) : ''}`);
   });
 
-  /** Paired bars (period A against period B) per label. */
-  dash.draw('pairbars', (el) => {
-    el.replaceChildren();
-    const id = el.dataset.source;
-    if (SXd.failed(id)) return SXd.failNote(el);
-    const rows = SXd.rows(id);
-    if (!rows) return;
-    const L = el.dataset.label;
-    const data = rows.filter((r) => r.a > 0 || r.b > 0).slice(0, 15);
-    if (!data.length) return;
-    const W = Math.max(280, el.clientWidth), rowH = 34, H = data.length * rowH + 4;
-    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Clicks per project in period A and period B');
-    const labels = svg.append('g');
-    labels.selectAll('text').data(data).join('text').attr('x', 0).attr('y', (d, i) => i * rowH + 20).text((d) => d[L]);
-    let lw = 0; labels.selectAll('text').each(function () { lw = Math.max(lw, this.getComputedTextLength()); });
-    lw = Math.min(lw + 10, W * 0.4);
-    const x = d3.scaleLinear().domain([0, d3.max(data, (d) => Math.max(d.a, d.b))]).range([0, Math.max(10, W - lw - 110)]);
-    const g = svg.append('g');
-    g.selectAll('rect.a').data(data).join('rect').attr('class', 'a').attr('x', lw).attr('y', (d, i) => i * rowH + 6).attr('height', 11).attr('rx', 2).attr('width', (d) => Math.max(1, x(d.a))).style('fill', 'var(--sx-a)');
-    g.selectAll('rect.b').data(data).join('rect').attr('class', 'b').attr('x', lw).attr('y', (d, i) => i * rowH + 19).attr('height', 11).attr('rx', 2).attr('width', (d) => Math.max(1, x(d.b))).style('fill', 'var(--cds-chart-muted)');
-    g.selectAll('text.v').data(data).join('text').attr('class', 'v').attr('x', (d) => lw + Math.max(x(d.a), x(d.b)) + 6).attr('y', (d, i) => i * rowH + 21)
-      .text((d) => `${d3.format(',')(d.a)} vs ${d3.format(',')(d.b)}`);
-  });
-
   /** Two periods of daily clicks laid over each other, day 1 to day N. */
   dash.draw('overlay', (el) => {
     el.replaceChildren();
@@ -1102,31 +1338,249 @@
       .on('pointerleave', () => { tip.hidden = true; });
   });
 
-  /** Month columns with period A and B coloured. */
-  dash.draw('months', (el) => {
+  /* ---- Explore & compare ---- */
+  const xShort = (s, n = 36) => { s = String(s ?? ''); return s.length > n ? `${s.slice(0, n - 1)}…` : s; };
+  const xSvg = (box, W, H, label) => d3.select(box).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', label);
+  /** Row labels down the left; returns the width they take. */
+  const xLabels = (svg, data, rowH, y0, W) => {
+    const g = svg.append('g');
+    g.selectAll('text').data(data).join('text').attr('x', 0).attr('y', (d, i) => i * rowH + y0).text((d) => xShort(d.name)).append('title').text((d) => d.name);
+    let lw = 0; g.selectAll('text').each(function () { lw = Math.max(lw, this.getComputedTextLength()); });
+    return Math.min(lw + 10, W * 0.45);
+  };
+  /** A (dark) and B (light) bars per row. */
+  const xPairChart = (box, data, m, M) => {
+    const W = Math.max(260, box.clientWidth), rowH = 30, H = data.length * rowH + 4;
+    const svg = xSvg(box, W, H, `${M.label} in A and B`);
+    const lw = xLabels(svg, data, rowH, 18, W);
+    const A = (d) => d[`a_${m}`] || 0, B = (d) => d[`b_${m}`] || 0;
+    const x = d3.scaleLinear().domain([0, d3.max(data, (d) => Math.max(A(d), B(d))) || 1]).range([0, Math.max(10, W - lw - 118)]);
+    const g = svg.append('g');
+    g.selectAll('rect.a').data(data).join('rect').attr('class', 'a').attr('x', lw).attr('y', (d, i) => i * rowH + 5).attr('height', 10).attr('rx', 2).attr('width', (d) => Math.max(1, x(A(d)))).style('fill', 'var(--sx-a)');
+    g.selectAll('rect.b').data(data).join('rect').attr('class', 'b').attr('x', lw).attr('y', (d, i) => i * rowH + 16).attr('height', 8).attr('rx', 2).attr('width', (d) => Math.max(1, x(B(d)))).style('fill', 'var(--cds-chart-muted)');
+    g.selectAll('text.v').data(data).join('text').attr('class', 'v').attr('x', (d) => lw + x(Math.max(A(d), B(d))) + 6).attr('y', (d, i) => i * rowH + 18).text((d) => `${SXd.fmt(d[`a_${m}`], M.fmt)} vs ${SXd.fmt(d[`b_${m}`], M.fmt)}`);
+  };
+  /** Change A − B per row, gains right in green, losses left in red. */
+  const xDivChart = (box, data, M) => {
+    const W = Math.max(260, box.clientWidth), rowH = 26, H = data.length * rowH + 4;
+    const svg = xSvg(box, W, H, `Change in ${M.label.toLowerCase()}, A against B`);
+    const lw = xLabels(svg, data, rowH, 17, W);
+    const ext = d3.max(data, (d) => Math.abs(d._d)) || 1;
+    const x = d3.scaleLinear().domain([-ext, ext]).range([lw + 58, W - 58]);
+    svg.append('line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', 0).attr('y2', H).style('stroke', 'var(--cds-chart-axis)');
+    svg.append('g').selectAll('rect').data(data).join('rect').attr('x', (d) => Math.min(x(0), x(d._d))).attr('y', (d, i) => i * rowH + 6).attr('height', 13).attr('rx', 2)
+      .attr('width', (d) => Math.max(1, Math.abs(x(d._d) - x(0)))).style('fill', (d) => (SXd.isGood(d._d, M) ? 'var(--color-ok)' : 'var(--color-bad)'));
+    svg.append('g').selectAll('text').data(data).join('text').attr('y', (d, i) => i * rowH + 17)
+      .attr('x', (d) => (d._d < 0 ? x(d._d) - 4 : x(d._d) + 4)).attr('text-anchor', (d) => (d._d < 0 ? 'end' : 'start')).text((d) => SXd.chgText(d._d, M));
+  };
+
+  /** One Explore view: summary, two charts and a sortable, filterable table, for the measure picked. */
+  dash.draw('xview', (el) => {
     el.replaceChildren();
-    if (SXd.failed('trend_daily')) return SXd.failNote(el);
+    const id = el.dataset.source;
+    if (SXd.failed(id)) return SXd.failNote(el);
+    const all = SXd.rows(id);
+    if (!all) return;
+    const st = SXd.state, panel = el.closest('[data-panel]'), view = panel.dataset.panel;
+    const ms = panel.dataset.measures.split(',');
+    const m = ms.includes(st.measure) ? st.measure : ms[0], M = SXd.M[m], rate = M.kind === 'rate';
+    const noun = el.dataset.noun || 'rows';
+    const q = String(st.q[view] || '').trim().toLowerCase(), tag = st.tag[view] || '';
+    const rows = all.filter((r) => (!q || String(r.name).toLowerCase().includes(q)) && SXd.tagMatch(r, tag)).map((r) => {
+      const a = r[`a_${m}`], b = r[`b_${m}`];
+      return { ...r, _d: a == null || b == null ? null : SXd.round1(a - b), _p: rate || a == null || b == null ? null : SXd.pct(a, b) };
+    });
+
+    // Summary sentence over the rows that match.
+    const sum = document.createElement('p'); sum.className = 'sx-sum';
+    const put = (t, bold) => { const s = document.createElement(bold ? 'b' : 'span'); s.textContent = t; sum.append(s); };
+    put(d3.format(',')(rows.length), true); put(` ${noun}${q || tag ? ' match' : ''}. `);
+    const tot = SXd.group(rows, () => 'all')[0];
+    if (tot) {
+      const a = tot[`a_${m}`], b = tot[`b_${m}`];
+      put(`${M.label}${rate ? ' overall' : ', all of them'}: `); put(SXd.fmt(a, M.fmt), true); put(' in A against '); put(SXd.fmt(b, M.fmt), true); put(' in B');
+      put(` (${rate ? SXd.chgText(a != null && b != null ? a - b : null, M) : SXd.fmt(SXd.pct(a, b), 'chg')}).`);
+    }
+    el.append(sum);
+    if (!rows.length) { const p = document.createElement('p'); p.className = 'sx-note'; p.textContent = 'Nothing matches. Clear the filter box or pick “All”.'; el.append(p); return; }
+
+    // Two charts: the biggest, and what moved most.
+    const two = document.createElement('div'); two.className = 'sx-two'; el.append(two);
+    const box = (title) => { const w = document.createElement('div'); const t = document.createElement('p'); t.className = 'sx-ch-title'; t.textContent = title; const c = document.createElement('div'); c.className = 'sx-chart is-auto'; w.append(t, c); two.append(w); return c; };
+    const minShown = 100;
+    const big = (rate
+      ? rows.filter((r) => (r.a_impressions || 0) >= minShown && r[`a_${m}`] != null).sort((x, y) => y.a_impressions - x.a_impressions)
+      : rows.filter((r) => (r[`a_${m}`] || 0) > 0 || (r[`b_${m}`] || 0) > 0).sort((x, y) => Math.max(y[`a_${m}`] || 0, y[`b_${m}`] || 0) - Math.max(x[`a_${m}`] || 0, x[`b_${m}`] || 0))).slice(0, 10);
+    const mv = rows.filter((r) => r._d != null && r._d !== 0 && (!rate || ((r.a_impressions || 0) >= minShown && (r.b_impressions || 0) >= minShown)))
+      .sort((x, y) => Math.abs(y._d) - Math.abs(x._d)).slice(0, 10).sort((x, y) => y._d - x._d);
+    // Both boxes first, so each chart is sized to its own column.
+    const c1 = box(rate ? `${M.label} of the ${noun} Google shows most · A in colour, B in grey` : `Biggest ${noun} by ${M.label.toLowerCase()} · A in colour, B in grey`);
+    const c2 = box(rate ? `Moved most (shown ${minShown}+ times in both) · A against B` : 'Moved most · A against B');
+    if (big.length) xPairChart(c1, big, m, M); else { c1.textContent = 'Not enough data for this chart.'; c1.className = 'sx-note'; }
+    if (mv.length) xDivChart(c2, mv, M); else { c2.textContent = 'Nothing changed.'; c2.className = 'sx-note'; }
+
+    // Table.
+    const cols = [{ f: 'name', label: el.dataset.nameLabel || 'Name', text: true }];
+    if (el.dataset.tag) cols.push({ f: el.dataset.tag, label: el.dataset.tagLabel || '', text: el.dataset.tag !== 'n' });
+    cols.push({ f: `a_${m}`, label: `${M.label}, A`, fmt: M.fmt }, { f: `b_${m}`, label: 'B', fmt: M.fmt }, { f: '_d', label: 'Change', chg: true });
+    if (!rate) cols.push({ f: '_p', label: '% change', pctchg: true });
+    for (const o of ms) if (o !== m) cols.push({ f: `a_${o}`, label: `${SXd.M[o].label}, A`, fmt: SXd.M[o].fmt, ctx: true });
+    let srt = st.sort[view];
+    if (!srt || !cols.some((c) => c.f === srt.f)) srt = rate ? { f: 'a_impressions', dir: 'desc' } : { f: `a_${m}`, dir: 'desc' };
+    const sorted = rows.slice().sort((x, y) => {
+      const a = x[srt.f], b = y[srt.f];
+      if (a == null && b == null) return 0; if (a == null) return 1; if (b == null) return -1;
+      const c = typeof a === 'number' && typeof b === 'number' ? a - b : String(a).localeCompare(String(b));
+      return srt.dir === 'desc' ? -c : c;
+    });
+    const limit = 25, shown = st.all[view] ? sorted : sorted.slice(0, limit);
+    const wrap = document.createElement('div'); wrap.className = 'sx-tablewrap';
+    const table = document.createElement('table'); table.className = 'sx-table';
+    const hr = table.createTHead().insertRow();
+    for (const c of cols) {
+      const th = document.createElement('th');
+      if (c.text) th.className = 'is-text';
+      if (c.ctx) th.classList.add('is-ctx');
+      th.setAttribute('aria-sort', srt.f === c.f ? (srt.dir === 'desc' ? 'descending' : 'ascending') : 'none');
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'sx-sortbtn';
+      b.textContent = `${c.label}${srt.f === c.f ? (srt.dir === 'desc' ? ' ↓' : ' ↑') : ''}`;
+      b.addEventListener('click', () => { st.sort[view] = { f: c.f, dir: srt.f === c.f ? (srt.dir === 'desc' ? 'asc' : 'desc') : c.text ? 'asc' : 'desc' }; dash.draw('xview'); });
+      th.append(b); hr.append(th);
+    }
+    const tb = table.createTBody();
+    for (const r of shown) {
+      const tr = tb.insertRow();
+      for (const c of cols) {
+        const td = tr.insertCell(), v = r[c.f];
+        if (c.text) td.className = 'is-text';
+        if (c.f === 'name' && el.dataset.drill) {
+          const b = document.createElement('button'); b.type = 'button'; b.className = 'sx-linkbtn'; b.textContent = String(v); b.title = `See the pages of ${v}`;
+          b.addEventListener('click', () => { if (window.SXgo) window.SXgo('pages', `${el.dataset.drill}:${v}`); });
+          td.append(b);
+        } else if (c.f === 'name' && /^https:\/\//.test(r.url || '')) {
+          const a = document.createElement('a'); a.href = r.url; a.target = '_blank'; a.rel = 'noopener'; a.textContent = String(v); td.append(a);
+        } else if (c.text) td.textContent = String(v ?? '');
+        else if (c.chg || c.pctchg) {
+          td.textContent = c.chg ? SXd.chgText(v, M) : SXd.fmt(v, 'chg');
+          if (v != null && Number(v) !== 0) td.classList.add(SXd.isGood(Number(v), M) ? 'is-good' : 'is-bad');
+        } else td.textContent = SXd.fmt(v, c.fmt);
+        if (c.ctx) td.classList.add('sx-muted');
+      }
+    }
+    wrap.append(table); el.append(wrap);
+    if (sorted.length > limit) {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'sx-more';
+      b.textContent = st.all[view] ? `Show the first ${limit}` : `Show all ${d3.format(',')(sorted.length)}`;
+      b.addEventListener('click', () => { st.all[view] = !st.all[view]; dash.draw('xview'); });
+      el.append(b);
+    }
+  });
+
+  /** The kind / project / type picker of an Explore view. */
+  dash.draw('xtags', (sel) => {
+    const rows = SXd.rows(sel.dataset.source) || [];
+    const view = sel.closest('[data-panel]').dataset.panel;
+    const opts = [new Option(sel.dataset.all || 'All', '')];
+    if (view === 'pages') {
+      for (const k of [...new Set(rows.map((r) => r.kind))].sort()) opts.push(new Option(`Kind: ${k}`, `kind:${k}`));
+      for (const k of [...new Set(rows.map((r) => r.project).filter(Boolean))].sort()) opts.push(new Option(`Project: ${k}`, `project:${k}`));
+    } else for (const k of [...new Set(rows.map((r) => r.tag).filter(Boolean))].sort()) opts.push(new Option(k, k));
+    sel.replaceChildren(...opts);
+    sel.value = SXd.state.tag[view] || '';
+  });
+
+  /** "Looking at … against …" */
+  dash.draw('xperiod', (el) => {
+    const p = dash.params();
+    el.replaceChildren();
+    if (!p.a_start || !p.b_start) { el.textContent = '—'; return; }
+    const s = (cls, t) => { const x = document.createElement('span'); x.className = cls; x.textContent = t; return x; };
+    el.append('Looking at ', s('is-a', SXd.label(p.a_start, p.a_end)), ` (A, ${SXd.days(p.a_start, p.a_end)} days) against `, s('is-b', SXd.label(p.b_start, p.b_end)), ` (B, ${SXd.days(p.b_start, p.b_end)} days).`);
+  });
+
+  /** "What changed" sentences. */
+  dash.draw('xinsights', (el) => {
+    el.replaceChildren();
+    if (SXd.failed('x_insights')) return SXd.failNote(el);
+    const rows = SXd.rows('x_insights');
+    if (!rows) return;
+    for (const r of rows) { const li = document.createElement('li'); li.textContent = r.text; if (r.tone !== 'neutral') li.className = `is-${r.tone}`; el.append(li); }
+  });
+
+  /** A laid over B, day by day (by week past three months), for the measure picked. */
+  dash.draw('xdaily', (el) => {
+    el.replaceChildren();
+    if (SXd.failed('x_daily')) return SXd.failNote(el);
+    const rows = SXd.rows('x_daily');
+    if (!rows || !rows.length) return;
+    const m = ['clicks', 'impressions', 'ctr', 'position'].includes(SXd.state.measure) ? SXd.state.measure : 'clicks', M = SXd.M[m];
+    const k = rows.length > 92 ? 7 : 1, pts = [];
+    for (let i = 0; i < rows.length; i += k) pts.push(SXd.bucket(rows.slice(i, i + k)));
+    const n = pts.length, A = (d) => d[`a_${m}`], B = (d) => d[`b_${m}`];
+    const vals = pts.flatMap((d) => [A(d), B(d)]).filter((v) => v != null);
+    if (!vals.length) return;
+    const W = Math.max(280, el.clientWidth), H = 240, mg = { t: 12, r: 12, b: 26, l: 48 };
+    const x = d3.scaleLinear().domain([0, Math.max(1, n - 1)]).range([mg.l, W - mg.r]);
+    const y = m === 'position'
+      ? d3.scaleLinear().domain([d3.max(vals) * 1.05, Math.max(0, d3.min(vals) * 0.9)]).nice().range([H - mg.b, mg.t])
+      : d3.scaleLinear().domain([0, d3.max(vals) * 1.1 || 1]).nice().range([H - mg.b, mg.t]);
+    const tf = m === 'ctr' ? (d) => `${d}%` : m === 'position' ? d3.format('.1f') : d3.format('~s');
+    const svg = xSvg(el, W, H, `${M.label} ${k === 7 ? 'by week' : 'by day'}, period A laid over period B`);
+    svg.append('g').attr('transform', `translate(${mg.l},0)`).call(d3.axisLeft(y).ticks(4).tickSize(-(W - mg.l - mg.r)).tickFormat(tf)).call((g) => g.selectAll('line').attr('stroke', 'var(--cds-chart-grid)'));
+    const fd = d3.utcFormat('%-d %b');
+    const ticks = d3.range(0, n, Math.max(1, Math.ceil(n / (W < 520 ? 4 : 7))));
+    svg.append('g').selectAll('text').data(ticks).join('text').attr('x', (i) => x(i)).attr('y', H - 8).attr('text-anchor', 'middle').text((i) => (pts[i].a_date ? fd(new Date(`${pts[i].a_date}T00:00:00Z`)) : ''));
+    if (m === 'position') svg.append('text').attr('x', W - mg.r).attr('y', mg.t + 10).attr('text-anchor', 'end').text('higher on the chart is better');
+    const line = (fn) => d3.line().defined((d) => fn(d) != null).x((d, i) => x(i)).y((d) => y(fn(d)));
+    svg.append('path').datum(pts).attr('fill', 'none').attr('stroke-width', 2).style('stroke', 'var(--cds-chart-muted)').attr('d', line(B));
+    svg.append('path').datum(pts).attr('fill', 'none').attr('stroke-width', 2.2).style('stroke', 'var(--sx-a)').attr('d', line(A));
+    const dot = svg.append('circle').attr('r', 4).style('fill', 'var(--sx-a)').attr('opacity', 0);
+    const tip = document.createElement('div'); tip.className = 'sx-tip'; tip.hidden = true; el.append(tip);
+    const fl = d3.utcFormat('%a %-d %b %Y');
+    svg.append('rect').attr('x', mg.l).attr('y', mg.t).attr('width', W - mg.l - mg.r).attr('height', H - mg.t - mg.b).attr('fill', 'transparent')
+      .on('pointermove', (ev) => {
+        const [px] = d3.pointer(ev);
+        const i = Math.max(0, Math.min(n - 1, Math.round(x.invert(px)))), d = pts[i];
+        if (A(d) != null) dot.attr('cx', x(i)).attr('cy', y(A(d))).attr('opacity', 1); else dot.attr('opacity', 0);
+        tip.replaceChildren();
+        const ln = (s, cls) => { if (!d[`${s}_date`]) return; const div = document.createElement('div'); if (cls) div.className = cls; div.textContent = `${k === 7 ? 'Week of ' : ''}${fl(new Date(`${d[`${s}_date`]}T00:00:00Z`))}: ${SXd.fmt(d[`${s}_${m}`], M.fmt)}`; tip.append(div); };
+        ln('a'); ln('b', 'sx-muted'); tip.hidden = false;
+        const sc = el.clientWidth / W;
+        tip.style.left = `${Math.min(Math.max(0, x(i) * sc - 90), el.clientWidth - 230)}px`; tip.style.top = '4px';
+      })
+      .on('pointerleave', () => { dot.attr('opacity', 0); tip.hidden = true; });
+  });
+
+  /** Every month Google keeps for the measure picked; click a month to look at it. */
+  dash.draw('xmonths', (el) => {
+    el.replaceChildren();
+    if (SXd.failed('trend_months')) return SXd.failNote(el);
     const rows = SXd.rows('trend_months');
     if (!rows || !rows.length) return;
-    const W = Math.max(280, el.clientWidth), H = 240, m = { t: 12, r: 8, b: 26, l: 44 };
-    const x = d3.scaleBand().domain(rows.map((d) => d.month)).range([m.l, W - m.r]).padding(0.25);
-    const y = d3.scaleLinear().domain([0, d3.max(rows, (d) => d.clicks) * 1.1]).nice().range([H - m.b, m.t]);
-    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Search Console clicks per month for 16 months, with periods A and B coloured');
-    svg.append('g').attr('transform', `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(4).tickSize(-(W - m.l - m.r)).tickFormat(d3.format(','))).call((g) => g.selectAll('line').attr('stroke', 'var(--cds-chart-grid)'));
+    const m = ['clicks', 'impressions', 'ctr', 'position'].includes(SXd.state.measure) ? SXd.state.measure : 'clicks', M = SXd.M[m];
+    const W = Math.max(280, el.clientWidth), H = 240, mg = { t: 12, r: 8, b: 26, l: 48 };
+    const x = d3.scaleBand().domain(rows.map((d) => d.month)).range([mg.l, W - mg.r]).padding(0.25);
+    const y = d3.scaleLinear().domain([0, d3.max(rows, (d) => d[m] || 0) * 1.1 || 1]).nice().range([H - mg.b, mg.t]);
+    const tf = m === 'ctr' ? (d) => `${d}%` : m === 'position' ? d3.format('.0f') : d3.format('~s');
+    const svg = xSvg(el, W, H, `${M.label} per month for 16 months, with periods A and B coloured`);
+    svg.append('g').attr('transform', `translate(${mg.l},0)`).call(d3.axisLeft(y).ticks(4).tickSize(-(W - mg.l - mg.r)).tickFormat(tf)).call((g) => g.selectAll('line').attr('stroke', 'var(--cds-chart-grid)'));
     const step = W < 520 ? 3 : W < 800 ? 2 : 1;
     svg.append('g').selectAll('text').data(rows.filter((d, i) => i % step === 0)).join('text').attr('x', (d) => x(d.month) + x.bandwidth() / 2).attr('y', H - 8).attr('text-anchor', 'middle').text((d) => d3.utcFormat('%b %y')(new Date(`${d.month}-01T00:00:00Z`)));
+    if (m === 'position') svg.append('text').attr('x', W - mg.r).attr('y', mg.t + 10).attr('text-anchor', 'end').text('taller = further down Google');
     const tip = document.createElement('div'); tip.className = 'sx-tip'; tip.hidden = true; el.append(tip);
     svg.append('g').selectAll('rect').data(rows).join('rect')
-      .attr('x', (d) => x(d.month)).attr('width', x.bandwidth()).attr('y', (d) => y(d.clicks)).attr('height', (d) => y(0) - y(d.clicks)).attr('rx', 3)
+      .attr('x', (d) => x(d.month)).attr('width', x.bandwidth()).attr('y', (d) => y(d[m] || 0)).attr('height', (d) => y(0) - y(d[m] || 0)).attr('rx', 3)
       .style('fill', (d) => (d.in_a === 'yes' ? 'var(--sx-a)' : d.in_b === 'yes' ? 'var(--color-fg-muted)' : 'var(--cds-chart-muted)'))
-      .style('fill-opacity', (d) => (d.partial === 'yes' ? 0.45 : 1))
+      .style('fill-opacity', (d) => (d.partial === 'yes' ? 0.45 : 1)).style('cursor', 'pointer')
+      .on('click', (ev, d) => { if (window.SXpickMonth) window.SXpickMonth(`${d.month}-01`); })
       .on('pointerenter', (ev, d) => {
         tip.replaceChildren();
         const a = document.createElement('b'); a.textContent = d.label + (d.partial === 'yes' ? ' (so far)' : '');
-        const b = document.createElement('div'); b.textContent = `${d3.format(',')(d.clicks)} clicks · ${d3.format(',')(d.impressions)} times shown`;
-        tip.append(a, b); tip.hidden = false;
+        const b = document.createElement('div'); b.textContent = `${SXd.fmt(d.clicks)} clicks · ${SXd.fmt(d.impressions)} times shown · ${SXd.fmt(d.ctr, 'pct')} · position ${SXd.fmt(d.position, 'pos')}`;
+        const c = document.createElement('div'); c.className = 'sx-muted'; c.textContent = 'Click to look at this month';
+        tip.append(a, b, c); tip.hidden = false;
         const sc = el.clientWidth / W;
-        tip.style.left = `${Math.min(Math.max(0, (x(d.month) + x.bandwidth()) * sc + 4), el.clientWidth - 220)}px`; tip.style.top = '4px';
+        tip.style.left = `${Math.min(Math.max(0, (x(d.month) + x.bandwidth()) * sc + 4), el.clientWidth - 260)}px`; tip.style.top = '4px';
       })
       .on('pointerleave', () => { tip.hidden = true; });
   });
@@ -1188,8 +1642,9 @@
 </script>
 
 <script>
-  /* ---------- Controls: tabs, quick picks, typed dates, report filter ---------- */
+  /* ---------- Controls: tabs, Explore periods, views, measures, filters, typed dates, report filter ---------- */
   (function () {
+    const SX = window.SX, st = SX.state;
     document.querySelectorAll('.sx').forEach((root) => { root.style.setProperty('--sx-a', dash.colors[0]); });
     const tabs = ['live', 'compare', 'ai', 'reports', 'guide'];
     const show = (name) => {
@@ -1197,24 +1652,91 @@
       document.querySelectorAll('.sx-sec[role=tabpanel]').forEach((s) => { s.hidden = s.id !== name; });
       document.querySelectorAll('.sx-tab').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
       dash.setLink(name);
+      if (name === 'compare') redraw();
     };
+
+    // ---- Explore: the period to look at (A) and what to compare it with (B)
+    const end = () => SX.addDays(SX.iso(new Date()), -3); // Search Console runs about 3 days behind
+    const lastFull = () => SX.addMonths(SX.monthStart(end()), -1);
+    const months = (n) => () => { const e = lastFull(); return [SX.addMonths(e, -(n - 1)), SX.monthEnd(e)]; };
+    const PA = {
+      d7: () => [SX.addDays(end(), -6), end()],
+      d28: () => [SX.addDays(end(), -27), end()],
+      mtd: () => [SX.monthStart(end()), end()],
+      m1: months(1), q3: months(3), h6: months(6), y12: months(12),
+    };
+    let customA = false, customB = false;
+    const modeA = () => { const p = dash.params(); for (const [k, f] of Object.entries(PA)) { const [s, e] = f(); if (s === p.a_start && e === p.a_end) return k; } return 'custom'; };
+    const modeB = () => { const p = dash.params(); if (!p.a_start) return 'prev'; for (const k of ['prev', 'yoy']) { const [s, e] = SX.shiftB(p.a_start, p.a_end, k); if (s === p.b_start && e === p.b_end) return k; } return 'custom'; };
+    const sync = () => {
+      const ma = customA ? 'custom' : modeA(), mb = customB ? 'custom' : modeB();
+      document.querySelectorAll('[data-a]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.a === ma)));
+      document.querySelectorAll('[data-b]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.b === mb)));
+      const cu = document.getElementById('x-custom');
+      if (cu) cu.hidden = !(ma === 'custom' || mb === 'custom');
+    };
+    const setA = (s, e) => {
+      const mb = customB ? 'custom' : modeB();
+      const next = { a_start: s, a_end: e };
+      if (mb !== 'custom') { const [bs, be] = SX.shiftB(s, e, mb); next.b_start = bs; next.b_end = be; }
+      dash.setParams(next);
+      sync();
+    };
+    const setB = (mode) => { const p = dash.params(); const [bs, be] = SX.shiftB(p.a_start, p.a_end, mode); dash.setParams({ b_start: bs, b_end: be }); sync(); };
+
+    // ---- Explore: which data, and which measure
+    const redraw = () => { for (const n of ['xview', 'xdaily', 'xmonths', 'xtags']) dash.draw(n); };
+    const setView = (v) => {
+      st.view = v;
+      document.querySelectorAll('.sx-xpanel').forEach((p) => { p.hidden = p.dataset.panel !== v; });
+      document.querySelectorAll('.sx-view').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.view === v)));
+      const panel = document.querySelector(`.sx-xpanel[data-panel="${v}"]`);
+      const ms = panel ? panel.dataset.measures.split(',') : [];
+      if (!ms.includes(st.measure)) st.measure = ms[0];
+      document.querySelectorAll('[data-measure]').forEach((b) => { b.hidden = !ms.includes(b.dataset.measure); b.setAttribute('aria-pressed', String(b.dataset.measure === st.measure)); });
+    };
+    window.SXgo = (v, tag) => { if (tag != null) { st.tag[v] = tag; st.all[v] = false; } setView(v); redraw(); const nav = document.querySelector('.sx-views'); if (nav && nav.scrollIntoView) nav.scrollIntoView({ block: 'start', behavior: 'smooth' }); };
+    window.SXpickMonth = (m) => { customA = false; setA(m, SX.monthEnd(m)); };
+
     document.addEventListener('click', (e) => {
-      const t = e.target.closest && e.target.closest('.sx-tab');
-      if (t) { show(t.dataset.tab); return; }
-      const c = e.target.closest && e.target.closest('[data-preset]');
-      if (c && window.SXpresets[c.dataset.preset]) dash.setParams(window.SXpresets[c.dataset.preset]());
+      const t = e.target.closest && e.target.closest('.sx-tab, [data-a], [data-b], [data-view], [data-measure]');
+      if (!t) return;
+      if (t.classList.contains('sx-tab')) { show(t.dataset.tab); return; }
+      if (t.dataset.a) { if (t.dataset.a === 'custom') { customA = true; sync(); } else { customA = false; setA(...PA[t.dataset.a]()); } return; }
+      if (t.dataset.b) { if (t.dataset.b === 'custom') { customB = true; sync(); } else { customB = false; setB(t.dataset.b); } return; }
+      if (t.dataset.view) { setView(t.dataset.view); redraw(); return; }
+      if (t.dataset.measure) { st.measure = t.dataset.measure; setView(st.view); redraw(); }
     });
+    let timer;
+    document.addEventListener('input', (e) => {
+      const t = e.target;
+      if (!(t.matches && t.matches('[data-x=q]'))) return;
+      const v = t.closest('[data-panel]').dataset.panel;
+      st.q[v] = t.value; st.all[v] = false;
+      clearTimeout(timer); timer = setTimeout(() => dash.draw('xview'), 150);
+    });
+    document.addEventListener('change', (e) => {
+      const t = e.target;
+      if (!(t.matches && t.matches('[data-x=tag]'))) return;
+      const v = t.closest('[data-panel]').dataset.panel;
+      st.tag[v] = t.value; st.all[v] = false;
+      dash.draw('xview');
+    });
+
+    setView('overview');
     show((location.hash || '').replace('#', '') || 'live');
     window.addEventListener('hashchange', () => show((location.hash || '').replace('#', '')));
 
     document.querySelectorAll('input[data-param]').forEach((inp) => {
-      inp.addEventListener('change', () => { if (inp.value && inp.validity.valid) dash.setParams({ [inp.dataset.param]: inp.value }); });
+      inp.addEventListener('change', () => { if (inp.value && inp.validity.valid) { dash.setParams({ [inp.dataset.param]: inp.value }); sync(); } });
       inp.addEventListener('blur', () => { inp.value = dash.params()[inp.dataset.param] || ''; });
     });
     dash.onData(() => {
       const p = dash.params();
       document.querySelectorAll('input[data-param]').forEach((inp) => { if (document.activeElement !== inp) inp.value = p[inp.dataset.param] || ''; });
+      sync();
     });
+    sync();
     const lib = document.getElementById('lib-filter');
     if (lib) lib.addEventListener('change', () => dash.draw('tbl'));
   })();
