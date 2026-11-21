@@ -51,3 +51,11 @@ node scripts/build-preview.mjs   # then open preview.html: no "—" left in the 
 - ROI email draft: `docs/EMAIL-TO-ROI.md` (targets in brackets are suggestions, not agreed).
 - AI project-name recount: OpenSEO matches one brand name only (`brandName`), no aliases. After each AI run, export the answers (`export_ai_visibility_data`; the download link needs the browser signed in to the OpenSEO account that owns project `14347a02…`, which is not the account with project `db1d2781…`), search the answer text for County Group and every project name, and update `data/ai_project_mentions.csv`. 1 Nov result: 13 of 38.
 - Next AI visibility snapshot: 30 Nov 2026. November data can be added once Search Console finalises (about 3 Dec).
+
+## County SEO Explorer (second dashboard, 21 Nov 2026)
+
+- Live and compare-any-period dashboard: https://claude.ai/artifact/9WgvtyodFffHZQC5fp4i6H (claude.ai "Data" type). Source files in `explorer/`: `index.html` (the page), `build-store.mjs` (writes `explorer/store/*.json`, the documents uploaded with ArtifactData batch), and the four saved CSVs.
+- Everything except ROI's deck figures, the deck index and the 1 Nov AI project recount is a live OpenSEO query (Search Console, GA4, AI checks), run with each viewer's own OpenSEO access. Filters: `l_*`/`p_*` (live 28-day windows, set by the page on open), `a_*`/`b_*` (compare periods), `ai_run` (which AI check). All date rules are `^20[0-9]{2}-[01][0-9]-[0-3][0-9]$`.
+- Brand rule is our own regex (`SX.BRAND` in the page): Google's `brandedClassification` counts "county 107", "ivory county" and "coco county" as NON_BRANDED, so it is not used.
+- AI checks: `get_ai_visibility_sources/results` default to scheduled runs only; the 1 Nov run was manual, so the page passes `runId` from the `ai_run` filter.
+- The reports sheet (County Group : Reports, tabs SEO / Social / Paid) only links decks; `explorer/reports_index.csv` lists them. The Oct 2026 Social deck is titled "October 2025" in the sheet; listed as Oct 2026.
