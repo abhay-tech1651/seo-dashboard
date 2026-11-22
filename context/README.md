@@ -19,6 +19,18 @@ kept on purpose (owner's call, 22 Nov 2026).
 4. Connectors needed in Claude: OpenSEO (Search Console, GA4, AI checks), Google Drive and Google
    Sheets (the Sheet), optionally GSC Wizard. Signed-in browser for Apps Script or Cloud console work.
 
+## Where all County work lives (GitHub, all private unless marked)
+
+| Repo | What it holds | Local folder on the first machine |
+|---|---|---|
+| `abhay-tech1651/seo-dashboard` | SEO dashboards (claude.ai reports, Explorer, Google Sheet), data, this context | `Documents/seo-dashboard` |
+| `abhay-tech1651/county-search-authority` | The County search-authority system built on the public claude-blog plugin: `search_authority/` package, `scripts/searchctl.py`, County skills (real-estate authority, citation assets, full/technical audit, Google Docs sync), OpenSEO data and 1 Nov baseline, AI visibility audit, Google Docs monitor workflows, Streamlit `dashboard.py`. Full upstream history kept; the local folder's `origin` still points to the public upstream, `county` points here (push with `git push county main`). | `Documents/Codex/2026-08-20/cre/outputs/google-search-authority-real-estate` |
+| `abhaynmehta/county-blog-authority` | County Blog Studio (web app, API, audit tools, blog drafts). **Pending:** 35 local changes from 22 Nov not pushed yet (the push needs the owner's OK) | `Documents/Codex/2026-08-20/cre/work/county-blog-authority` |
+| `abhay-tech1651/county-workspace` | All other County work files: 8-blog audit package and revised blogs (final renders + DOCX), SMO reports (Aug, Oct, Nov), August monthly report, digital-hygiene audits, ROI docs, PRP audit, build scripts, screenshots. Left out: installed software, older render copies, zips of included folders, page dumps, and two chats shared by Shipra (personal). | `Documents/Codex/2026-08-20/cre` |
+| `abhay-tech1651/str-qc` | Google Ads search-terms QC tool. Raw data only inside the encrypted vault (`vault/*.qcvault`, owner's passphrase). The old `cocoa-search-terms` and `ivory-search-terms` folders were copied into `history/earlier-folders/` on 22 Nov; they reach GitHub when the owner runs **Save data to GitHub**. | `Documents/str-qc` |
+| `abhaynmehta/ad-analysis` | Monthly Google Ads analysis pages | `Documents/ad-analysis` |
+| `abhay-tech1651/STR_SOP` (public) | STR standard operating procedure | (not cloned here) |
+
 ## What is in this folder
 
 | File | What it is |

@@ -15,3 +15,4 @@
 - [Dashboard design taste](feedback-dashboard-design.md) — handbook-style briefings over BI charts; all 4 projects equal; Sheets + Apps Script home
 - [SEO Google Sheet](project-seo-sheet.md) — 22 Nov 2026 Sheets + Apps Script dashboard (chosen home); script in seo-dashboard/sheets
 - [Repo hand-over rule](feedback-repo-handover.md) — keep full context + IDs in private repos; only lead data/keys stay out
+- [Repos map](reference-repos-map.md) — which GitHub repo holds which County work; pending pushes
