@@ -57,15 +57,17 @@ the script is linked to its own project:
 - Google Cloud project **County SEO Dashboard** (`county-seo-dashboard`, number `540186854841`),
   in abhaycounty@gmail.com. Free; no billing.
 - APIs switched on: Google Search Console API, Google Analytics Data API.
-- Sign-in (OAuth) screen: External, **Testing**, test user abhaycounty@gmail.com.
+- Sign-in (OAuth) screen: External, **In production** (published 22 Nov 2026), home page
+  https://www.countygroup.in/, privacy policy https://www.countygroup.in/privacy-policy.php,
+  authorised domain countygroup.in. Not submitted for Google verification, so the one-time approval
+  shows an "unverified app" warning; that is expected for an internal tool.
 - Apps Script > Project settings > Google Cloud Platform project = `540186854841`.
-- The script runs as abhaycounty@gmail.com.
+- The script runs as abhaycounty@gmail.com, approved again after publishing, so the approval does
+  not expire after 7 days (that limit applies only while a sign-in screen is in Testing).
 
-**Limit while in Testing:** Google lets a Testing sign-in last about 7 days. After that the
-automatic refresh stops and the Data line says "Refresh failed". To restart it, open
-Extensions > Apps Script, run **setup** and approve again. To remove the limit, publish the sign-in
-screen (Google Auth Platform > Audience > Publish app); Google asks first for a home page and a
-privacy-policy link on a domain County controls (Branding page).
+If the Data line ever says "Refresh failed" because the approval was removed (for example in Google
+Account > Security > Third-party connections), open Extensions > Apps Script, run **setup** and
+approve again.
 
 ## Sharing with the manager
 
