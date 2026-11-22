@@ -1,0 +1,17 @@
+- [User role](user-role.md) — Abhay, SEO/content systems lead at County Group real estate
+- [Agency dynamics](project-agencies.md) — ROI and AGO agency management context and constraints
+- [County Group USPs](project-usps.md) — Key differentiators for County Group / Clove County
+- [System goal](project-system-goal.md) — Build automated blog audit, writing, and AEO/GEO system
+- [County One CRM](project-county-crm.md) — Multi-tenant RE SaaS (Salesforce + Farvision); County Group first tenant; commercial product goal
+- [Audit gaps feedback](feedback-audit-gaps.md) — Manual findings (Abhay+Bhavik) that tool missed, now implemented
+- [Campaign analysis rules](feedback-campaign-analysis-rules.md) — Sheets are truth, no conjecture, strict under-5 flag, exact DQ remarks, keep artifact structures
+- [SMO report rebuild](project-smo-report.md) — v2 workbook 17 Oct; IST fix, FB dupes, verified IG collabs; open agency questions
+- [ROI growth plan](project-roi-growth-plan.md) — Oct 2026 70→300 leads deck + architecture sheet; contradictions, review verdicts
+- [openSEO baseline](project-openseo-baseline.md) — Nov 2026 openSEO project id, SEO + AI visibility baseline, tracker, credits
+- [STR system](project-str-system.md) — 3 STR sheets, coding, Vivek's rule, 4 Nov audit findings, automation goal
+- [Ad-analysis state](project-ad-analysis-state.md) — Sep page, Oct (1–31) page, Sep vs Oct page done 15 Nov; November next; links
+- [SEO dashboard](project-seo-dashboard.md) — Sep vs Oct 2026 live artifact + private repo seo-dashboard (data, docs, offline preview)
+- [SEO Explorer](project-seo-explorer.md) — live + compare-any-period SEO dashboard from the Reports sheet (21 Nov 2026)
+- [Dashboard design taste](feedback-dashboard-design.md) — handbook-style briefings over BI charts; all 4 projects equal; Sheets + Apps Script home
+- [SEO Google Sheet](project-seo-sheet.md) — 22 Nov 2026 Sheets + Apps Script dashboard (chosen home); script in seo-dashboard/sheets
+- [Repo hand-over rule](feedback-repo-handover.md) — keep full context + IDs in private repos; only lead data/keys stay out

@@ -1,7 +1,11 @@
 # SEO dashboard: hand-over notes for Claude Code
 
-Read this first on any machine. Then `docs/FINDINGS.md` (every verified number) and
-`docs/NOTES.md` (questions already answered).
+Read this first on any machine. Then `context/README.md` (how to pick up from any machine; full
+session log and Claude's memory notes are in `context/`), `docs/FINDINGS.md` (every verified
+number) and `docs/NOTES.md` (questions already answered).
+
+**After every piece of work:** update `sheets/CONTEXT.md` (or the relevant notes), refresh
+`context/SESSION-LOG.md` and `context/memory/`, and push to `main`, so nothing is lost between machines.
 
 **Main dashboard now (22 Nov 2026): the Google Sheet "County SEO Dashboard".** Read
 `sheets/CONTEXT.md` and `sheets/SETUP.md` before touching it. The claude.ai dashboards below are older.
