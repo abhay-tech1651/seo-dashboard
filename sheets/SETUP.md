@@ -49,6 +49,24 @@ If the Data line says "Refresh failed: ... permission", the account in step 4 ca
 Console or Google Analytics. Add it as a user there (read access is enough), then run
 **SEO > Refresh now**.
 
+### The Google Cloud project (done 22 Nov 2026)
+
+The hidden Cloud project every Apps Script gets can't have the Search Console API switched on, so
+the script is linked to its own project:
+
+- Google Cloud project **County SEO Dashboard** (`county-seo-dashboard`, number `540186854841`),
+  in abhaycounty@gmail.com. Free; no billing.
+- APIs switched on: Google Search Console API, Google Analytics Data API.
+- Sign-in (OAuth) screen: External, **Testing**, test user abhaycounty@gmail.com.
+- Apps Script > Project settings > Google Cloud Platform project = `540186854841`.
+- The script runs as abhaycounty@gmail.com.
+
+**Limit while in Testing:** Google lets a Testing sign-in last about 7 days. After that the
+automatic refresh stops and the Data line says "Refresh failed". To restart it, open
+Extensions > Apps Script, run **setup** and approve again. To remove the limit, publish the sign-in
+screen (Google Auth Platform > Audience > Publish app); Google asks first for a home page and a
+privacy-policy link on a domain County controls (Branding page).
+
 ## Sharing with the manager
 
 Share the Sheet like any Google Sheet. **Editor** lets them change the period dropdowns
