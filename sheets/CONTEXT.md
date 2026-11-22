@@ -10,15 +10,41 @@ source. After the claude.ai "Data" dashboards (Sep vs Oct report, County SEO Exp
 **Google Sheets + Apps Script** as the home: data stays in Google, no hosting, shareable like any
 Sheet, works on phone. The claude.ai dashboards still exist but the Sheet is the main one now.
 
+## Where we stopped (22 Nov 2026)
+
+Done and working:
+- Sheet built, script installed and linked to its own Cloud project, sign-in published (no 7-day
+  expiry), first full refresh 22 Nov 2026 13:19 IST, numbers match OpenSEO, 0 error cells.
+- Formatting pass done on every tab (see "Look" below).
+- Everything committed to `main`; this file, SETUP.md and the .xlsx copy are the hand-over.
+
+Not done yet / next steps the owner may ask for:
+- Share the Sheet with the manager (Editor if they should change the period, else Viewer).
+- Check the first automatic 07:00 IST refresh on 23 Nov 2026 (Data Sources "Refreshed because" =
+  "daily automatic refresh").
+- November 2026 numbers settle in Search Console around 3 Dec; nothing to do, the Sheet picks them up.
+- Next OpenSEO AI-visibility check is 30 Nov 2026 (shown on the Explorer, not in the Sheet).
+- Possible additions discussed: AI-visibility results in the Sheet (needs a manual paste or a
+  connector, OpenSEO has no API for Apps Script), Social/Paid decks.
+
+How we got here (short):
+1. 15 Nov: Sep vs Oct claude.ai report (repo `dashboard/`).
+2. 21 Nov: County SEO Explorer, live + compare any period (repo `explorer/`), Compare tab rebuilt as
+   "Explore & compare".
+3. 22 Nov: owner asked for something simpler that they and their manager can open anywhere, with
+   every source named and checkable, and chose Google Sheets + Apps Script. Built this Sheet.
+
 ## Where things are
 
 | Thing | Where |
 |---|---|
-| The Sheet | Google Drive, title **County SEO Dashboard** (owner's County Google account). Link not stored here on purpose. |
+| The Sheet | https://docs.google.com/spreadsheets/d/1DoQWexheJYr8rrFnbHrQmDgGUuE4w8KW9lAOS4Gir3U/edit (title **County SEO Dashboard**; created through the Drive connector, owner countyoneoseven@gmail.com; opened and run as abhaycounty@gmail.com) |
 | Full copy of the Sheet | `sheets/County-SEO-Dashboard.xlsx` (every tab, formula and format, data as of 22 Nov 2026 13:19 IST) |
-| Apps Script | Bound to the Sheet (Extensions > Apps Script). Source: `sheets/Code.gs`, `sheets/appsscript.json` |
-| Google Cloud project | **County SEO Dashboard** (`county-seo-dashboard`), Search Console API + Google Analytics Data API on, sign-in screen published "In production" (home page countygroup.in, privacy https://www.countygroup.in/privacy-policy.php) |
-| Data | Search Console property https://www.countygroup.in/ ; GA4 property 389974595 ("County Group") |
+| Apps Script | Bound to the Sheet (Extensions > Apps Script), script ID `1crxYeKNae3yaBqdMXWGfjIBkNpg1WG_KVeqxBuaLpIe8DPVe8r22vF7W`. Source: `sheets/Code.gs`, `sheets/appsscript.json`. Runs as abhaycounty@gmail.com |
+| Google Cloud project | **County SEO Dashboard**, ID `county-seo-dashboard`, number `540186854841`, in abhaycounty@gmail.com. Search Console API + Google Analytics Data API on. Sign-in screen: External, published "In production" (home page https://www.countygroup.in/, privacy https://www.countygroup.in/privacy-policy.php, domain countygroup.in), not Google-verified |
+| Data | Search Console property https://www.countygroup.in/ ; GA4 property 389974595 ("County Group") ; OpenSEO project `14347a02-a0e5-4b73-a38a-930d6071b049` (for cross-checks) |
+| Older dashboards | Sep vs Oct report https://claude.ai/artifact/NNdUdyrHo7EUtTibA7dMfn ; County SEO Explorer https://claude.ai/artifact/9WgvtyodFffHZQC5fp4i6H (see repo `CLAUDE.md`) |
+| Repo | github.com/abhay-tech1651/seo-dashboard (private), branch `main` only; commits as "County SEO Dashboard" <322489466+abhay-tech1651@users.noreply.github.com> |
 
 ## How it works (one paragraph)
 

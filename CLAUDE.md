@@ -15,7 +15,7 @@ Read this first on any machine. Then `docs/FINDINGS.md` (every verified number) 
 
 ## How the owner wants the work done
 
-- **Data security first.** No lead names, phone numbers, emails, keys or sheet IDs in this repo. Repo stays private.
+- **Data security first.** No lead or customer data (names, phone numbers, personal emails) and no passwords, API keys or tokens in this repo. Repo stays private. Sheet links, account emails, project and script IDs are fine here (owner's call, 22 Nov 2026): they keep the hand-over complete.
 - **Sources are the truth; no guessing.** State only what Google, the CRM sheet or ROI's report shows. Mark anything unproven as "not proven yet".
 - **Simple and short.** Plain words a manager understands; every number says where it came from.
 - **Keep the SEO and STR dashboards separate.**

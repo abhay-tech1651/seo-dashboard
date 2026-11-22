@@ -1,7 +1,7 @@
 # County SEO Dashboard (Google Sheets)
 
-Sheet: **County SEO Dashboard** in County's Google Drive (search Drive for that title; the link is
-not kept in this repo). A full export with every formula and format is `sheets/County-SEO-Dashboard.xlsx`.
+Sheet: **County SEO Dashboard**, https://docs.google.com/spreadsheets/d/1DoQWexheJYr8rrFnbHrQmDgGUuE4w8KW9lAOS4Gir3U/edit
+(all IDs and accounts are listed in `sheets/CONTEXT.md`). A full export with every formula and format is `sheets/County-SEO-Dashboard.xlsx`.
 
 ## How it works
 
