@@ -57,3 +57,9 @@ Then open `preview.html` in any browser. Without Node, `preview.html` still open
 The repo is private. It holds website traffic numbers and lead counts, not personal data:
 no lead names, phone numbers, emails, passwords or API keys. Keep it private; share the
 live dashboard from claude.ai rather than making this repo public.
+
+## Google Sheet version (main dashboard from 22 Nov 2026)
+
+The **County SEO Dashboard** Google Sheet refreshes itself from Search Console and Google Analytics.
+See `sheets/CONTEXT.md` (what it is and why), `sheets/SETUP.md` (install and fixes) and
+`sheets/County-SEO-Dashboard.xlsx` (full copy).

@@ -1,7 +1,7 @@
 # County SEO Dashboard (Google Sheets)
 
-Sheet: https://docs.google.com/spreadsheets/d/1DoQWexheJYr8rrFnbHrQmDgGUuE4w8KW9lAOS4Gir3U/edit
-(owned by the County Google account that created it).
+Sheet: **County SEO Dashboard** in County's Google Drive (search Drive for that title; the link is
+not kept in this repo). A full export with every formula and format is `sheets/County-SEO-Dashboard.xlsx`.
 
 ## How it works
 
@@ -54,15 +54,16 @@ Console or Google Analytics. Add it as a user there (read access is enough), the
 The hidden Cloud project every Apps Script gets can't have the Search Console API switched on, so
 the script is linked to its own project:
 
-- Google Cloud project **County SEO Dashboard** (`county-seo-dashboard`, number `540186854841`),
-  in abhaycounty@gmail.com. Free; no billing.
+- Google Cloud project **County SEO Dashboard** (project ID `county-seo-dashboard`),
+  in the owner's Google account (the one signed in to the browser when setup ran). Free; no billing.
 - APIs switched on: Google Search Console API, Google Analytics Data API.
 - Sign-in (OAuth) screen: External, **In production** (published 22 Nov 2026), home page
   https://www.countygroup.in/, privacy policy https://www.countygroup.in/privacy-policy.php,
   authorised domain countygroup.in. Not submitted for Google verification, so the one-time approval
   shows an "unverified app" warning; that is expected for an internal tool.
-- Apps Script > Project settings > Google Cloud Platform project = `540186854841`.
-- The script runs as abhaycounty@gmail.com, approved again after publishing, so the approval does
+- Apps Script > Project settings > Google Cloud Platform project = the project number shown on
+  that Cloud project's Settings page.
+- The script runs as the owner's Google account, approved again after publishing, so the approval does
   not expire after 7 days (that limit applies only while a sign-in screen is in Testing).
 
 If the Data line ever says "Refresh failed" because the approval was removed (for example in Google

@@ -3,6 +3,9 @@
 Read this first on any machine. Then `docs/FINDINGS.md` (every verified number) and
 `docs/NOTES.md` (questions already answered).
 
+**Main dashboard now (22 Nov 2026): the Google Sheet "County SEO Dashboard".** Read
+`sheets/CONTEXT.md` and `sheets/SETUP.md` before touching it. The claude.ai dashboards below are older.
+
 ## Who and what
 
 - Owner: County Group's SEO / content systems lead. Audience: their manager and boss, who are not SEO people.
@@ -59,3 +62,9 @@ node scripts/build-preview.mjs   # then open preview.html: no "—" left in the 
 - Brand rule is our own regex (`SX.BRAND` in the page): Google's `brandedClassification` counts "county 107", "ivory county" and "coco county" as NON_BRANDED, so it is not used.
 - AI checks: `get_ai_visibility_sources/results` default to scheduled runs only; the 1 Nov run was manual, so the page passes `runId` from the `ai_run` filter.
 - The reports sheet (County Group : Reports, tabs SEO / Social / Paid) only links decks; `explorer/reports_index.csv` lists them. The Oct 2026 Social deck is titled "October 2025" in the sheet; listed as Oct 2026.
+
+## County SEO Dashboard (Google Sheet, 22 Nov 2026)
+
+- The owner's chosen home for SEO reporting: Google Sheet + Apps Script, shareable with the manager, every number a formula over raw Google rows. Full context: `sheets/CONTEXT.md`; install and fixes: `sheets/SETUP.md`; script: `sheets/Code.gs` + `sheets/appsscript.json`; full export: `sheets/County-SEO-Dashboard.xlsx`.
+- Edit the Sheet with the Google Sheets connector (find it in Drive by title), check with `get_values` plus an error scan; change the script here, then paste it into the Sheet's Apps Script.
+- The County SEO Explorer's Compare tab was rebuilt as "Explore & compare" on 21 Nov (commit efa00f7) before the owner moved to the Sheet.
