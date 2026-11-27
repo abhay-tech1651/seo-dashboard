@@ -50,7 +50,11 @@ blog tools, social reports) lives elsewhere and is deliberately left out of this
 | 22 Nov | 2ad8df7, f4988b1 | Full Sheet export, CONTEXT.md, IDs and accounts, where we stopped |
 | 22 Nov | f16a10e, ed20fae, c53712c | This folder: session log and memory notes (SEO only) |
 | 25 Nov | 321dc4d | Review and redesign of the Sheet: one month dropdown, all 16 months fetched daily, Dashboard in reading order, Month by month and Agency check tabs, `sheets/LAYOUT.md` |
-| 27 Nov | (this commit) | Dashboard rebuilt as a one-screen briefing (story, cards, four projects on sale, day-by-day chart); November-so-far findings in CONTEXT.md |
+| 27 Nov | 5cf2b32 | Dashboard rebuilt as a one-screen briefing (story, cards, four projects on sale, day-by-day chart); November-so-far findings in CONTEXT.md |
+| 27 Nov | d4e5cb7, 6782171 | Enquiries counted as people, by kind (WhatsApp, Contact us, forms): new Raw GA enquiries tab, script installed |
+| 27 Nov | c576357, dcac0dc | Microsoft Clarity guide (`docs/CLARITY-GUIDE.md`) with the blog findings |
+| 27 Nov | 6f1dcdd | Clarity deep dive into the top Cocoa blog, heatmap screenshots in `docs/clarity-2026-11-27/` |
+| 27 Nov | (this commit) | Hand-over for the office laptop: where we stopped, open questions, memory copies |
 
 ## Owner's standing rules (also in memory)
 

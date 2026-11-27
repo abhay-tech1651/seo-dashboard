@@ -4433,3 +4433,10 @@ User: "inquiries I don't understand. Please make me understand ... change the da
 - Clarity: the browser pane is not signed in to clarity.microsoft.com yet; waiting for the owner to sign in.
 - Clarity (signed in by the owner in the browser pane): project "County Group" z77gcwb5k1. Last 30 days: 10,360 visits; blog pages 89 visits (under 1%), top post 32 views (Cocoa), desktop-heavy, 63% scroll, 3.5 min active, dead clicks 33%, 2 Contact us. Guide written to docs/CLARITY-GUIDE.md.
 - Deep dive into the top Cocoa blog in Clarity (heatmaps click / scroll / attention, 17 recordings, AI summaries, the live page on desktop and phone): findings and changes appended to docs/CLARITY-GUIDE.md, screenshots in docs/clarity-2026-11-27/.
+
+## 27 Nov 2026 (end of day): pushed for the office laptop
+
+- Closing message on the Cocoa deep dive: who came, scroll, attention, clicks, what the post is missing, site-code problems, six changes for the post; asked whether to write the change list for the web team.
+- User: "no not yet just push everything and make sure I'm able to work on this from my home machine ... push everything and context whatever done today, will see everything in detail in office laptop".
+- Checked every repo: seo-dashboard, str-qc, county-search-authority and ad-analysis already in sync. county-workspace had new digital-hygiene folders (23-27 Nov) not yet pushed; scanned them (only public website copies, the site's own public numbers and account details, a public Maps key already in the site's HTML; no lead data, no passwords) and pushed. The Blog Studio repo (county-blog-authority) was left alone: out of scope, its 35 local changes date from Oct and GitHub has 2 newer commits from elsewhere, so it needs the owner to merge.
+- Hand-over: README timeline, CONTEXT.md open questions, Clarity memory note updated.

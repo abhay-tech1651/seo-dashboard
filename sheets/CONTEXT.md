@@ -96,6 +96,12 @@ check: ROI's clicks match Search Console within 4 every month; ROI's organic vis
 150 of Google Analytics google / organic.
 
 Not done yet / next steps the owner may ask for:
+- **Open question (27 Nov, end of day):** write the change list for the web team from the Clarity
+  deep dive (`docs/CLARITY-GUIDE.md`, "What to change on this post")? The owner said "not yet" and will
+  read everything in detail on the office laptop. Do not change the website or send anything without a yes.
+- Clarity: exclude the County and agency team (Settings > Setup > IP blocking) so blog numbers show buyers only.
+- Website bugs to pass on when the owner says so: `clearTimeout(fallbackTimer)` with the timer line
+  commented out (about 58% of the site's JS errors); GTM/GA only loads after scroll, mousemove or touch.
 - Share the Sheet with the manager and Bhavik (Editor if they should change the month).
 - When ROI's November report arrives: type its figures and link on Agency check row "Nov 2026", and
   County's CRM organic lead count in the yellow column (only Sep 68 and Oct 93 are filled).
