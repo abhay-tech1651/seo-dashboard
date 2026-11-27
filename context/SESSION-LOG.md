@@ -4413,3 +4413,13 @@ Hold and roast the sheet, roast the dashboard again, and look for weaknesses, lo
 - Dashboard rebuilt top to bottom (verdict, four numbers, why, projects, pages moved, check next, 16-month chart; Go-to links). New tabs Month by month and Agency check (ROI figures, report links, CRM leads Sep 68 / Oct 93, 9 findings with exact numbers).
 - 25 Nov: daily refresh ran 07:42 IST on the new script. Tested "This month so far" vs "Same month last year". Found and fixed: AI channel only from ~Jun 2026 (switched to source matching); GA key events ~none before Apr 2026 (text now says so); Cocoa County visits land on /cocoacounty/campaign (project visits now by address prefix: 163 visits, 20 enquiry events in Oct). Error scan: none. Numbers still match the 22 Nov OpenSEO check (Oct 4,289 clicks, 5,125 visits, 72 enquiry events).
 - Formatting on all new parts; tab order and colours; `sheets/LAYOUT.md` pulled from the live Sheet; CONTEXT.md, SETUP.md, memory notes updated; pushed.
+
+## 27 Nov 2026: November so far, and the Dashboard rebuilt as a briefing
+
+User: "SEO dashboard, let's focus on now what is happening for this month and also making the dashboard even better right now I don't like it" ... "it has to be better".
+
+- Read November so far (1-26 Nov) against 1-26 Oct: clicks 3,258 (-12%), visits 3,923 (-10%), enquiry events 33 (against 65), AI visits 62 (61). Brand searches -318 clicks, new-buyer -24, position 5.6 (was 5.9): fewer people searched, rankings held. Projects on sale flat or up; older projects (Center Court, Coco County, County 107) carry the fall. Against Nov 2025: clicks -24%, position 6.6 -> 5.6.
+- Enquiries: GA key events by event and landing page (OpenSEO) showed October's 65 included 15 WhatsApp clicks by 3 visitors on /cocoacounty/campaignDV; counted as people it is about 43 (Oct 1-26) against 29 (Nov 1-26).
+- Looked at the Sheet in the owner's Chrome (Claude in Chrome; the built-in browser pane was signed out of Google). Roast: still a spreadsheet, sources column took half the width, text cut off, opened on last month.
+- Rebuilt the Dashboard tab (cleared, new layout A:G): title, dropdowns moved to B3/E3 (rows 1-3 frozen), DATA_STATUS moved to A4, four-sentence "What happened" story, four number cards, the four projects on sale, day-by-day line chart (new chart, Chart workings H1:J32), pages moved, check next, month-by-month chart. Helper numbers in Chart workings L1:N14. Settings B33/B37 now read Dashboard B3/E3. Sources moved to cell notes. Tested Oct 2026 vs Month before and Nov so far vs Same month last year: no errors. Default set back to This month so far vs Month before.
+- LAYOUT.md (Dashboard and Chart workings) and CONTEXT.md updated; pushed.

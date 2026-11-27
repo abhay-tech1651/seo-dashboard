@@ -49,7 +49,8 @@ blog tools, social reports) lives elsewhere and is deliberately left out of this
 | 22 Nov | 9695ed4, 1b542e0 | Own Google Cloud project; sign-in screen published (no 7-day expiry) |
 | 22 Nov | 2ad8df7, f4988b1 | Full Sheet export, CONTEXT.md, IDs and accounts, where we stopped |
 | 22 Nov | f16a10e, ed20fae, c53712c | This folder: session log and memory notes (SEO only) |
-| 25 Nov | (this commit) | Review and redesign of the Sheet: one month dropdown, all 16 months fetched daily, Dashboard in reading order, Month by month and Agency check tabs, `sheets/LAYOUT.md` |
+| 25 Nov | 321dc4d | Review and redesign of the Sheet: one month dropdown, all 16 months fetched daily, Dashboard in reading order, Month by month and Agency check tabs, `sheets/LAYOUT.md` |
+| 27 Nov | (this commit) | Dashboard rebuilt as a one-screen briefing (story, cards, four projects on sale, day-by-day chart); November-so-far findings in CONTEXT.md |
 
 ## Owner's standing rules (also in memory)
 

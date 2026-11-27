@@ -1,6 +1,6 @@
 # County SEO Dashboard (Google Sheet): full context for picking up on any machine
 
-Last updated 25 Nov 2026. Read with `sheets/SETUP.md` (how it is installed), `sheets/LAYOUT.md` (every
+Last updated 27 Nov 2026. Read with `sheets/SETUP.md` (how it is installed), `sheets/LAYOUT.md` (every
 tab, named range and formula, pulled from the live Sheet) and the repo `CLAUDE.md`.
 
 ## Why it exists
@@ -14,7 +14,50 @@ Sheet, works on phone. The claude.ai dashboards still exist but the Sheet is the
 It is built for daily use by Abhay and Bhavik, for the manager, and for auditing the SEO agency
 (ROI Mantra) month by month.
 
-## Where we stopped (25 Nov 2026)
+## Where we stopped (27 Nov 2026)
+
+On 27 Nov 2026 the owner said they still did not like the Dashboard ("it has to be better") and asked
+what is happening this month. Roast of the 25 Nov version, seen in the owner's Chrome: it still looked
+like a spreadsheet (a "Where it comes from" column took half the width, long text cut off at the edge,
+tables of equal weight), it opened on last month, and enquiry events were read as people.
+
+Rebuilt the Dashboard tab as a one-screen briefing that reads top to bottom (formulas in LAYOUT.md):
+1. Navy title "SEO briefing · November 2026 so far", dates, the two yellow dropdowns (B3 Month, E3
+   Compare with; rows 1-3 frozen so they stay on screen), refresh status (A4 = DATA_STATUS), last 7 days,
+   links to the detail tabs.
+2. **What happened**: four plain sentences, all formulas: Traffic (with month-end pace and the same
+   days a year earlier), Why (brand vs new-buyer clicks, times shown, position, and whether rankings
+   held: a change of 0.5 position or less = held), Enquiries (with the "one visitor can click WhatsApp
+   several times" caveat), Projects (the four on sale, then the older projects' biggest moves).
+3. **The four numbers** as cards: big number, ▲/▼ change in green/red, and a line under it (pace for
+   clicks). Sources moved into cell notes (hover).
+4. **The four projects on sale**: Ivory (with Gold), Clove, Cocoa, Jade: clicks, change, visits, change,
+   enquiry events, position. Older projects are summed in the story and listed on the Projects tab.
+5. **Day by day** line chart: month picked (blue) against the whole compared month (grey).
+6. **Pages that moved most** (4 lost, 4 gained), **Check next** (Pages, New buyers, Enquiries, AI
+   answers, ROI report), **Month by month** chart.
+Default view is now "This month so far" against "Month before". Helper numbers sit in Chart workings
+L1:N14, the day-by-day data in Chart workings H1:J32. Font: Inter. Checked with Oct 2026 vs Month
+before and Nov 2026 so far vs Same month last year: no error cells.
+
+November 2026 so far (1 to 26 Nov, checked 27 Nov):
+- Clicks 3,258, 12% fewer than 1-26 Oct (3,708); on pace for about 3,760 (October: 4,289). Same days
+  of Nov 2025: 4,298, so 24% fewer than a year ago.
+- The drop is in searches naming County or a project (-318 clicks); new-buyer searches -24. Position
+  5.6 (was 5.9), times shown -8%: fewer people searched, rankings held. Against Nov 2025, position
+  improved from 6.6 to 5.6 and new-buyer clicks rose; brand clicks fell by 985.
+- Projects on sale are flat or up (Ivory 420 +17, Clove 62 +3, Cocoa 92 +25, Jade 129 +4). The fall is in
+  older projects: Center Court -118, Coco County -103, County 107 -87. /cleocounty is new (61 clicks).
+- Enquiry events 33 against 65. October's 65 included 15 WhatsApp clicks by 3 visitors on
+  /cocoacounty/campaignDV (an ad landing page counted as Organic Search). Counted as people (GA
+  totalUsers per event and landing page, via OpenSEO): about 43 in Oct 1-26 against 29 in Nov 1-26.
+- AI visits 62 against 61.
+
+Next ideas from this round (not done): count people who enquired instead of events (needs a Code.gs
+change: GA4 metric totalUsers with dimension isKeyEvent, or userKeyEventRate), and ask why
+/cocoacounty/campaignDV gets Organic Search visits.
+
+## Before that (25 Nov 2026)
 
 On 23 Nov 2026 the owner asked for a hard review ("roast") of the Sheet: the period picker was too
 complex, the Dashboard flooded numbers with no flow, and it should serve Abhay's and Bhavik's daily
@@ -139,8 +182,10 @@ Chart workings and the Raw tabs (grey) · Data Sources (green, last).
 
 ## Look
 
-Arial 10. Navy title bands, light blue-grey section bands, dark-blue table headers with white bold
-text, thin light-grey borders, light striping on Month by month, yellow input cells with an amber
+Dashboard (27 Nov): Inter 10, gridlines hidden, navy title band, section headings in navy with a navy
+underline, the four-sentence story on a pale grey panel with a blue left edge, number cards on pale
+blue, ▲ green / ▼ red. Other tabs: Arial 10, navy title bands, light blue-grey section bands, dark-blue
+table headers with white bold text, thin light-grey borders, light striping on Month by month, yellow input cells with an amber
 border, grey cells for figures typed from ROI's reports, green/red for rises/falls (position:
 red when it rises, since lower is better).
 

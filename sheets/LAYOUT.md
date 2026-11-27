@@ -1,6 +1,6 @@
 # County SEO Dashboard: every tab, named range and formula
 
-Pulled from the live Sheet on 25 Nov 2026 (after the redesign). With this file and `Code.gs` the whole
+Pulled from the live Sheet on 25 Nov 2026 (after the redesign); Dashboard and Chart workings updated 27 Nov 2026 (briefing layout). With this file and `Code.gs` the whole
 Sheet can be rebuilt. Formatting (colours, widths, merges) is described in `CONTEXT.md` under "Look".
 
 Cells that only hold labels are listed too, so positions are clear. Long spilled results are not listed:
@@ -35,7 +35,7 @@ only the formula in the top-left cell.
 | Name | Where |
 |---|---|
 | B_AVAILABLE | 'Settings'!B40 |
-| DATA_STATUS | 'Dashboard'!B7 |
+| DATA_STATUS | 'Dashboard'!A4 |
 | DAYS_A | 'Settings'!B41 |
 | DAYS_B | 'Settings'!B42 |
 | FETCHED_PERIODS | 'Data Sources'!B3:B8 |
@@ -52,112 +52,110 @@ only the formula in the top-left cell.
 
 ## Dashboard
 
-- `A1`: County SEO Dashboard
-- `A2`: Search Console and Google Analytics for countygroup.in. Pick a month in the yellow cell and everything below changes at once. Each number says where it comes from; the Data Sources tab links to Google to check it.
-- `A3`: Go to:
-- `B3`: `=HYPERLINK("#gid=21","Month by month")`
-- `C3`: `=HYPERLINK("#gid=22","Agency check")`
-- `D3`: `=HYPERLINK("#gid=3","Projects")`
-- `E3`: `=HYPERLINK("#gid=1","Pages")`
-- `F3`: `=HYPERLINK("#gid=2","Searches")`
-- `A5`: Month
-- `B5`: Last full month
-- `C5`: compared with
-- `D5`: Month before
-- `A6`: Dates
-- `B6`: `=TEXT(PERIOD_A_START,"d mmm yyyy")&" to "&TEXT(PERIOD_A_END,"d mmm yyyy")&IF(PART_MONTH," (month not finished)","")&", against "&TEXT(PERIOD_B_START,"d mmm yyyy")&" to "&TEXT(PERIOD_B_END,"d mmm yyyy")&IF(B_AVAILABLE,""," (Google no longer has these dates)")`
-- `A7`: Data
-- `B7`: Up to date. Google data runs to 24 Nov 2026. Refreshed 25 Nov 2026, 07:42 IST.
-- `A8`: Last 7 days
-- `B8`: `=LET(L,LATEST_DAY,d,'Raw Google daily'!A2:A,c,'Raw Google daily'!B2:B,w_now,SUMIFS(c,d,">="&L-6,d,"<="&L),w_before,SUMIFS(c,d,">="&L-13,d,"<="&L-7),m_now,SUMIFS(c,d,">="&L-27,d,"<="&L),m_before,SUMIFS(c,d,">="&L-55,d,"<="&L-28),TEXT(w_now,"#,##0")&" clicks from Google ("&TEXT(L-6,"d mmm")&" to "&TEXT(L,"d mmm")&"), "&TEXT(ABS(w_now/w_before-1),"0%")&IF(w_now>=w_before," more"," fewer")&" than the 7 days before. Last 28 days: "&TEXT(m_now,"#,##0")&", "&TEXT(ABS(m_now/m_before-1),"0%")&IF(m_now>=m_before," more"," fewer")&" than the 28 days before. The last two days are not final yet.")`
-- `A10`: In one line
-- `A11`: `=IF(NOT(B_AVAILABLE),"Google no longer keeps "&LABEL_B&", so there is nothing to compare "&LABEL_A&" with. Pick Month before.",LABEL_A&": "&TEXT(B15,"#,##0")&" clicks from Google, "&IF(C15=0,"",TEXT(ABS(B15/C15-1),"0%")&IF(B15>=C15," more"," fewer")&" than "&LABEL_B&". ")&"Searches naming County or a project "&IF(B22>=C22,"rose by ","fell by ")&TEXT(ABS(B22-C22),"#,##0")&" clicks; new-buyer searches "&IF(B23>=C23,"rose by ","fell by ")&TEXT(ABS(B23-C23),"#,##0")&". Visits from search engines led to "&TEXT(B17,"#,##0")&" enquiry events"&IF(C17=0," (Google Analytics recorded none in "&LABEL_B&").",", against "&TEXT(C17,"#,##0")&"."))`
-- `A13`: The four numbers that matter
-- `B14`: `=LABEL_A`
-- `C14`: `=LABEL_B`
-- `D14`: Change
-- `E14`: Where it comes from
+Rebuilt 27 Nov 2026 as a one-screen briefing (columns A to G, 850 px wide, rows 1 to 3 frozen). The yellow
+dropdowns are B3 (Month, list Settings!A9:A26) and E3 (Compare with, list Settings!A29:A30); Settings!B33 and B37 read them.
+DATA_STATUS is A4 (the script writes the refresh status there). Charts: day by day (line, Chart workings H1:J32) anchored at
+A29; month by month (chart 183833413, Chart workings A1:D17) anchored at A64. Source notes are cell notes on B3, E3, A15:F15, A21.
+
+- `A1`: `="SEO briefing  ·  "&IF(PART_MONTH,TEXT(PERIOD_A_START,"mmmm yyyy")&" so far",TEXT(PERIOD_A_START,"mmmm yyyy"))`
+- `A2`: `="countygroup.in, Google search only (no ads). "&TEXT(PERIOD_A_START,"d mmm")&" to "&TEXT(PERIOD_A_END,"d mmm yyyy")&IF(B_AVAILABLE,", against "&TEXT(PERIOD_B_START,"d mmm")&" to "&TEXT(PERIOD_B_END,"d mmm yyyy")&".",". Google no longer keeps the compared month.")`
+- `A3`: Month
+- `B3`: This month so far
+- `D3`: compared with
+- `E3`: Month before
+- `A4`: Up to date. Google data runs to 26 Nov 2026. Refreshed 27 Nov 2026, 07:42 IST.
+- `A5`: `=LET(L,LATEST_DAY,d,'Raw Google daily'!A2:A,c,'Raw Google daily'!B2:B,w_now,SUMIFS(c,d,">="&L-6,d,"<="&L),w_before,SUMIFS(c,d,">="&L-13,d,"<="&L-7),"Last 7 days ("&TEXT(L-6,"d mmm")&" to "&TEXT(L,"d mmm")&"): "&TEXT(w_now,"#,##0")&" clicks, "&TEXT(ABS(w_now/w_before-1),"0%")&IF(w_now>=w_before," more"," fewer")&" than the 7 days before. Google's last two days are not final yet.")`
+- `A6`: More detail:
+- `B6`: `=HYPERLINK("#gid=21","Month by month")`
+- `C6`: `=HYPERLINK("#gid=22","Agency check")`
+- `D6`: `=HYPERLINK("#gid=3","Projects")`
+- `E6`: `=HYPERLINK("#gid=1","Pages")`
+- `F6`: `=HYPERLINK("#gid=2","Searches")`
+- `G6`: `=HYPERLINK("#gid=20","Sources")`
+- `A8`: What happened
+- `A9`: `=LET(a,'Chart workings'!$M$2,b,'Chart workings'!$N$2,p,'Chart workings'!$M$10,f,'Chart workings'!$N$10,y,'Chart workings'!$M$11,"Traffic.  Google sent "&TEXT(a,"#,##0")&" clicks"&IF(PART_MONTH," from 1 to "&TEXT(PERIOD_A_END,"d mmm")," in "&TEXT(PERIOD_A_START,"mmmm"))&IF(b=0,".",", "&TEXT(ABS(a/b-1),"0%")&IF(a>=b," more"," fewer")&" than "&LABEL_B&".")&IF(PART_MONTH," At this pace "&TEXT(PERIOD_A_START,"mmmm")&" ends near "&TEXT(p,"#,##0")&", against "&TEXT(f,"#,##0")&" in all of "&TEXT(PERIOD_B_START,"mmmm yyyy")&".","")&IF(OR(y="",Settings!$B$37="Same month last year",y=0),""," A year ago, the same days had "&TEXT(y,"#,##0")&" ("&TEXT(ABS(a/y-1),"0%")&IF(a>=y," more now"," fewer now")&")."))`
+- `A10`: `=LET(db,'Chart workings'!$M$6-'Chart workings'!$N$6,dn,'Chart workings'!$M$7-'Chart workings'!$N$7,pa,'Chart workings'!$M$9,pb,'Chart workings'!$N$9,ia,'Chart workings'!$M$8,ib,'Chart workings'!$N$8,"Why.  Searches naming County or a project gave "&TEXT(ABS(db),"#,##0")&IF(db<0," fewer"," more")&" clicks; searches by new buyers (no County name) gave "&TEXT(ABS(dn),"#,##0")&IF(dn<0," fewer"," more")&". "&IF(ib=0,"","Google showed the site "&TEXT(ABS(ia/ib-1),"0%")&IF(ia>=ib," more"," less")&" often, at an average position of "&TEXT(pa,"0.0")&" (was "&TEXT(pb,"0.0")&"; lower is better). "&IF(ABS(pa-pb)<=0.5,"Rankings held, so the change is mostly in how many people searched.",IF(pa<pb,"Rankings improved.","Rankings slipped: the Searches and Pages tabs show where."))))`
+- `A11`: `=LET(v,'Chart workings'!$M$3,vb,'Chart workings'!$N$3,e,'Chart workings'!$M$4,eb,'Chart workings'!$N$4,"Enquiries.  "&TEXT(v,"#,##0")&" visits came from search engines"&IF(vb=0,"",", "&TEXT(ABS(v/vb-1),"0%")&IF(v>=vb," more"," fewer")&" than "&LABEL_B)&". They led to "&e&" enquiry events (WhatsApp, Contact us, thank-you pages), against "&eb&"."&IF(eb=0," Google Analytics recorded none in "&LABEL_B&": tracking was most likely not set up then."," One visitor can click WhatsApp several times, so a few busy visitors can swing this count."))`
+- `A12`: `=LET(sell,{"Ivory County";"Clove County";"Cocoa County";"Jade County"},t,TEXTJOIN(", ",TRUE,MAP(sell,LAMBDA(k,LET(x,SUMIFS(Projects!$C$4:$C$20,Projects!$A$4:$A$20,k&"*"),z,SUMIFS(Projects!$D$4:$D$20,Projects!$A$4:$A$20,k&"*"),REGEXREPLACE(k," County","")&" "&TEXT(x,"#,##0")&" ("&TEXT(x-z,"+#,##0;-#,##0;0")&")")))),o,FILTER(HSTACK(Projects!$A$4:$A$20,Projects!$E$4:$E$20),Projects!$A$4:$A$20<>"",NOT(REGEXMATCH(Projects!$A$4:$A$20&"",'Chart workings'!$M$14))),w,SORTN(o,3,0,2,TRUE),"Projects.  On sale, clicks to each project's pages: "&t&". Older projects together: "&TEXT('Chart workings'!$M$12,"#,##0")&" ("&TEXT('Chart workings'!$M$12-'Chart workings'!$N$12,"+#,##0;-#,##0;0")&"), mostly "&TEXTJOIN(", ",TRUE,BYROW(w,LAMBDA(r,INDEX(r,1)&" "&TEXT(INDEX(r,2),"+#,##0;-#,##0;0"))))&".")`
+- `A14`: The four numbers
 - `A15`: Clicks from Google
-- `B15`: `=SUMIFS('Raw Google daily'!$B$2:$B,'Raw Google daily'!$A$2:$A,">="&PERIOD_A_START,'Raw Google daily'!$A$2:$A,"<="&PERIOD_A_END)`
-- `C15`: `=SUMIFS('Raw Google daily'!$B$2:$B,'Raw Google daily'!$A$2:$A,">="&PERIOD_B_START,'Raw Google daily'!$A$2:$A,"<="&PERIOD_B_END)`
-- `D15`: `=IF(C15=0,"",B15/C15-1)`
-- `E15`: Search Console, all searches
-- `A16`: Visits from search engines (not ads)
-- `B16`: `=SUMIFS('Raw GA channels'!$C$2:$C,'Raw GA channels'!$A$2:$A,KEY_A,'Raw GA channels'!$B$2:$B,"Organic Search")`
-- `C16`: `=SUMIFS('Raw GA channels'!$C$2:$C,'Raw GA channels'!$A$2:$A,KEY_B,'Raw GA channels'!$B$2:$B,"Organic Search")`
-- `D16`: `=IF(C16=0,"",B16/C16-1)`
-- `E16`: Google Analytics, channel Organic Search (Google, Bing and others)
-- `A17`: Enquiry events from those visits
-- `B17`: `=SUMIFS('Raw GA channels'!$E$2:$E,'Raw GA channels'!$A$2:$A,KEY_A,'Raw GA channels'!$B$2:$B,"Organic Search")`
-- `C17`: `=SUMIFS('Raw GA channels'!$E$2:$E,'Raw GA channels'!$A$2:$A,KEY_B,'Raw GA channels'!$B$2:$B,"Organic Search")`
-- `D17`: `=IF(C17=0,"",B17/C17-1)`
-- `E17`: Google Analytics key events (WhatsApp and Contact us clicks, thank-you pages), channel Organic Search
-- `A18`: Visits from AI assistants
-- `B18`: `=SUMPRODUCT(REGEXMATCH(LOWER('Raw GA sources'!$B$2:$B&""),TEXTJOIN("|",TRUE,Settings!$M$7:$M$13))*('Raw GA sources'!$A$2:$A=KEY_A)*'Raw GA sources'!$C$2:$C)`
-- `C18`: `=SUMPRODUCT(REGEXMATCH(LOWER('Raw GA sources'!$B$2:$B&""),TEXTJOIN("|",TRUE,Settings!$M$7:$M$13))*('Raw GA sources'!$A$2:$A=KEY_B)*'Raw GA sources'!$C$2:$C)`
-- `D18`: `=IF(C18=0,"",B18/C18-1)`
-- `E18`: Google Analytics visit sources such as chatgpt.com and gemini (list on Settings)
-- `A20`: Why clicks moved
-- `B21`: `=LABEL_A`
-- `C21`: `=LABEL_B`
-- `D21`: Change
-- `E21`: Where it comes from
-- `A22`: Clicks from searches naming County or a project
-- `B22`: `=SUMIFS('Searches workings'!$C$2:$C,'Searches workings'!$B$2:$B,"Brand")`
-- `C22`: `=SUMIFS('Searches workings'!$D$2:$D,'Searches workings'!$B$2:$B,"Brand")`
-- `D22`: `=IF(C22=0,"",B22/C22-1)`
-- `E22`: Search Console searches; the brand words are on Settings
-- `A23`: Clicks from new-buyer searches
-- `B23`: `=SUMIFS('Searches workings'!$C$2:$C,'Searches workings'!$B$2:$B,"New buyer")`
-- `C23`: `=SUMIFS('Searches workings'!$D$2:$D,'Searches workings'!$B$2:$B,"New buyer")`
-- `D23`: `=IF(C23=0,"",B23/C23-1)`
-- `E23`: Searches without County or a project name: new demand
-- `A24`: Clicks where Google hides the search
-- `B24`: `=B15-B22-B23`
-- `C24`: `=C15-C22-C23`
-- `D24`: `=IF(C24=0,"",B24/C24-1)`
-- `E24`: Google keeps rare searches private
-- `A25`: Times shown on Google
-- `B25`: `=SUMIFS('Raw Google daily'!$C$2:$C,'Raw Google daily'!$A$2:$A,">="&PERIOD_A_START,'Raw Google daily'!$A$2:$A,"<="&PERIOD_A_END)`
-- `C25`: `=SUMIFS('Raw Google daily'!$C$2:$C,'Raw Google daily'!$A$2:$A,">="&PERIOD_B_START,'Raw Google daily'!$A$2:$A,"<="&PERIOD_B_END)`
-- `D25`: `=IF(C25=0,"",B25/C25-1)`
-- `E25`: Search Console impressions
-- `A26`: Click rate (change in points)
-- `B26`: `=IF(B25=0,,B15/B25)`
-- `C26`: `=IF(C25=0,,C15/C25)`
-- `D26`: `=(B26-C26)*100`
-- `E26`: Clicks divided by times shown
-- `A27`: Average position (lower is better)
-- `B27`: `=IF(B25=0,,SUMIFS('Raw Google daily'!$E$2:$E,'Raw Google daily'!$A$2:$A,">="&PERIOD_A_START,'Raw Google daily'!$A$2:$A,"<="&PERIOD_A_END)/B25)`
-- `C27`: `=IF(C25=0,,SUMIFS('Raw Google daily'!$E$2:$E,'Raw Google daily'!$A$2:$A,">="&PERIOD_B_START,'Raw Google daily'!$A$2:$A,"<="&PERIOD_B_END)/C25)`
-- `D27`: `=B27-C27`
-- `E27`: Search Console, weighted by times shown
-- `A29`: Projects: clicks from Google to each project's pages
-- `A30`: Project
-- `B30`: `=LABEL_A`
-- `C30`: `=LABEL_B`
-- `D30`: Change
-- `E30`: % change
-- `F30`: `="Visits from search engines, "&LABEL_A`
-- `A31`: `=IFERROR(CHOOSECOLS(FILTER(Projects!A4:L20,Projects!A4:A20<>""),1,3,4,5,6,10),"")`
-- `A48`: Pages that moved most
-- `A49`: Page
-- `B49`: `=LABEL_A`
-- `C49`: `=LABEL_B`
-- `D49`: Change
-- `E49`: Kind of page
-- `F49`: Project
-- `A50`: Lost most clicks
-- `A51`: `=IFERROR(LET(w,FILTER('Pages workings'!A2:F,'Pages workings'!A2:A<>"",'Pages workings'!F2:F<0),CHOOSECOLS(SORTN(w,5,0,6,TRUE),1,4,5,6,2,3)),"No page lost clicks.")`
-- `A56`: Gained most clicks
-- `A57`: `=IFERROR(LET(w,FILTER('Pages workings'!A2:F,'Pages workings'!A2:A<>"",'Pages workings'!F2:F>0),CHOOSECOLS(SORTN(w,5,0,6,FALSE),1,4,5,6,2,3)),"No page gained clicks.")`
-- `A63`: Check next
-- `A64`: `=LET(n,COUNTIFS('Pages workings'!E2:E,">=10",'Pages workings'!D2:D,0),IF(n=0,"No page with 10 or more clicks in "&LABEL_B&" dropped to zero.",n&IF(n=1," page"," pages")&" with 10 or more clicks in "&LABEL_B&" got none in "&LABEL_A&". Check they still open and are still on Google (Pages tab, sort by biggest drop)."))`
-- `A65`: `="Only "&TEXT(IF(B15=0,0,B23/B15),"0.0%")&" of clicks in "&LABEL_A&" came from new-buyer searches (people not yet searching for County or a project), against "&TEXT(IF(C15=0,0,C23/C15),"0.0%")&" in "&LABEL_B&". This is the share that shows new demand."`
-- `A66`: `=IF(C17=0,"Google Analytics recorded no enquiry events from search engines in "&LABEL_B&", and almost none from Nov 2025 to Mar 2026 (Month by month tab), so enquiry tracking was most likely not set up then. Compare enquiries from Apr 2026 onwards.","Visits from search engines led to an enquiry event "&TEXT(IF(B16=0,0,B17/B16),"0.0%")&" of the time in "&LABEL_A&", against "&TEXT(IF(C16=0,0,C17/C16),"0.0%")&" in "&LABEL_B&".")`
-- `A67`: `="Visits from AI assistants: "&TEXT(B18,"#,##0")&" against "&TEXT(C18,"#,##0")&" (Channels tab splits them by assistant). Whether ChatGPT, Gemini or Google's AI answers name County is checked monthly in OpenSEO, not in this file."`
-- `A68`: `=IFERROR(LET(r,XLOOKUP(PERIOD_A_START,'Agency check'!$A$5:$A$19,'Agency check'!$C$5:$C$19),g,XLOOKUP(PERIOD_A_START,'Agency check'!$A$5:$A$19,'Agency check'!$D$5:$D$19),IF(r="","ROI's report for "&TEXT(PERIOD_A_START,"mmmm yyyy")&" is not in yet.","ROI's report for "&TEXT(PERIOD_A_START,"mmmm yyyy")&" gives "&TEXT(r,"#,##0")&" organic visits; Google Analytics has "&TEXT(g,"#,##0")&" from Google search. Their reports still give no enquiry count (Agency check tab).")),"ROI's report for "&TEXT(PERIOD_A_START,"mmmm yyyy")&" is not on the Agency check tab.")`
-- `A70`: Clicks from Google, month by month (month picked in blue, compared month in dark grey)
+- `B15`: Visits from search engines
+- `D15`: Enquiry events
+- `F15`: Visits from AI assistants
+- `A16`: `='Chart workings'!$M$2`
+- `B16`: `='Chart workings'!$M$3`
+- `D16`: `='Chart workings'!$M$4`
+- `F16`: `='Chart workings'!$M$5`
+- `A17`: `=LET(a,'Chart workings'!$M$2,b,'Chart workings'!$N$2,IF(b=0,"nothing to compare",IF(a>=b,"▲ ","▼ ")&TEXT(ABS(a/b-1),"0%")&"   from "&TEXT(b,"#,##0")&" in "&LABEL_B))`
+- `B17`: `=LET(a,'Chart workings'!$M$3,b,'Chart workings'!$N$3,IF(b=0,"nothing to compare",IF(a>=b,"▲ ","▼ ")&TEXT(ABS(a/b-1),"0%")&"   from "&TEXT(b,"#,##0")))`
+- `D17`: `=LET(a,'Chart workings'!$M$4,b,'Chart workings'!$N$4,IF(b=0,"nothing to compare",IF(a>=b,"▲ ","▼ ")&TEXT(ABS(a/b-1),"0%")&"   from "&TEXT(b,"#,##0")))`
+- `F17`: `=LET(a,'Chart workings'!$M$5,b,'Chart workings'!$N$5,IF(b=0,"nothing to compare",IF(a>=b,"▲ ","▼ ")&TEXT(ABS(a/b-1),"0%")&"   from "&TEXT(b,"#,##0")))`
+- `A18`: `=IF(PART_MONTH,"On pace for about "&TEXT('Chart workings'!$M$10,"#,##0")&" by "&TEXT(EOMONTH(PERIOD_A_START,0),"d mmm"),"Search Console, every search")`
+- `B18`: Google Analytics, channel Organic Search
+- `D18`: WhatsApp, Contact us, thank-you pages
+- `F18`: chatgpt.com, Gemini and others
+- `A20`: The four projects on sale
+- `A21`: Project
+- `B21`: Clicks
+- `C21`: Change
+- `D21`: Visits
+- `E21`: Change
+- `F21`: Enquiry events
+- `G21`: Position
+- `A22`: Ivory County (incl. Gold)
+- `B22`: `=SUMIFS(Projects!$C$4:$C$20,Projects!$A$4:$A$20,"Ivory County*")`
+- `C22`: `=SUMIFS(Projects!$C$4:$C$20,Projects!$A$4:$A$20,"Ivory County*")-SUMIFS(Projects!$D$4:$D$20,Projects!$A$4:$A$20,"Ivory County*")`
+- `D22`: `=SUMIFS(Projects!$J$4:$J$20,Projects!$A$4:$A$20,"Ivory County*")`
+- `E22`: `=SUMIFS(Projects!$J$4:$J$20,Projects!$A$4:$A$20,"Ivory County*")-SUMIFS(Projects!$K$4:$K$20,Projects!$A$4:$A$20,"Ivory County*")`
+- `F22`: `=SUMIFS(Projects!$L$4:$L$20,Projects!$A$4:$A$20,"Ivory County*")`
+- `G22`: `=IFERROR(XLOOKUP("Ivory County",Projects!$A$4:$A$20,Projects!$I$4:$I$20),"")`
+- `A23`: Clove County
+- `B23`: `=SUMIFS(Projects!$C$4:$C$20,Projects!$A$4:$A$20,"Clove County*")`
+- `C23`: `=SUMIFS(Projects!$C$4:$C$20,Projects!$A$4:$A$20,"Clove County*")-SUMIFS(Projects!$D$4:$D$20,Projects!$A$4:$A$20,"Clove County*")`
+- `D23`: `=SUMIFS(Projects!$J$4:$J$20,Projects!$A$4:$A$20,"Clove County*")`
+- `E23`: `=SUMIFS(Projects!$J$4:$J$20,Projects!$A$4:$A$20,"Clove County*")-SUMIFS(Projects!$K$4:$K$20,Projects!$A$4:$A$20,"Clove County*")`
+- `F23`: `=SUMIFS(Projects!$L$4:$L$20,Projects!$A$4:$A$20,"Clove County*")`
+- `G23`: `=IFERROR(XLOOKUP("Clove County",Projects!$A$4:$A$20,Projects!$I$4:$I$20),"")`
+- `A24`: Cocoa County
+- `B24`: `=SUMIFS(Projects!$C$4:$C$20,Projects!$A$4:$A$20,"Cocoa County*")`
+- `C24`: `=SUMIFS(Projects!$C$4:$C$20,Projects!$A$4:$A$20,"Cocoa County*")-SUMIFS(Projects!$D$4:$D$20,Projects!$A$4:$A$20,"Cocoa County*")`
+- `D24`: `=SUMIFS(Projects!$J$4:$J$20,Projects!$A$4:$A$20,"Cocoa County*")`
+- `E24`: `=SUMIFS(Projects!$J$4:$J$20,Projects!$A$4:$A$20,"Cocoa County*")-SUMIFS(Projects!$K$4:$K$20,Projects!$A$4:$A$20,"Cocoa County*")`
+- `F24`: `=SUMIFS(Projects!$L$4:$L$20,Projects!$A$4:$A$20,"Cocoa County*")`
+- `G24`: `=IFERROR(XLOOKUP("Cocoa County",Projects!$A$4:$A$20,Projects!$I$4:$I$20),"")`
+- `A25`: Jade County
+- `B25`: `=SUMIFS(Projects!$C$4:$C$20,Projects!$A$4:$A$20,"Jade County*")`
+- `C25`: `=SUMIFS(Projects!$C$4:$C$20,Projects!$A$4:$A$20,"Jade County*")-SUMIFS(Projects!$D$4:$D$20,Projects!$A$4:$A$20,"Jade County*")`
+- `D25`: `=SUMIFS(Projects!$J$4:$J$20,Projects!$A$4:$A$20,"Jade County*")`
+- `E25`: `=SUMIFS(Projects!$J$4:$J$20,Projects!$A$4:$A$20,"Jade County*")-SUMIFS(Projects!$K$4:$K$20,Projects!$A$4:$A$20,"Jade County*")`
+- `F25`: `=SUMIFS(Projects!$L$4:$L$20,Projects!$A$4:$A$20,"Jade County*")`
+- `G25`: `=IFERROR(XLOOKUP("Jade County",Projects!$A$4:$A$20,Projects!$I$4:$I$20),"")`
+- `A26`: `=HYPERLINK("#gid=3","All projects, including the older ones, are on the Projects tab  →")`
+- `A28`: Day by day: clicks from Google
+- `A41`: `="How to read it: blue is "&LABEL_A&", grey is "&TEXT(PERIOD_B_START,"mmmm yyyy")&" (the whole month). Weekends dip. Google's last two days are still filling in."`
+- `A43`: Pages that moved most
+- `A44`: Page
+- `B44`: Clicks
+- `C44`: Before
+- `D44`: Change
+- `E44`: Kind of page
+- `F44`: Project
+- `A45`: Lost most clicks
+- `A46`: `=IFERROR(LET(w,FILTER('Pages workings'!A2:F,'Pages workings'!A2:A<>"",'Pages workings'!F2:F<0),CHOOSECOLS(SORTN(w,4,0,6,TRUE),1,4,5,6,2,3)),"No page lost clicks.")`
+- `A50`: Gained most clicks
+- `A51`: `=IFERROR(LET(w,FILTER('Pages workings'!A2:F,'Pages workings'!A2:A<>"",'Pages workings'!F2:F>0),CHOOSECOLS(SORTN(w,4,0,6,FALSE),1,4,5,6,2,3)),"No page gained clicks.")`
+- `A56`: Check next
+- `A57`: Pages
+- `B57`: `=LET(n,COUNTIFS('Pages workings'!E2:E,">=10",'Pages workings'!D2:D,0),IF(n=0,"No page that had 10 or more clicks in "&LABEL_B&" dropped to zero.",n&IF(n=1," page"," pages")&" with 10 or more clicks in "&LABEL_B&" got none in "&LABEL_A&". Check they still open and are still on Google (Pages tab, sort by biggest drop)."))`
+- `A58`: New buyers
+- `B58`: `="Only "&TEXT(IF('Chart workings'!$M$2=0,0,'Chart workings'!$M$7/'Chart workings'!$M$2),"0.0%")&" of clicks came from new buyers (searches without County or a project name), against "&TEXT(IF('Chart workings'!$N$2=0,0,'Chart workings'!$N$7/'Chart workings'!$N$2),"0.0%")&" in "&LABEL_B&". This is the number the blog and location pages have to grow."`
+- `A59`: Enquiries
+- `B59`: `=IF('Chart workings'!$N$4=0,"Google Analytics recorded no enquiry events from search engines in "&LABEL_B&", so tracking was most likely not set up then. Compare from Apr 2026 on.","Visits from search engines turned into an enquiry event "&TEXT(IF('Chart workings'!$M$3=0,0,'Chart workings'!$M$4/'Chart workings'!$M$3),"0.0%")&" of the time, against "&TEXT(IF('Chart workings'!$N$3=0,0,'Chart workings'!$N$4/'Chart workings'!$N$3),"0.0%")&" in "&LABEL_B&"."&IF(OR(LEFT(KEY_A,8)="Oct 2026",LEFT(KEY_B,8)="Oct 2026")," October includes 15 WhatsApp clicks by 3 visitors on /cocoacounty/campaignDV (an ad page), so it looks higher than it was.",""))`
+- `A60`: AI answers
+- `B60`: `="Visits from AI assistants: "&TEXT('Chart workings'!$M$5,"#,##0")&" against "&TEXT('Chart workings'!$N$5,"#,##0")&" (Channels tab splits them by assistant). Whether ChatGPT, Gemini or Google's AI answers name County is checked monthly in OpenSEO."`
+- `A61`: ROI report
+- `B61`: `=IFERROR(LET(r,XLOOKUP(PERIOD_A_START,'Agency check'!$A$5:$A$19,'Agency check'!$C$5:$C$19),g,XLOOKUP(PERIOD_A_START,'Agency check'!$A$5:$A$19,'Agency check'!$D$5:$D$19),IF(r="","ROI's report for "&TEXT(PERIOD_A_START,"mmmm yyyy")&" is not in yet. When it arrives, type its numbers on the Agency check tab.","ROI's report for "&TEXT(PERIOD_A_START,"mmmm yyyy")&" gives "&TEXT(r,"#,##0")&" organic visits; Google Analytics has "&TEXT(g,"#,##0")&" from Google search. Their reports still give no enquiry count.")),"ROI's report for "&TEXT(PERIOD_A_START,"mmmm yyyy")&" is not on the Agency check tab.")`
+- `A63`: Month by month: clicks from Google (month picked in blue, compared month in grey)
 
 ## Month by month
 
@@ -646,7 +644,7 @@ only the formula in the top-left cell.
 - `A30`: Same month last year
 - `A32`: What the Dashboard shows
 - `A33`: Month picked
-- `B33`: `=LET(x,Dashboard!B5,IF(ISNUMBER(x),TEXT(x,"mmm yyyy"),x&""))`
+- `B33`: `=LET(x,Dashboard!B3,IF(ISNUMBER(x),TEXT(x,"mmm yyyy"),x&""))`
 - `A34`: Month picked starts
 - `B34`: `=IFERROR(XLOOKUP(B33,A9:A26,B9:B26),B9)`
 - `A35`: Month picked ends
@@ -654,7 +652,7 @@ only the formula in the top-left cell.
 - `A36`: Month picked is not finished
 - `B36`: `=B35<EOMONTH(B34,0)`
 - `A37`: Compared with
-- `B37`: `=IF(Dashboard!D5="","Month before",Dashboard!D5)`
+- `B37`: `=IF(Dashboard!E3="","Month before",Dashboard!E3)`
 - `A38`: Compared month starts
 - `B38`: `=EDATE(B34,IF(B37="Same month last year",-12,-1))`
 - `A39`: Compared month ends
@@ -783,6 +781,14 @@ only the formula in the top-left cell.
 - `C2`: `=ARRAYFORMULA(IF(A2:A="",,IF(A2:A=PERIOD_B_START,E2:E,0)))`
 - `D2`: `=ARRAYFORMULA(IF(A2:A="",,E2:E-B2:B-C2:C))`
 - `E2`: `=IFERROR(MAP(TOCOL(A2:A,1),LAMBDA(m,SUMIFS('Raw Google daily'!$B$2:$B,'Raw Google daily'!$A$2:$A,">="&m,'Raw Google daily'!$A$2:$A,"<="&EOMONTH(m,0)))),)`
+
+Briefing helpers (added 27 Nov 2026), used by the Dashboard:
+
+- `H1`: Day, `I1`: `=LABEL_A`, `J1`: `=TEXT(PERIOD_B_START,"mmm yyyy")`
+- `H2`: `=SEQUENCE(31)`
+- `I2`: `=MAP(H2:H32,LAMBDA(d,LET(x,PERIOD_A_START+d-1,IF(OR(x>PERIOD_A_END,x>LATEST_DAY,MONTH(x)<>MONTH(PERIOD_A_START)),NA(),SUMIFS('Raw Google daily'!$B$2:$B,'Raw Google daily'!$A$2:$A,x)))))`
+- `J2`: `=MAP(H2:H32,LAMBDA(d,LET(x,PERIOD_B_START+d-1,IF(OR(x>EOMONTH(PERIOD_B_START,0),NOT(B_AVAILABLE)),NA(),SUMIFS('Raw Google daily'!$B$2:$B,'Raw Google daily'!$A$2:$A,x)))))` (the whole compared month)
+- `L1:N14`: labels in L, month picked in M, compared month in N: M2/N2 clicks (Raw Google daily); M3/N3 visits (Raw GA channels, Organic Search, KEY_A/KEY_B); M4/N4 enquiry events; M5/N5 AI visits (Raw GA sources matching Settings!M7:M13); M6/N6 brand clicks and M7/N7 new-buyer clicks (Searches workings); M8/N8 times shown; M9/N9 average position; M10 month-end pace `=IF(PART_MONTH,ROUND(M2/(PERIOD_A_END-PERIOD_A_START+1)*DAY(EOMONTH(PERIOD_A_START,0)),-1),M2)`, N10 the whole compared month; M11 clicks on the same days a year earlier; M12/N12 older projects' clicks (Projects rows not matching M14); M14 the pattern of projects on sale `^(Ivory County|Clove County|Cocoa County|Jade County)`.
 
 ## Raw Google daily
 

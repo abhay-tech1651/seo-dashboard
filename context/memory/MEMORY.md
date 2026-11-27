@@ -4,6 +4,6 @@
 - [openSEO baseline](project-openseo-baseline.md) — Nov 2026 openSEO project id, SEO + AI visibility baseline, tracker
 - [SEO dashboard](project-seo-dashboard.md) — Sep vs Oct 2026 claude.ai report + this repo
 - [SEO Explorer](project-seo-explorer.md) — live + compare-any-period claude.ai dashboard (21 Nov 2026)
-- [SEO Google Sheet](project-seo-sheet.md) — the main SEO dashboard (Sheets + Apps Script); 25 Nov redesign: month dropdown, Month by month, Agency check
+- [SEO Google Sheet](project-seo-sheet.md) — the main SEO dashboard (Sheets + Apps Script); 27 Nov: Dashboard rebuilt as a briefing, This month so far by default
 - [Dashboard design taste](feedback-dashboard-design.md) — handbook-style briefings, plain words, Sheets + Apps Script home
 - [Repo hand-over rule](feedback-repo-handover.md) — keep full SEO context + IDs in this repo after every piece of work
