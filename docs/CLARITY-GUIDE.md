@@ -70,3 +70,63 @@ on a phone.
 - 1,962 JavaScript errors in 12% of visits, mostly "fallbacktimer is not defined" and
   "cannot read properties of null (reading 'getattribute')": a website script bug for the web team.
 - Dead clicks in 11% of all visits; quick backs in 8%.
+
+## Deep dive: the top Cocoa blog (27 Nov 2026)
+
+Post: "A Warm Expression of Luxury: A Closer Look at Cocoa County Flats in Gurgaon"
+(https://www.countygroup.in/blog/A-Warm-Expression-of-Luxury-A-Closer-Look-at-Cocoa-County-Flats-in-Gurgaon-),
+published 9 Nov 2026, about 2,900 words, one photo. Screenshots in `docs/clarity-2026-11-27/`.
+
+**Who came:** 17 recorded visits by about 11 people. At least 3 of those people look like the County
+or agency team, not buyers: user 1rkolge (3 visits of 54 to 90 minutes, one starting on a test page
+"/asdasda", one from /cococounty/plans), 1n99tq5 (3 visits, 13 to 52 minutes, one ending on
+thankyou.php) and fqmiy8 (53 minutes, 31 pages). Their long visits inflate time and scroll for this
+post. Real Google visitors: 4 on a phone left after 3, 18, 24 seconds (one stayed 19 minutes); on a
+computer, visits of 22 seconds, 1 min 23, 7 min 37 and 1 hour 8 minutes.
+
+**Where the page sits (share of page height):** title 2%, photo 4%, Key Takeaways 10%, design 19%,
+3 and 4 BHK with two tables 22-29%, Apartment Specifications 34%, Landscaped Spaces 42%, Leisure 47%,
+Club Elixir 54%, Community Spaces 57-62%, closing 66% (link to County Group, Center Court, phone
+number 88822 88800 at 69%), FAQ with 8 open questions 70-88%, Contact Us link in the footer 94%.
+The only link to the Cocoa County project page is at 23%. There is no enquiry box in the post: only
+the floating round enquiry icon (59 px, no words, bottom corner, covers the text on a phone).
+
+**Scroll (desktop, 28 views):** 100% start, 82% reach 20%, 79% reach 30%, then 61% at 35% and 43%
+at 40%: the biggest drop is at "Apartment Specifications and Finishes" (a long list). 29% reach the
+middle, 21% reach the FAQ (70%), 4% the very end. The first screen ends inside the photo, so
+"Key Takeaways" is below the fold.
+
+**Attention (time):** most time is spent on the opening (10-20%: about 2 to 2.5 minutes), on the
+BHK tables (25-35%: about 1.5 to 2 minutes) and on amenities (50-60%: 5 to 6 minutes, but only about
+8 visitors get there and some are the team). The FAQ gets about 10 to 20 seconds per section.
+
+**Clicks (desktop, 27 clicks):** all on plain text and headings ("Note: the areas and
+specifications", the title, "Key Features", amenities text, an FAQ question). Nobody clicked a link
+to the project, the phone number or the enquiry icon. People tapping text and headings that do
+nothing = dead clicks.
+
+**A real visitor (27 Nov, 12:20, Google, computer, 7 min 37):** read this post, went to the blog
+list, opened "Cocoa County Near Dwarka Expressway", reloaded it, went back and forth between the two
+Cocoa posts, and left. Clearly interested in Cocoa; never saw the project page or an enquiry prompt.
+
+**Site code found while checking:**
+- Google Tag Manager (and so Google Analytics) only loads after the visitor scrolls, moves the mouse
+  or touches the screen. Visitors who leave without doing that are never counted by Google Analytics
+  (Clarity still sees them).
+- The chat-widget loader calls `clearTimeout(fallbackTimer)` after the line that created
+  `fallbackTimer` was commented out. That is the "fallbacktimer is not defined" error (about 58% of
+  the site's JavaScript errors in Clarity). Harmless to visitors, but it hides real errors; delete the
+  line or restore the timer.
+- The enquiry popup's captcha also loads only after a scroll or touch. Tested: after a scroll it
+  loads and the form shows the captcha, so the form works for real visitors.
+
+**What to change on this post:**
+1. A short enquiry box with the project name at about 25-30% (right after the 3 and 4 BHK tables,
+   before the specifications), e.g. "See Cocoa County prices and floor plans" with WhatsApp and the form.
+2. Turn the specifications list into a short table or collapse it; it is where most readers leave.
+3. Add photos of the residences, clubhouse and landscapes (the post has one photo for 2,900 words).
+4. Make the FAQ collapsible and put a "Book a site visit" button next to Q.8.
+5. Link the BHK tables and headings people tap to the Cocoa project page / floor plans.
+6. A label on the floating icon ("Enquire") and move it off the text on phones.
+7. Exclude the team from Clarity (Settings > Setup > IP blocking, or ask the team to use a
+   separate browser profile) so the numbers show buyers only.
