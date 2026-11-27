@@ -7,3 +7,4 @@
 - [SEO Google Sheet](project-seo-sheet.md) — the main SEO dashboard (Sheets + Apps Script); 27 Nov: Dashboard rebuilt as a briefing, This month so far by default
 - [Dashboard design taste](feedback-dashboard-design.md) — handbook-style briefings, plain words, Sheets + Apps Script home
 - [Repo hand-over rule](feedback-repo-handover.md) — keep full SEO context + IDs in this repo after every piece of work
+- [Microsoft Clarity](reference-clarity.md) — project z77gcwb5k1, blog filter, 27 Nov 2026 blog baseline
