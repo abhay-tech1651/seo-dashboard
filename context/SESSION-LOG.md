@@ -4423,3 +4423,11 @@ User: "SEO dashboard, let's focus on now what is happening for this month and al
 - Looked at the Sheet in the owner's Chrome (Claude in Chrome; the built-in browser pane was signed out of Google). Roast: still a spreadsheet, sources column took half the width, text cut off, opened on last month.
 - Rebuilt the Dashboard tab (cleared, new layout A:G): title, dropdowns moved to B3/E3 (rows 1-3 frozen), DATA_STATUS moved to A4, four-sentence "What happened" story, four number cards, the four projects on sale, day-by-day line chart (new chart, Chart workings H1:J32), pages moved, check next, month-by-month chart. Helper numbers in Chart workings L1:N14. Settings B33/B37 now read Dashboard B3/E3. Sources moved to cell notes. Tested Oct 2026 vs Month before and Nov so far vs Same month last year: no errors. Default set back to This month so far vs Month before.
 - LAYOUT.md (Dashboard and Chart workings) and CONTEXT.md updated; pushed.
+
+## 27 Nov 2026 (later): enquiries explained and counted as people; Clarity next
+
+User: "inquiries I don't understand. Please make me understand ... change the dashboard ... Also, I want to understand Microsoft Clarity ... which blogs are getting more attention, heat maps of their blogs, teach me how to use it".
+
+- Explained: GA "enquiries" are WhatsApp button taps, Contact us taps and form thank-you pages; only forms are sure leads; the old number counted taps, not people.
+- Script: new Raw GA enquiries tab (times and people per event, plus people with any enquiry). Installed via the built-in browser pane (Claude in Chrome kept disconnecting), refreshNow ran 16:05 IST. Dashboard card is now People who enquired (Nov 1-26: 27, Oct 1-26: 39) with the WhatsApp / Contact us / forms split.
+- Clarity: the browser pane is not signed in to clarity.microsoft.com yet; waiting for the owner to sign in.

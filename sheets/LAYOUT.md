@@ -28,6 +28,7 @@ only the formula in the top-left cell.
 | Raw GA channels | 13 |
 | Raw GA sources | 14 |
 | Raw GA landing pages | 15 |
+| Raw GA enquiries | 16 |
 | Data Sources | 20 |
 
 ## Named ranges
@@ -883,6 +884,14 @@ Briefing helpers (added 27 Nov 2026), used by the Dashboard:
 - `D2`: 1695
 - `E2`: 21
 - `F2`: `=ARRAYFORMULA(IF(B2:B="",,IF(LEN(B2:B)>1,REGEXREPLACE(B2:B,"/$",""),B2:B)))`
+
+## Raw GA enquiries
+
+- `A1`: Period, `B1`: Enquiry (event name), `C1`: Times, `D1`: People, `E1`: Kind (formula)
+- Rows 2+: written by the script (enquiries_ in Code.gs); one "Anyone who enquired" row per period.
+- `E2`: `=ARRAYFORMULA(IF(B2:B="",,IF(B2:B="Anyone who enquired","Anyone",IF(REGEXMATCH(LOWER(B2:B),"whatsapp"),"WhatsApp",IF(REGEXMATCH(LOWER(B2:B),"contact"),"Contact us",IF(REGEXMATCH(LOWER(B2:B),"thank|lead|form"),"Form sent","Other"))))))`
+- Chart workings L15:N20: people who enquired (Anyone), WhatsApp, Contact us, Form sent people, enquiry taps (times), and M20 = the tab has rows.
+- Dashboard D15:D18, A11 and B59 read these (falling back to taps when M20 is FALSE).
 
 ## Data Sources
 

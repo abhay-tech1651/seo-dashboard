@@ -53,9 +53,19 @@ November 2026 so far (1 to 26 Nov, checked 27 Nov):
   totalUsers per event and landing page, via OpenSEO): about 43 in Oct 1-26 against 29 in Nov 1-26.
 - AI visits 62 against 61.
 
-Next ideas from this round (not done): count people who enquired instead of events (needs a Code.gs
-change: GA4 metric totalUsers with dimension isKeyEvent, or userKeyEventRate), and ask why
-/cocoacounty/campaignDV gets Organic Search visits.
+Later on 27 Nov (owner: "make me understand enquiries"): the script now also fetches enquiries by
+kind into a new tab **Raw GA enquiries** (sheetId 16): per period and GA event name, Times (keyEvents)
+and People (totalUsers), plus one row per period "Anyone who enquired" (dimension isKeyEvent = true,
+so a person who did two things counts once). Column E (formula) groups events into WhatsApp, Contact
+us, Form sent (thank-you pages and *_lead events), Anyone. The Dashboard card is now "People who
+enquired" with "15 WhatsApp · 7 Contact us · 6 forms" under it, and the story says a tap only opens
+WhatsApp or the contact page while a form is a sure lead. If the tab is empty the cells fall back to
+taps (Chart workings M20). Installed through the built-in browser pane (Apps Script editor, edits
+applied to the Monaco model, SHA-256 of the editor text = repo file with LF endings), refresh run
+27 Nov 16:05 IST: Nov 1-26 = 27 people (33 taps), Oct 1-26 = 39 people (65 taps).
+Found: GA recorded center_court_lead form events in Aug-Oct 2025 (77, 21, 15), then no enquiries at
+all from Nov 2025 to Jan 2026; the "not set up before Apr 2026" wording was wrong and is replaced.
+Still open: why /cocoacounty/campaignDV (an ad page) gets Organic Search visits.
 
 ## Before that (25 Nov 2026)
 
