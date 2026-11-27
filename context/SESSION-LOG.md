@@ -4431,3 +4431,4 @@ User: "inquiries I don't understand. Please make me understand ... change the da
 - Explained: GA "enquiries" are WhatsApp button taps, Contact us taps and form thank-you pages; only forms are sure leads; the old number counted taps, not people.
 - Script: new Raw GA enquiries tab (times and people per event, plus people with any enquiry). Installed via the built-in browser pane (Claude in Chrome kept disconnecting), refreshNow ran 16:05 IST. Dashboard card is now People who enquired (Nov 1-26: 27, Oct 1-26: 39) with the WhatsApp / Contact us / forms split.
 - Clarity: the browser pane is not signed in to clarity.microsoft.com yet; waiting for the owner to sign in.
+- Clarity (signed in by the owner in the browser pane): project "County Group" z77gcwb5k1. Last 30 days: 10,360 visits; blog pages 89 visits (under 1%), top post 32 views (Cocoa), desktop-heavy, 63% scroll, 3.5 min active, dead clicks 33%, 2 Contact us. Guide written to docs/CLARITY-GUIDE.md.
