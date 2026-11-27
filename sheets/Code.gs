@@ -30,6 +30,7 @@ const TAB = {
   channels: 'Raw GA channels',
   sources: 'Raw GA sources',
   landing: 'Raw GA landing pages',
+  enquiries: 'Raw GA enquiries',
   log: 'Data Sources',
 };
 
@@ -125,7 +126,18 @@ function refresh_(why) {
     log.push(gaLog_(TAB.sources + '!A1:E' + (sources.length + 1), 'sessionSourceMedium', 'none', span, sources.length, runAt));
     log.push(gaLog_(TAB.landing + '!A1:E' + (landing.length + 1), 'landingPage', 'sessionDefaultChannelGroup = Organic Search', span, landing.length, runAt));
 
-    // 5. Record what was fetched.
+    // 5. Enquiries from search-engine visits, by kind (event name), counted twice: how many times
+    //    (key events) and how many people (users). One extra row per period counts the people who
+    //    made any enquiry, so a person who tapped WhatsApp and sent a form counts once there.
+    const enq = enquiries_(months, slices, lastDay, keyOf, organic);
+    write_(ss, TAB.enquiries, enq.rows, 4, true);
+    log.push([TAB.enquiries + '!A1:D' + (enq.rows.length + 1), 'Google Analytics 4', 'Property ' + CONFIG.ga4Property + ' (Data API runReport)',
+      'Apps Script in this file, read-only',
+      'Key events and people (totalUsers) by eventName, plus people with any key event (isKeyEvent = true); filter: sessionDefaultChannelGroup = Organic Search',
+      span, runAt, enq.rows.length, enq.note,
+      '=HYPERLINK("https://analytics.google.com/analytics/web/#/p' + CONFIG.ga4Property + '/reports/intelligenthome","Open Google Analytics")']);
+
+    // 6. Record what was fetched.
     const sh = ss.getSheetByName(TAB.log);
     ss.getRangeByName('FETCHED_PERIODS').setValues([
       [toDate_(periods[0].start)], [toDate_(lastDay)],
@@ -195,9 +207,11 @@ function gsc_(body, max) {
 /**
  * Google Analytics Data API report: visits, engaged visits and enquiry (key) events by one
  * dimension. With 'keyOf' the report is split by month and each row gets that month's key;
- * otherwise every row gets 'key'. Rows: [period, value, visits, engaged visits, key events].
+ * otherwise every row gets 'key'. Rows: [period, value, visits, engaged visits, key events], or
+ * [period, value, ...metrics] when 'metrics' names other metrics.
  */
-function ga_(startDate, endDate, dimension, dimensionFilter, keyOf, key) {
+function ga_(startDate, endDate, dimension, dimensionFilter, keyOf, key, metrics) {
+  const mets = metrics || ['sessions', 'engagedSessions', 'keyEvents'];
   const url = 'https://analyticsdata.googleapis.com/v1beta/properties/' + CONFIG.ga4Property + ':runReport';
   const dims = keyOf ? [{ name: 'yearMonth' }, { name: dimension }] : [{ name: dimension }];
   const out = [];
@@ -205,8 +219,8 @@ function ga_(startDate, endDate, dimension, dimensionFilter, keyOf, key) {
     const body = {
       dateRanges: [{ startDate: startDate, endDate: endDate }],
       dimensions: dims,
-      metrics: [{ name: 'sessions' }, { name: 'engagedSessions' }, { name: 'keyEvents' }],
-      orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
+      metrics: mets.map((m) => ({ name: m })),
+      orderBys: [{ metric: { metricName: mets[0] }, desc: true }],
       limit: 10000, offset: offset,
     };
     if (dimensionFilter) body.dimensionFilter = dimensionFilter;
@@ -219,6 +233,30 @@ function ga_(startDate, endDate, dimension, dimensionFilter, keyOf, key) {
     if (!res.rows || offset + res.rows.length >= (res.rowCount || 0)) break;
   }
   return out;
+}
+
+/**
+ * Enquiries (key events) from Organic Search visits: one row per period and event name with
+ * [period, event name, times, people], and one row per period named 'Anyone who enquired' with the
+ * people who made any enquiry. If Google refuses the people-with-any-enquiry report, the per-event
+ * rows are still written and the note says so.
+ */
+function enquiries_(months, slices, lastDay, keyOf, organic) {
+  const isKey = { filter: { fieldName: 'isKeyEvent', stringFilter: { matchType: 'EXACT', value: 'true' } } };
+  const both = { andGroup: { expressions: [organic, isKey] } };
+  const mets = ['keyEvents', 'totalUsers'];
+  const keep = (r) => r[2] > 0;
+  let rows = ga_(months[0].start, lastDay, 'eventName', organic, keyOf, null, mets).filter(keep);
+  slices.forEach((p) => { rows = rows.concat(ga_(p.start, p.end, 'eventName', organic, null, p.key, mets).filter(keep)); });
+  let note = 'Column A names the period. Only events Google Analytics marks as key events (times > 0) are kept.';
+  try {
+    let any = ga_(months[0].start, lastDay, 'isKeyEvent', both, keyOf, null, mets);
+    slices.forEach((p) => { any = any.concat(ga_(p.start, p.end, 'isKeyEvent', both, null, p.key, mets)); });
+    any.forEach((r) => rows.push([r[0], 'Anyone who enquired', r[2], r[3]]));
+  } catch (e) {
+    note += ' The people-with-any-enquiry rows are missing: ' + e.message;
+  }
+  return { rows: rows, note: note };
 }
 
 function call_(url, body, name) {
